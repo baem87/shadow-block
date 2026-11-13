@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>BLOCK BLAST 2026</title>
+<meta name="theme-color" content="#1a1a3a">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#1a1a3a">
+<link rel="icon" href="./icon-512.png" type="image/png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:auto;overflow-y:auto;background:#0f0f1a}
+body{color:#fff;font-family:Arial,sans-serif}
+#wrap{max-width:430px;margin:0 auto;height:auto;min-height:100vh;display:flex;flex-direction:column;padding:6px 8px calc(6px + env(safe-area-inset-bottom));gap:3px;background:var(--bg,linear-gradient(180deg,#1a1a3a,#0f0f1a));transition:.8s;width:100%}
+#wrap.battleMode{background:linear-gradient(180deg,#1a0000,#2a0033,#000000,#FF00CC22)!important;animation:battleShake.8s infinite}
+@keyframes battleShake{0%{filter:brightness(1)}50%{filter:brightness(1.15)}100%{filter:brightness(1)}}
+#wrap.battleMode #board{border:3px solid #FF00CC!important;box-shadow:0 0 20px #FF00CC,0 0 40px #FF00CC66!important;animation:boardBlink 1.2s infinite}
+@keyframes boardBlink{0%{box-shadow:0 0 15px #FF00CC}50%{box-shadow:0 0 30px #FF00CC,0 0 50px #00E5FF}100%{box-shadow:0 0 15px #FF00CC}}
+#top{display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+#top h1{font-size:18px} #top h1 span{color:#ffcc00}
+.pill{background:rgba(255,255,255,.15);padding:5px 9px;border-radius:20px;font-size:11px;border:1px solid #333}
+#topBtns{display:flex;gap:4px}
+.topBtn{background:#222;border:1px solid #555;color:#fff;padding:5px 8px;border-radius:8px;font-size:11px;cursor:pointer;font-weight:bold}
+.topBtn.pause{background:#FFA500;color:#000;border:none}
+.topBtn.logout{background:#ffcc00;border:none}
+.topBtn.menuBtn{background:#ffcc00;color:#000;border:none;font-size:16px;padding:5px 10px}
+#statsBar{display:flex;gap:3px;flex-shrink:0}
+.statBox{flex:1;background:rgba(0,0,0,.45);border-radius:12px;padding:8px 2px;text-align:center;font-size:10px;border:1px solid rgba(255,255,255,.2)}
+.statBox b{display:block;font-size:14px;color:#ffcc00}
+.statBox.total{background:linear-gradient(180deg,rgba(255,204,0,.25),rgba(0,0,0,.45));border-color:#ffcc00}
+.statBox.total b{color:#FFE600;font-size:24px!important}
+#badgeBar{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;min-height:22px}
+.badge{background:linear-gradient(180deg,#FFD700,#FFA500);color:#000;font-size:10px;font-weight:bold;padding:3px 8px;border-radius:20px}
+.badge.sifu{background:linear-gradient(180deg,#FF3D00,#FFD600);color:#000;border:2px solid #fff}
+.badge.mahaguru{background:linear-gradient(180deg,#FFD700,#fff,#FFD700);color:#000;border:2px solid #FFD700;box-shadow:0 0 18px #FFD700}
+#scoreBox{text-align:center;flex-shrink:0;line-height:1}
+#scoreBox b{font-size:18px;color:#ffcc00}
+#best{font-size:11px;color:#ddd}
+#battleBanner{display:none;background:linear-gradient(90deg,#ff00cc,#ffcc00,#ff00cc);color:#000;text-align:center;padding:6px;border-radius:10px;font-weight:bold;font-size:12px;flex-shrink:0;animation:glow 1s infinite}
+@keyframes glow{0%{box-shadow:0 0 5px #ff00cc}50%{box-shadow:0 0 14px #ff00cc}100%{box-shadow:0 0 5px #ff00cc}}
+#gameArea{display:flex;gap:6px;align-items:stretch;justify-content:center;width:100%}
+.sideCol{display:flex;flex-direction:column;gap:6px;width:58px;flex-shrink:0}
+.sideBtn{flex:1;background:linear-gradient(180deg,#3a3a4a,#222);border:2px solid rgba(255,255,255,.3);color:#fff;border-radius:12px;padding:6px 2px;font-weight:bold;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;line-height:1.1;user-select:none;touch-action:manipulation;text-align:center}
+.sideBtn:active{background:#ffcc00;color:#000}
+.sideBtn.active-bomb{box-shadow:0 0 15px #ffcc00;animation:pulseBtn.6s infinite}
+.sideBtn.active-flash{box-shadow:0 0 15px #ffcc00;animation:pulseBtn.6s infinite}
+@keyframes pulseBtn{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+.sideBtn small{font-size:9px;opacity:.9}
+.sideBtn.ico{font-size:18px}
+.sideBtn.rotate{background:linear-gradient(180deg,#8a00ff,#4a0099);border:none}
+.sideBtn.drop{background:linear-gradient(180deg,#ff00cc,#7a00ff);border:none}
+.sideBtn.spin{background:linear-gradient(180deg,#ff00cc,#7a00ff);border:none}
+.sideBtn.bomb{background:linear-gradient(180deg,#ff4757,#c0392b);border:none}
+.sideBtn.flash{background:linear-gradient(180deg,#1e90ff,#1a5276);border:none}
+#board{flex:1;min-width:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(14,1fr);gap:3px;background:var(--boardBg,#1a1a2e);padding:6px;border-radius:16px;border:2px solid rgba(255,255,255,.25);box-shadow:0 10px 36px rgba(0,0,0,.7);position:relative}
+#board.bomb-mode{border:3px solid #ff4757!important;box-shadow:0 0 20px #ff4757!important}
+#board.flash-mode{border:3px solid #1e90ff!important;box-shadow:0 0 20px #1e90ff!important}
+.cell{background:var(--cell,#2a2a3a);border-radius:4px;min-width:0;min-height:0;transition:.15s;position:relative}
+.cell.filled{border-radius:7px;background:linear-gradient(135deg, var(--c1) 0%, var(--c2) 45%, var(--c1) 100%);box-shadow: inset 0 3px 0 rgba(255,255,255,.85), inset 0 -4px 0 rgba(0,0,0,.4), 0 3px 8px rgba(0,0,0,.6), 0 0 10px var(--c1);border:1px solid rgba(255,255,255,.45)}
+.cell.filled::after{content:"";position:absolute;top:2px;left:2px;right:50%;height:38%;background:linear-gradient(180deg,rgba(255,255,255,.95),transparent);border-radius:5px;pointer-events:none}
+.cell.falling{border-radius:7px;background:linear-gradient(135deg, var(--c1) 0%, var(--c2) 45%, var(--c1) 100%);box-shadow: inset 0 3px 0 rgba(255,255,255,.95), 0 0 18px var(--c1);border:2px solid #fff;animation:fallGlow.6s infinite}
+@keyframes fallGlow{0%{box-shadow:0 0 10px var(--c1)}50%{box-shadow:0 0 22px var(--c1)}100%{box-shadow:0 0 10px var(--c1)}}
+.cell.explode{animation:explodeAnim.55s ease-out 1 forwards!important;background:#FFD700!important;border:2px solid #fff!important}
+@keyframes explodeAnim{0%{transform:scale(1);opacity:1;background:#ff4757}35%{transform:scale(1.35);background:#FFD700;opacity:1}100%{transform:scale(0);opacity:0}}
+.cell.zap{animation:zapAnim.55s ease-out 1 forwards!important;background:#fff!important;border:2px solid #1e90ff!important}
+@keyframes zapAnim{0%{transform:scale(1);opacity:1;background:#ffcc00}35%{transform:scale(1.25);background:#fff;opacity:1}100%{transform:scale(0);opacity:0}}
+#fxLayer{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:80px;z-index:10;opacity:0;visibility:hidden}
+#fxLayer.show{visibility:visible;animation:fxPop.55s ease-out 1 forwards}
+@keyframes fxPop{0%{opacity:0;transform:scale(.5)}30%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:scale(1.4);visibility:hidden}}
+#trayLabel{font-size:10px;color:#ccc;text-align:center}
+#btnRow{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap}
+button{flex:1;background:linear-gradient(180deg,#333,#222);color:#fff;border:1px solid rgba(255,255,255,.25);padding:10px 3px;border-radius:12px;font-weight:bold;cursor:pointer;font-size:11px;min-width:60px}
+button:disabled{opacity:.4}
+#leaderboard{background:rgba(0,0,0,.5);border-radius:14px;padding:10px 12px;flex-shrink:0;font-size:16px;border:1px solid rgba(255,255,255,.25);overflow:visible;min-height:150px}
+#leaderboard b{font-size:17px}
+#lbList{margin-top:6px}
+.lbRow{display:flex;justify-content:space-between;align-items:center;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.15);font-size:16px;font-weight:bold}
+.lbRow b{font-size:20px;color:#ffcc00}
+.lbRow.me{background:rgba(255,204,0,.25);border-radius:8px}
+.lbRow.empty{opacity:.45}
+.lbRow.empty b{color:#888}
+.lbSep{border-top:1px dashed rgba(255,255,255,.4);margin:6px 0;padding-top:6px;font-size:12px;color:#aaa;text-align:center}
+#footer{text-align:center;font-size:10px;color:#aaa;padding:0;flex-shrink:0;line-height:1.3}
+#footer b{color:#ffcc00}
+#msg,#inviteModal,#loginModal,#roomModal,#surpriseModal,#howModal,#rankModal,#stageModal,#spinModal,#pauseModal,#battleModal,#battleOverModal,#menuModal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:99;padding:14px}
+.msgBox{background:linear-gradient(180deg,#2a2a3a,#1a1a2a);border:2px solid #ffcc00;padding:18px;border-radius:18px;text-align:center;width:100%;max-width:350px;max-height:92dvh;overflow-y:auto}
+.msgBox input,.msgBox select{width:100%;padding:11px;border-radius:10px;border:1px solid #555;background:#111;color:#fff;margin:8px 0;text-align:center;font-size:15px}
+.menuItem{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.07);border-radius:10px;padding:11px 10px;margin:6px 0;text-align:left;font-size:14px}
+.menuItem b{color:#ffcc00}
+.menuItem button{flex:none;min-width:70px;padding:8px}
+.menuSection{font-size:11px;color:#aaa;margin:12px 0 4px;text-align:left;letter-spacing:1px}
+#wheelWrap{position:relative;width:240px;height:240px;margin:12px auto}
+#wheel{width:100%;height:100%;border-radius:50%;border:5px solid #fff;position:relative;overflow:hidden;transition:transform 3s cubic-bezier(.15,.9,.25,1);background:conic-gradient(#ff4757 0 60deg,#ffa502 60deg 120deg,#2ed573 120deg 180deg,#1e90ff 180deg 240deg,#eccc68 240deg 300deg,#ff00cc 300deg 360deg);box-shadow:0 0 25px rgba(255,0,204,.6)}
+#wheelCenter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;z-index:2;border:3px solid #ffcc00;color:#000;font-weight:bold}
+#wheelPointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:30px;z-index:3}
+#toast{position:fixed;top:18%;left:50%;transform:translateX(-50%) translateY(-20px);background:linear-gradient(180deg,#ffcc00,#ff00cc);color:#000;padding:12px 18px;border-radius:16px;border:3px solid #fff;text-align:center;z-index:100;opacity:0;pointer-events:none;transition:.3s;width:85%;max-width:300px;font-weight:bold}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#epicBar{position:fixed;top:0;left:0;right:0;background:linear-gradient(90deg,#ff00cc,#ffcc00,#ff00cc);color:#000;text-align:center;padding:4px;font-weight:bold;z-index:101;display:none;font-size:12px}
+.hidden{display:none!important}
+.stageList{display:flex;flex-direction:column-reverse;gap:0;text-align:left;margin-top:10px}
+.stageItem{display:flex;gap:10px;align-items:center;padding:10px 8px;border-left:3px solid #555;margin-left:14px;opacity:.55}
+.stageItem.unlocked{opacity:1;border-left-color:#ffcc00;background:rgba(46,213,115,.12)}
+.stageItem.current{opacity:1;border-left-color:#ffcc00;background:rgba(255,204,0,.2)}
+.howStep{background:rgba(255,255,255,.07);border-radius:10px;padding:10px;margin:6px 0;text-align:left;font-size:13px;line-height:1.4}
+.howStep b{color:#ffcc00}
+.howStep.warn{background:rgba(255,204,0,.18);border:2px solid #ffcc00}
+.progressBar{height:8px;background:#333;border-radius:20px;overflow:hidden;margin:8px 0}
+.progressFill{height:100%;background:linear-gradient(90deg,#ff00cc,#ffcc00)}
+.battlePlayer{display:flex;justify-content:space-between;padding:6px 8px;background:rgba(255,255,255,.07);border-radius:8px;margin:4px 0;font-size:13px}
+.battlePlayer.alive{border:1px solid #ffcc00}
+.battlePlayer.dead{opacity:.4;text-decoration:line-through;border:1px solid #ffcc00}
+.battlePlayer.me{background:rgba(255,204,0,.25);border-color:#ffcc00}
+.battlePlayer.ghost{border:1px dashed #ff4757!important;opacity:.55}
+.pauseBtn{width:100%;padding:12px;border-radius:10px;font-weight:bold;margin-top:8px;font-size:14px}
+#bombBanner,#flashBanner{display:none;background:linear-gradient(90deg,#ff4757,#FFD700);color:#000;text-align:center;padding:8px;border-radius:10px;font-weight:bold;font-size:13px;flex-shrink:0}
+#flashBanner{background:linear-gradient(90deg,#1e90ff,#00E5FF);color:#000}
+#bombBanner button,#flashBanner button{background:#000;color:#fff;border:none;padding:4px 10px;border-radius:8px;flex:none;min-width:70px;margin-left:6px}
+#spinResultBox{background:rgba(255,204,0,.2);border:2px solid #ffcc00;border-radius:12px;padding:10px;margin:10px 0;min-height:50px;display:none}
+#spinResultBox.show{display:block}
+#lbLive{font-size:11px;color:#ffcc00;text-align:right}
+.levelTable{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.levelTable th{ background:#ffcc00;color:#000;padding:8px;text-align:left}
+.levelTable td{ padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.15)}
+.levelTable tr.you{ background:rgba(255,204,0,.25);font-weight:bold}
+.levelTable tr.you td{ color:#ffcc00}
+</style>
+</head>
+<body>
+<div id="epicBar">🎵 🎁 SURPRISE SPIN! 🎵</div>
+<div id="wrap">
+ <div id="top"><h1>💥 BLOCK <span>BLAST</span></h1><div id="topBtns"><button onclick="openMenu()" class="topBtn menuBtn">☰</button><button onclick="togglePause()" class="topBtn pause">⏸ PAUSE</button><button onclick="doLogout()" class="topBtn logout">🚪 LOGOUT</button></div></div>
+ <div style="display:flex;justify-content:space-between;font-size:11px"><span class="pill" id="myIdPill">-</span><span class="pill" id="loginStatus">Not logged in</span></div>
+ <div id="statsBar">
+ <div class="statBox total"><span>🏆 TOTAL SCORE</span><b id="totalTxt">0</b></div>
+ <div class="statBox"><span>⭐ This Level Score</span><b id="levelScoreTxt">0</b></div>
+ <div class="statBox"><span>⭐ Level</span><b id="levelTxt">1</b></div>
+ <div class="statBox"><span>🎨 Theme</span><b id="themeTxt">Classic</b></div>
+ </div>
+ <div id="battleBanner">⚔️ BATTLE MODE - <span id="battleSpeedTxt">Speed: SLOW</span> | Alive: <span id="battleAliveTxt">-</span> | <span id="battleTimerTxt">0s</span></div>
+ <div id="badgeBar"></div>
+ <div id="scoreBox"><b id="scoreTxt">0</b><div id="best">Best Total: <span id="bestTxt">0</span> | Combo: <span id="comboTxt">x1</span></div></div>
+ <div id="bombBanner">💣 TAP BOARD TO EXPLODE! Block stopped! <button onclick="cancelBombFlash()">❌ CANCEL</button></div>
+ <div id="flashBanner">⚡ TAP ANY ROW! Block stopped! <button onclick="cancelBombFlash()">❌ CANCEL</button></div>
+ <div id="gameArea">
+ <div class="sideCol">
+ <div class="sideBtn" onpointerdown="moveCursor(-1,0)"><span class="ico">◀</span><small>LEFT</small></div>
+ <div class="sideBtn rotate" onpointerdown="rotateBlock()"><span class="ico">🔄</span><small>ROTATE</small></div>
+ <div class="sideBtn bomb" id="bombSideBtn" onclick="useBomb()"><span class="ico">💣</span><small>BOMB</small><b>(<span id="bombBtnTxt">0</span>)</b></div>
+ <div class="sideBtn flash" id="flashSideBtn" onclick="useFlash()"><span class="ico">⚡</span><small>FLASH</small><b>(<span id="flashBtnTxt">0</span>)</b></div>
+ </div>
+ <div id="board"><div id="fxLayer">💥</div></div>
+ <div class="sideCol">
+ <div class="sideBtn" onpointerdown="moveCursor(1,0)"><span class="ico">▶</span><small>RIGHT</small></div>
+ <div class="sideBtn drop" onpointerdown="dropCursor()"><span class="ico">⬇</span><small>DROP</small></div>
+ <div class="sideBtn spin" onclick="openSpin()"><span class="ico">🎁</span><small>SPIN</small><b>(<span id="spinBtnTxt">0</span>)</b></div>
+ </div>
+ </div>
+ <div id="trayLabel">Block falls by itself - move the falling block!</div>
+ <div id="btnRow">
+ <button onclick="newGame()">🔄 NEW</button>
+ <button style="background:linear-gradient(180deg,#ffcc00,#ffcc00);border:none" onclick="openRoom()">🏠 ROOM</button>
+ </div>
+ <div id="leaderboard"><div style="display:flex;justify-content:space-between;align-items:center"><b>🏆 TOP 3 - TOP SCORE</b><span id="lbLive">🟢 LIVE</span></div><div id="lbList">Loading...</div><div id="myRank" style="color:#ffcc00;font-weight:bold;margin-top:4px;font-size:14px"></div><button onclick="loadLeaderboard(true)" style="background:#222;border:1px solid #555;padding:6px;border-radius:8px;width:100%;margin-top:6px;font-size:11px">🔄 REFRESH TOP SCORE</button></div>
+ <div id="footer">BLOCKBLAST 2026<br><b>Designed and Inspired by ShadowNetwork@Baem</b></div>
+</div>
+<div id="menuModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">☰ MENU</h2>
+ <div class="menuSection">— GAME INFO —</div>
+ <div class="menuItem"><span>🟢 Online Now</span><b id="onlineCount">1</b></div>
+ <div class="menuItem"><span>🏠 Room</span><span><b id="roomTxt">-</b> <button onclick="openMenuModal(openRoom)" style="background:#ffcc00;border:none">OPEN</button></span></div>
+ <div class="menuItem"><span>🎨 Theme</span><b id="themeTxt2">Classic</b></div>
+ <div class="menuItem"><span>🏆 Total Score</span><b id="totalTxt2">0</b></div>
+ <div class="menuSection">— POWER-UPS —</div>
+ <div class="menuItem"><span>💣 BOMB</span><span><b id="bombTxt">0</b> <button onclick="closeMenu();useBomb()" style="background:#ffcc00;border:none">USE</button></span></div>
+ <div class="menuItem"><span>⚡ FLASH</span><span><b id="flashTxt">0</b> <button onclick="closeMenu();useFlash()" style="background:#ffcc00;border:none">USE</button></span></div>
+ <div class="menuItem"><span>🎁 SPIN</span><span><b id="spinTxt">0</b> <button onclick="openMenuModal(openSpin)" style="background:#ffcc00;border:none">SPIN</button></span></div>
+ <div class="menuSection">— MORE —</div>
+ <div class="menuItem"><span>❓ HOW TO PLAY</span><button onclick="openMenuModal(openHow)" style="background:#ffcc00;border:none">OPEN</button></div>
+ <div class="menuItem"><span>🏆 TOP 3 + MY RANK</span><button onclick="openMenuModal(openRank)" style="background:#FFA500;border:none;color:#000">OPEN</button></div>
+ <div class="menuItem"><span>🗺️ LEVEL STAGE</span><button onclick="openMenuModal(openStage)" style="background:linear-gradient(90deg,#FFD700,#FF00CC);border:none;color:#000">OPEN</button></div>
+  <div class="menuItem"><span>📱 INSTALL APP</span><button id="installAppBtn" onclick="installApp()" style="background:#00E5FF;color:#000;border:none">INSTALL</button></div>
+  <div style="font-size:11px;color:#aaa;text-align:center;padding:2px 6px">Install and sharing require a public HTTPS hosted URL.</div>
+  <div class="menuItem"><span>📤 INVITE</span><button onclick="closeMenu();inviteBattle()" style="background:#2ed573;border:none">INVITE</button></div>
+ <button onclick="closeMenu()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:10px">✅ CLOSE</button>
+</div></div>
+<div id="inviteModal" class="hidden"><div class="msgBox">
+  <h2>📤 INVITE FRIENDS</h2>
+  <p style="font-size:13px">Copy link ni bagi kat kawan.</p>
+  <input id="inviteLinkInput" readonly>
+  <p id="inviteIdTxt" style="font-size:13px;color:#ffcc00"></p>
+  <button onclick="copyInviteLink()" style="background:#2ed573;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">📋 COPY LINK</button>
+  <button onclick="shareInviteWhatsApp()" style="background:#25D366;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:8px;color:#000">💬 SHARE WHATSAPP</button>
+  <p style="font-size:11px;color:#aaa;margin-top:8px">Kalau kau buka pakai file://, kawan tak boleh buka link tu. Kena host kat Netlify / GitHub Pages dulu.</p>
+  <button onclick="closeInvite()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button>
+</div></div>
+<div id="toast"><b id="toastTxt">🎁 Free Spin Added!</b></div>
+<div id="spinModal" class="hidden"><div class="msgBox"><h2>🎰 SPIN WHEEL!</h2><p style="font-size:13px">⏸ Game PAUSED! Spin slowly!</p><p style="font-size:12px;color:#ffcc00">Prize will save. It will not go away!</p><div id="wheelWrap"><div id="wheelPointer">⬇️</div><div id="wheel"></div><div id="wheelCenter">🎰</div></div><div id="spinResultBox"><div style="font-size:12px;color:#aaa">🎁 YOUR PRIZE:</div><div id="spinResult" style="font-weight:bold;color:#ffcc00;min-height:24px;font-size:18px"></div><div id="spinSavedTxt" style="font-size:12px;color:#ffcc00"></div></div><button id="spinGoBtn" onclick="doSpinWheel()" style="background:linear-gradient(90deg,#ffcc00,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000">🎰 SPIN!</button><button onclick="closeSpin()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE & RESUME GAME</button></div></div>
+<div id="loginModal"><div class="msgBox">
+ <h2>💥 BLOCK BLAST</h2>
+ <p style="font-size:13px">Login saves on this phone, or type your ID!</p>
+ <div id="autoLoginBox" style="display:none;background:rgba(46,213,115,.15);border:1px solid #ffcc00;border-radius:10px;padding:10px;margin:8px 0"><b>Found saved account!</b><br><span id="autoLoginId" style="color:#ffcc00"></span><br><button onclick="autoLogin()" style="background:#ffcc00;border:none;padding:10px;border-radius:10px;width:100%;font-weight:bold;margin-top:6px;color:#000">✅ LOGIN WITH THIS ID</button></div>
+ <p style="font-size:12px;color:#aaa;margin-top:8px">— OR —</p>
+ <input id="loginId" placeholder="Enter your ID" style="text-transform:lowercase">
+ <button onclick="loginWithId()" style="background:#ffcc00;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">🔑 LOGIN WITH ID</button>
+ <p style="font-size:12px;color:#aaa;margin-top:10px">— NEW? REGISTER —</p>
+ <input id="regName" placeholder="e.g. baem" autocomplete="off">
+ <p style="font-size:11px;color:#aaa;margin-top:2px">Type your name, e.g. <b style="color:#ffcc00">baem</b> - number is auto</p>
+ <button onclick="doRegister()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">✅ REGISTER & GET ID</button>
+ <p id="regResult" style="margin-top:10px;color:#ffcc00;font-weight:bold;min-height:20px"></p>
+ <p style="font-size:10px;color:#666;margin-top:10px">BLOCKBLAST 2026<br>Designed and Inspired by ShadowNetwork@Baem</p>
+</div></div>
+<div id="pauseModal" class="hidden"><div class="msgBox"><h2>⏸ PAUSE</h2><p>Game paused. Block stopped.</p><p style="font-size:13px;color:#ffcc00" id="pauseInfo"></p>
+<button onclick="togglePause()" class="pauseBtn" style="background:#ffcc00;color:#000;border:none">▶ RESUME</button>
+<button onclick="openMenuFromPause()" class="pauseBtn" style="background:#ffcc00;color:#000;border:none">☰ OPEN MENU</button>
+<button onclick="openRankFromPause()" class="pauseBtn" style="background:#FFA500;border:none;color:#000">🏆 TOP 3 + MY RANK</button>
+<button onclick="openStageFromPause()" class="pauseBtn" style="background:linear-gradient(90deg,#FFD700,#FF00CC);border:none;color:#000">🗺️ LEVEL STAGE</button>
+<button onclick="openHowFromPause()" class="pauseBtn" style="background:#ffcc00;border:none">❓ HOW TO PLAY</button>
+<button onclick="doLogout()" class="pauseBtn" style="background:#ffcc00;border:none">🚪 SAVE & LOGOUT</button>
+</div></div>
+<div id="roomModal" class="hidden"><div class="msgBox"><h2>🏠 ROOM</h2><p>Play with friends in 1 room - Code System Fixed</p><select id="roomSize"><option value="2">2 Players</option><option value="3">3 Players</option><option value="4">4 Players</option></select><button onclick="createRoom()" style="background:#ffcc00;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">➕ CREATE NEW ROOM</button><input id="joinCode" placeholder="Room Code" maxlength="6" style="text-transform:uppercase"><button onclick="joinRoom()" style="background:#ffcc00;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">🚪 JOIN ROOM</button><div id="roomInfo" style="margin-top:10px;text-align:left;font-size:13px"></div><div id="roomPlayers" style="margin-top:8px;text-align:left"></div><button id="btnHostPlay" onclick="hostStartBattle()" style="display:none;background:linear-gradient(90deg,#ffcc00,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000;margin-top:10px">▶ HOST: START BATTLE!</button><button id="btnHostReset" onclick="hostResetRoom()" style="display:none;background:#ff6b00;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:8px;color:#fff">🔄 HOST: RESET ROOM (Buang Ghost)</button><p id="roomWaitTxt" style="font-size:11px;color:#aaa;margin-top:6px"></p><button onclick="closeRoom()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button><button onclick="leaveRoom()" style="background:#ffcc00;border:none;padding:10px;border-radius:10px;width:100%;margin-top:6px">❌ LEAVE ROOM</button></div></div>
+<div id="battleModal" class="hidden"><div class="msgBox" style="border-color:#ffcc00;background:linear-gradient(180deg,#ffcc00,#ffcc00)"><h2>⚔️ BATTLE START!</h2><p style="font-size:14px">Special Block Blast Battle!</p><p style="font-size:12px;color:#ffcc00">Starts SLOW, gets FASTER every 15 seconds!<br>Last one alive WINS + Free Spin!</p><div id="battleCountdown" style="font-size:42px;font-weight:bold;color:#ffcc00;margin:10px">3</div><div id="battlePlayersList"></div><button onclick="closeBattleModal()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button></div></div>
+<div id="battleOverModal" class="hidden"><div class="msgBox" style="border-color:#ffcc00"><h2 id="battleOverTitle">💀 YOU ARE OUT!</h2><p id="battleOverDesc"></p><p id="battleOverReward" style="color:#ffcc00;font-weight:bold"></p><p style="font-size:11px;color:#aaa">Auto closing in 3 seconds...</p><button onclick="closeBattleOver()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">✅ BACK TO NORMAL GAME</button></div></div>
+<div id="howModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">❓ HOW TO PLAY</h2><div id="howContent"></div><button onclick="closeHow()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:10px">✅ GOT IT, LET'S PLAY!</button></div></div>
+<div id="rankModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">🏆 TOP 3 + MY RANK</h2><p style="font-size:11px;color:#aaa;text-align:center">Top 3 only + your rank</p><div id="rankList" style="margin-top:10px"></div><div id="rankMy" style="color:#ffcc00;font-weight:bold;margin-top:10px;text-align:center"></div><button onclick="closeRank()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:10px">CLOSE</button></div></div>
+<div id="stageModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">🗺️ LEVEL STAGE</h2><p style="text-align:center;font-size:12px;color:#aaa">From bottom to MAHAGURU!</p><div style="text-align:center;margin-top:8px"><b id="stageCurrent">You are at Level 1</b><div class="progressBar"><div class="progressFill" id="stageProgress" style="width:0%"></div></div><small id="stageNext"></small></div><div class="stageList" id="stageList"></div><button onclick="closeStage()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:10px">CLOSE</button></div></div>
+<div id="surpriseModal" class="hidden"><div class="msgBox"><h2 style="font-size:26px">🎰 SURPRISE JACKPOT!</h2><p style="font-size:11px;color:#ffcc00;font-weight:bold">LEVEL 50+ ONLY! 5% CHANCE!</p><p style="font-size:14px;margin:8px 0">Sudden jackpot!</p><div id="surpriseWheel" style="font-size:50px;margin:10px">🎰</div><div id="surpriseResult" style="font-size:18px;font-weight:bold;color:#ffcc00;min-height:28px"></div><button id="surpriseBtn" onclick="spinSurprise()" style="background:linear-gradient(90deg,#ffcc00,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000">🎰 SPIN JACKPOT!</button><p style="font-size:11px;color:#aaa;margin-top:8px">Options: Up 1 Level | Down 1 Level | Free Points</p></div></div>
+<div id="msg" class="hidden"><div class="msgBox"><h2>GAME OVER!</h2><p id="msgDesc"></p><p id="levelUpMsg" style="color:#ffcc00;font-weight:bold"></p><button onclick="closeMsg();newGame()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">▶ PLAY AGAIN</button></div></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, query, orderByChild, limitToLast, onValue, update, onDisconnect, runTransaction, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const firebaseConfig = { apiKey: "AIzaSyBeen0199XOEHELRY8LKjbf3clvc9c7UxA", authDomain: "shadow-blast.firebaseapp.com", databaseURL: "https://shadow-blast-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "shadow-blast", storageBucket: "shadow-blast.firebasestorage.app", messagingSenderId: "642271317286", appId: "1:642271317286:web:91420d6429e6059fec05e7" };
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+let audioCtx=null, epicPlaying=false, suspenseInterval=null, suspensePlaying=false;
+function getAudio(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); return audioCtx; }
+function playTone(f,d,ty='sine',v=0.2,slide=null,delay=0){ try{ let ctx=getAudio(); setTimeout(()=>{ let o=ctx.createOscillator(), g=ctx.createGain(); o.type=ty; o.frequency.setValueAtTime(f, ctx.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(slide, ctx.currentTime+d); g.gain.setValueAtTime(v, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime+d); o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+d); },delay); }catch(e){} }
+function soundBlast(){ playTone(150,0.3,'sawtooth',0.25,40); playTone(800,0.15,'sine',0.2,1200,50); }
+function soundLose(){ playTone(400,0.3,'sine',0.25,300); playTone(300,0.3,'sine',0.25,200,300); playTone(200,0.5,'sine',0.25,100,600); }
+function soundLevelUp(){ [523,659,784,1046].forEach((n,i)=>playTone(n,0.2,'square',0.15,n,i*120)); }
+function soundSurprise(){ [600,800,1000,1200,1500,2000].forEach((n,i)=>playTone(n,0.15,'square',0.15,n,i*100)); }
+function playEpic(){ if(epicPlaying) return; epicPlaying=true; document.getElementById('epicBar').style.display='block'; let notes=[523,659,784,1046,784,1046,1318,1568,2093]; notes.forEach((n,i)=>{ playTone(n,0.35,'sawtooth',0.12,n*1.02,i*250); }); setTimeout(()=>{ epicPlaying=false; document.getElementById('epicBar').style.display='none'; },5000); }
+function startSuspenseMusic(){ if(suspensePlaying) return; suspensePlaying=true; let beat=0; suspenseInterval=setInterval(()=>{ if(!suspensePlaying) return; beat++; let speed=battleMode?battleSpeed:1200; let vol=speed<=500?0.35:0.22; playTone(55,0.25,'sawtooth',vol,40); playTone(110,0.15,'sine',vol*0.8,80,80); if(beat%4===0) playTone(220,0.12,'square',0.08,180); },400); }
+function stopSuspenseMusic(){ suspensePlaying=false; if(suspenseInterval){ clearInterval(suspenseInterval); suspenseInterval=null; } playTone(200,0.6,'sawtooth',0.25,50); }
+function showToast(msg){ let t=document.getElementById('toast'); document.getElementById('toastTxt').textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function getDisplayName(id){ if(!id) return 'GUEST'; let n=String(id).replace(/^blast-/i,'').replace(/-\d+$/,''); if(!n) return String(id); return n.charAt(0).toUpperCase()+n.slice(1); }
+function getFallSpeed(lvl){ if(lvl>=400) return 380; if(lvl>=300) return 450; if(lvl>=200) return 550; if(lvl>=100) return 650; if(lvl>=50) return 750; return 900; }
+let myUser = JSON.parse(localStorage.getItem('bb_user')||'null');
+let myRoom = localStorage.getItem('bb_room')||'';
+let myRoomHost = localStorage.getItem('bb_room_host')||'';
+let saveData = JSON.parse(localStorage.getItem('bb_save')||'{}');
+function getSave(){ return { totalScore: saveData.totalScore||0, bombs: saveData.bombs||0, flash: saveData.flash||0, freeSpins: saveData.freeSpins||0, level: saveData.level||1 }; }
+function persistSave(){ saveData.totalScore=totalScore; saveData.bombs=bombs; saveData.flash=flash; saveData.freeSpins=freeSpins; saveData.level=level; localStorage.setItem('bb_save', JSON.stringify(saveData)); if(myUser) localStorage.setItem('bb_user', JSON.stringify(myUser)); }
+function userKey(){ return myUser ? myUser.id.replace(/[^a-z0-9-]/g,'_') : ''; }
+function isValidId(id){ return id && typeof id==='string' && id.startsWith('blast-') && id.length>8; }
+function isGhostPlayer(p){ return !p || !p.lastSeen || (Date.now()-p.lastSeen>30000); }
+function isActivePlayer(p){ return p && p.alive!==false && !isGhostPlayer(p); }
+async function syncAll(){
+  if(!myUser) return;
+  persistSave();
+  const key=userKey();
+  const payload={ id:myUser.id, name:myUser.name, totalScore:totalScore, score:totalScore, level:level, bombs:bombs, flash:flash, freeSpins:freeSpins, room:myRoom||'global', time:Date.now(), lastSeen:Date.now() };
+  try{ await update(ref(db,'users/'+key), payload); await set(ref(db,'totals/'+key), payload); await set(ref(db,'leaderboard/'+key), payload); }catch(e){ console.warn('syncAll failed', e); }
+}
+function cleanLeaderboard(data){ let byId={}; Object.values(data||{}).forEach(r=>{ if(!r||!isValidId(r.id)) return; if(!byId[r.id]||(r.score||0)>byId[r.id].score) byId[r.id]=r; }); return Object.values(byId).sort((a,b)=>(b.score||0)-(a.score||0)); }
+function renderLeaderboardHTML(arr){
+  const top3=[]; for(let i=0;i<3;i++) top3.push(arr[i]||{id:'-',score:0,empty:true});
+  let html=top3.map((r,i)=>'<div class="lbRow '+(r.empty?'empty ':'')+(r.id===myUser?.id?'me':'')+'"><span>'+(i+1)+'. '+(i===0?'🥇':i===1?'🥈':'🥉')+' '+(r.empty?'-':getDisplayName(r.id))+'</span><b>'+r.score+'</b></div>').join('');
+  if(myUser){ const mine=arr.find(x=>x.id===myUser.id); if(mine){ const rank=arr.filter(x=>x.score>mine.score).length+1; if(rank>3) html+='<div class="lbSep">— YOUR RANK —</div><div class="lbRow me"><span>'+rank+'. '+getDisplayName(mine.id)+'</span><b>'+mine.score+'</b></div>'; document.getElementById('myRank').textContent='Your Rank: #'+rank+' | Your Total: '+mine.score; }else document.getElementById('myRank').textContent='No score yet! Login with your ID to see your rank.'; }else document.getElementById('myRank').textContent='Login to see your rank!';
+  return html;
+}
+function updateTopUI(){ document.getElementById('totalTxt').textContent=totalScore; if(document.getElementById('totalTxt2')) document.getElementById('totalTxt2').textContent=totalScore; document.getElementById('levelScoreTxt').textContent=levelScore; document.getElementById('scoreTxt').textContent=levelScore; document.getElementById('bestTxt').textContent=Math.max(totalScore, parseInt(localStorage.getItem('bb_best')||0)); document.getElementById('myIdPill').textContent=myUser?myUser.id:'-'; document.getElementById('roomTxt').textContent=myRoom||'-'; document.getElementById('loginStatus').textContent=myUser?'Logged in: '+getDisplayName(myUser.id)+' | Lv '+level:'Not logged in'; document.getElementById('spinTxt').textContent=freeSpins; document.getElementById('spinBtnTxt').textContent=freeSpins; document.getElementById('bombTxt').textContent=bombs; document.getElementById('bombBtnTxt').textContent=bombs; document.getElementById('flashTxt').textContent=flash; document.getElementById('flashBtnTxt').textContent=flash; document.getElementById('levelTxt').textContent=level; if(document.getElementById('themeTxt2')) document.getElementById('themeTxt2').textContent=document.getElementById('themeTxt').textContent; if(battleMode){ document.getElementById('battleBanner').style.display='block'; document.getElementById('battleSpeedTxt').textContent='Speed: '+battleSpeedLabel; document.getElementById('battleAliveTxt').textContent=battleAliveCount; document.getElementById('battleTimerTxt').textContent=battleElapsed+'s'; } else document.getElementById('battleBanner').style.display='none'; }
+let openedFromPause=false,spinPaused=false,wasPausedBeforeSpin=false,isExploding=false;
+let battleMode=false,battleStartTime=0,battleElapsed=0,battleTimer=null,battleSpeedLabel='SLOW',battleAliveCount=0,battleSpeed=1200;
+let battleUnsubscribe=null,battleListeningRoom='',countdownInterval=null,countdownToken='',battleCountdownActive=false;
+let activeBattleKey='',finishedBattleKey='',battleEliminated=false,battleFinishRequestKey='',battleRoomForSession='',lastBattleScoreWrite=0;
+let firebaseServerOffset=0,overlaySyncTimer=null;
+const BLOCKING_OVERLAYS=['loginModal','roomModal','inviteModal','surpriseModal','howModal','rankModal','stageModal','spinModal','pauseModal','battleModal','battleOverModal','menuModal','msg'];
+function hasBlockingOverlayExcept(exceptId){ return BLOCKING_OVERLAYS.some(id=>id!==exceptId&&document.getElementById(id)&&!document.getElementById(id).classList.contains('hidden')); }
+function hasBlockingOverlay(){return hasBlockingOverlayExcept('');}
+function gameInputBlocked(){return isPaused||spinPaused||isExploding||hasBlockingOverlay();}
+function gameLoopBlocked(){return isPaused||spinPaused||isExploding||(!battleMode&&hasBlockingOverlay());}
+function syncOverlayPause(){ if(hasBlockingOverlay()&&!battleMode){ if(overlaySyncTimer){clearTimeout(overlaySyncTimer);overlaySyncTimer=null;} stopFall(); return; } if(overlaySyncTimer)return; overlaySyncTimer=setTimeout(()=>{ overlaySyncTimer=null; if(!hasBlockingOverlay()&&!isPaused&&!spinPaused&&!isExploding&&curBlock&&gameActive)startFall(); },0); }
+const overlayObserver=new MutationObserver(syncOverlayPause);
+overlayObserver.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
+function battleNow(){return Date.now()+firebaseServerOffset;}
+function makeBattleKey(roomCode,startAt){return roomCode+':'+String(Number(startAt)||0);}
+window.openMenu=function(){ if(battleMode||battleCountdownActive){showToast('Menu is unavailable during Battle.');return;} if(hasBlockingOverlayExcept('pauseModal'))return; document.getElementById('menuModal').classList.remove('hidden'); updateTopUI(); stopFall(); syncOverlayPause(); };
+window.closeMenu=function(){ document.getElementById('menuModal').classList.add('hidden'); if(openedFromPause&&isPaused){ openedFromPause=false; document.getElementById('pauseModal').classList.remove('hidden'); } syncOverlayPause(); };
+window.openMenuModal=function(action){ const cameFromPause=openedFromPause&&isPaused; document.getElementById('menuModal').classList.add('hidden'); openedFromPause=cameFromPause; if(typeof action==='function')action(); if(cameFromPause&&isPaused&&!hasBlockingOverlay())restorePauseAfterOverlay(); syncOverlayPause(); };
+function restorePauseAfterOverlay(){ if(openedFromPause&&isPaused){openedFromPause=false;document.getElementById('pauseModal').classList.remove('hidden');syncOverlayPause();} }
+window.openMenuFromPause=function(){ if(battleMode||battleCountdownActive)return; openedFromPause=true; document.getElementById('pauseModal').classList.add('hidden'); document.getElementById('menuModal').classList.remove('hidden'); updateTopUI(); stopFall(); syncOverlayPause(); };
+window.openRankFromPause=function(){ openedFromPause=true; document.getElementById('pauseModal').classList.add('hidden'); openRank(); };
+window.openStageFromPause=function(){ openedFromPause=true; document.getElementById('pauseModal').classList.add('hidden'); openStage(); };
+window.openHowFromPause=function(){ openedFromPause=true; document.getElementById('pauseModal').classList.add('hidden'); openHow(); };
+function checkLogin(){ let saved=null; try{saved=JSON.parse(localStorage.getItem('bb_user')||'null');}catch(e){} if(saved){ document.getElementById('autoLoginBox').style.display='block'; document.getElementById('autoLoginId').textContent=saved.id+' | Total: '+getSave().totalScore+' | Level: '+getSave().level; }else document.getElementById('autoLoginBox').style.display='none'; document.getElementById('loginModal').classList.remove('hidden'); syncOverlayPause(); }
+window.autoLogin=function(){ myUser=JSON.parse(localStorage.getItem('bb_user')); let s=getSave(); totalScore=s.totalScore; bombs=s.bombs; flash=s.flash; freeSpins=s.freeSpins; level=s.level; levelScore=0; document.getElementById('loginModal').classList.add('hidden'); updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle(); syncAll(); };
+window.loginWithId=async function(){ let id=document.getElementById('loginId').value.trim().toLowerCase(); if(!id) return alert('Enter your ID first!'); if(!id.startsWith('blast-')) id='blast-'+id; try{ let key=id.replace(/[^a-z0-9-]/g,'_'); let snap=await get(ref(db,'users/'+key)); if(!snap.exists()) return alert('ID not found! Please register or check spelling.'); let u=snap.val(); myUser={name:u.name, id:u.id, globalNum:u.globalNum}; localStorage.setItem('bb_user', JSON.stringify(myUser)); let totalSnap=await get(ref(db,'totals/'+key)); if(totalSnap.exists()){ let t=totalSnap.val(); totalScore=t.totalScore||0; bombs=t.bombs||0; flash=t.flash||0; freeSpins=t.freeSpins||0; level=t.level||1; saveData={totalScore,bombs,flash,freeSpins,level}; localStorage.setItem('bb_save', JSON.stringify(saveData)); } levelScore=0; document.getElementById('loginModal').classList.add('hidden'); updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle(); syncAll(); }catch(e){ alert(e.message); } };
+window.doRegister=async function(){ let btn=document.querySelector('#loginModal button[onclick="doRegister()"]'); if(btn) btn.disabled=true; const name=document.getElementById('regName').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'')||'baem'; document.getElementById('regResult').textContent='Registering...'; try{ const result=await runTransaction(ref(db,'counters/global_id'),current=>current===null?1:current+1); const next=result.snapshot.val(), num=String(next).padStart(3,'0'), id='blast-'+name+'-'+num; myUser={name,id,created:Date.now(),globalNum:next}; localStorage.setItem('bb_user',JSON.stringify(myUser)); await set(ref(db,'users/'+id.replace(/[^a-z0-9-]/g,'_')),myUser); totalScore=0; levelScore=0; bombs=0; flash=0; freeSpins=0; level=1; persistSave(); document.getElementById('regResult').textContent='Your ID: '+id; document.getElementById('regResult').style.color='#2ed573'; await syncAll(); setTimeout(()=>{ document.getElementById('loginModal').classList.add('hidden'); updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle(); },800); }catch(e){ document.getElementById('regResult').textContent='Failed: '+e.message; document.getElementById('regResult').style.color='#ff4757'; if(btn) btn.disabled=false; } };
+async function goOnline(){ if(!myUser) return; try{ let key=myUser.id.replace(/[^a-z0-9-]/g,'_'); let onlineRef=ref(db,'online/'+key); await set(onlineRef,{id:myUser.id, name:myUser.name, time:Date.now(), room:myRoom||''}); onDisconnect(onlineRef).remove(); setInterval(()=>set(onlineRef,{id:myUser.id, name:myUser.name, time:Date.now(), room:myRoom||''}),30000); }catch(e){} }
+onValue(ref(db,'.info/serverTimeOffset'),s=>{firebaseServerOffset=Number(s.val())||0;});
+onValue(ref(db,'online'), s=>{ let v=s.val()||{}; document.getElementById('onlineCount').textContent=Object.keys(v).length; });
+async function copyShareText(text){ if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(text); return new Promise((resolve,reject)=>{ const input=document.createElement('textarea');input.value=text;input.style.position='fixed';input.style.opacity='0'; document.body.appendChild(input);input.select(); try{if(document.execCommand('copy'))resolve();else reject(new Error('Copy failed'));}catch(e){reject(e);} input.remove(); }); }
+let deferredInstallPrompt=null;
+function updateInstallButton(){ const btn=document.getElementById('installAppBtn'); if(btn)btn.textContent=deferredInstallPrompt?'INSTALL':'HOW TO INSTALL'; }
+window.addEventListener('beforeinstallprompt',event=>{ event.preventDefault();deferredInstallPrompt=event;updateInstallButton(); });
+window.addEventListener('appinstalled',()=>{ deferredInstallPrompt=null;updateInstallButton();showToast('BLOCK BLAST installed!'); });
+window.installApp=async function(){ if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone){ alert('BLOCK BLAST is already installed.');return; } if(deferredInstallPrompt){ deferredInstallPrompt.prompt(); try{await deferredInstallPrompt.userChoice;}catch(e){} deferredInstallPrompt=null;updateInstallButton();return; } if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){ alert('Install requires the game to be hosted on a public HTTPS website. Deploy index.html, manifest.webmanifest, the icon files, and service-worker.js together.'); return; } alert('If your browser offers installation, use its Install App or Add to Home Screen menu. On iPhone/iPad, open Share and choose Add to Home Screen.'); };
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){ navigator.serviceWorker.register(new URL('./service-worker.js',location.href)).catch(error=>console.warn('Service worker registration failed',error)); }
+window.inviteBattle=function(){ const url=location.href.split('#')[0].split('?')[0]; document.getElementById('inviteLinkInput').value=url; document.getElementById('inviteIdTxt').textContent=myUser?'Your ID: '+myUser.id+(myRoom?' | Room: '+myRoom:''):'Login dulu untuk dapat ID'; document.getElementById('inviteModal').classList.remove('hidden'); stopFall(); syncOverlayPause(); };
+window.closeInvite=function(){ document.getElementById('inviteModal').classList.add('hidden'); syncOverlayPause(); };
+window.copyInviteLink=async function(){ const text=document.getElementById('inviteLinkInput').value+(myUser?' | My ID: '+myUser.id:'')+(myRoom?' | Room: '+myRoom:''); try{ if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); } else throw new Error('no clipboard'); showToast('✅ Link Copied!'); }catch(e){ const inp=document.getElementById('inviteLinkInput'); inp.select(); inp.setSelectionRange(0,99999); try{ document.execCommand('copy'); showToast('✅ Link Copied!'); } catch(e2){ prompt('Copy link ni manually:', text); } } };
+window.shareInviteWhatsApp=function(){ const text=encodeURIComponent('Play BLOCK BLAST 2026! My ID: '+(myUser?myUser.id:'')+' Room: '+(myRoom||'-')+' Link: '+document.getElementById('inviteLinkInput').value); window.open('https://wa.me/?text='+text,'_blank'); };
+let isPaused=false;
+window.togglePause=function(){ if(battleMode||battleCountdownActive){showToast('Battle cannot be paused.');return;} if(hasBlockingOverlayExcept('pauseModal')||isExploding)return; isPaused=!isPaused; if(isPaused){ stopFall(); document.getElementById('pauseModal').classList.remove('hidden'); document.getElementById('pauseInfo').textContent='Level '+level+' | This Level Score: '+levelScore+' (not added yet) | Total: '+totalScore+' | BOMB: '+bombs+' | FLASH: '+flash+' | SPIN: '+freeSpins; }else{ openedFromPause=false; document.getElementById('pauseModal').classList.add('hidden'); if(curBlock) startFall(); } syncOverlayPause(); };
+window.doLogout=async function(){ if(battleMode) await battleEliminate('logout'); stopSuspenseMusic(); const savedLevel=level; if(level<=200 && levelScore>0){ totalScore+=levelScore; } let savedTotal=totalScore; levelScore=0; localStorage.setItem('bb_best',String(totalScore)); persistSave(); await syncAll(); if(myRoom) await leaveRoom(); isPaused=false; openedFromPause=false; battleMode=false; document.getElementById('wrap').classList.remove('battleMode'); document.getElementById('pauseModal').classList.add('hidden'); document.getElementById('battleOverModal').classList.add('hidden'); stopFall(); document.getElementById('loginModal').classList.remove('hidden'); checkLogin(); loadLeaderboard(true); if(savedLevel<=200) alert('Saved! Total: '+savedTotal+' (Level '+savedLevel+' score MASUK sebab Lv 1-200).'); else alert('Saved! Total: '+savedTotal+' (Level '+savedLevel+' score not added - level not finished, Lv 200+ hangus). You will restart Level '+savedLevel+' when you login again.'); };
+window.openRoom=function(){ if(battleMode||battleCountdownActive){showToast('Room controls are unavailable during Battle.');return;} document.getElementById('roomModal').classList.remove('hidden'); updateRoomInfo();listenBattle(); stopFall(); syncOverlayPause(); };
+window.closeRoom=function(){document.getElementById('roomModal').classList.add('hidden');restorePauseAfterOverlay();syncOverlayPause();};
+function genCode(){ return Math.random().toString(36).substring(2,6).toUpperCase(); }
+function setupRoomHeartbeat(code){ if(window._roomHB) clearInterval(window._roomHB); window._roomHB=setInterval(()=>{ if(myRoom===code && myUser){ update(ref(db,'rooms/'+code+'/players/'+userKey()),{lastSeen:Date.now()}).catch(()=>{}); } else clearInterval(window._roomHB); },3000); }
+function setupRoomDisconnect(code){ const key=userKey(); if(!key) return; get(ref(db,'rooms/'+code)).then(snap=>{ const room=snap.val(); if(room && room.status==='playing'){ onDisconnect(ref(db,'rooms/'+code+'/players/'+key)).update({alive:false,lastSeen:Date.now()}).catch(()=>{}); } else { onDisconnect(ref(db,'rooms/'+code+'/players/'+key)).remove().catch(()=>{}); } }).catch(()=>{ onDisconnect(ref(db,'rooms/'+code+'/players/'+key)).remove().catch(()=>{}); }); }
+window.createRoom=async function(){ if(!myUser)return alert('Register first!'); if(battleMode||battleCountdownActive)return showToast('Finish the current battle first.'); if(myRoom)await leaveRoom(); const size=parseInt(document.getElementById('roomSize').value,10); let code=''; for(let tries=0;tries<8;tries++){ code=genCode(); const exists=await get(ref(db,'rooms/'+code)); if(!exists.exists())break; code=''; } if(!code)return alert('Could not create a room. Please try again.'); const key=userKey(); await set(ref(db,'rooms/'+code),{code,max:size,created:Date.now(),host:myUser.id,hostName:myUser.name,status:'waiting',players:{[key]:{name:myUser.name,id:myUser.id,score:totalScore,alive:true,lastSeen:Date.now()}}}); myRoom=code; myRoomHost=myUser.id; localStorage.setItem('bb_room',code); localStorage.setItem('bb_room_host',myUser.id); setupRoomDisconnect(code); setupRoomHeartbeat(code); document.getElementById('roomTxt').textContent=code; updateRoomInfo(); listenBattle(); alert('Room '+code+' created! You are HOST. Share code '+code+' kat kawan!'); };
+window.joinRoom=async function(){ if(!myUser)return alert('Register first!'); if(battleMode||battleCountdownActive)return showToast('Finish the current battle first.'); const code=String(document.getElementById('joinCode').value||'').trim().toUpperCase(); if(!code)return alert('Enter room code!'); if(myRoom===code){ showToast('Kau dah dalam room ni!'); updateRoomInfo(); return; } if(myRoom&&myRoom!==code)await leaveRoom(); const key=userKey(); let snap; try{ snap=await get(ref(db,'rooms/'+code)); }catch(e){ return alert('Could not check room: '+e.message); } if(!snap.exists()){ const project=app.options&&app.options.projectId?app.options.projectId:'unknown'; return alert('ROOM NOT FOUND: '+code+'. Check HOST and PLAYER use same link / Firebase project ('+project+'). Ask HOST to create new room code.'); } let room=snap.val(); if(room.status!=='waiting'&&room.status!=='finished'){ return alert('ROOM NOT READY: '+code+' is "'+(room.status||'unknown')+'". Ask HOST to create new waiting room.'); } let players=room.players||{}; let now=Date.now(); for(let k in players){ if(players[k].lastSeen && now-players[k].lastSeen>30000){ await remove(ref(db,'rooms/'+code+'/players/'+k)); delete players[k]; } } let activePlayers=Object.values(players).filter(p=>p && p.alive!==false); let alreadyIn=!!players[key]; if(!alreadyIn && activePlayers.length>=Number(room.max||2)){ return alert('ROOM FULL BETUL: '+activePlayers.length+'/'+room.max+'\n\nYang ada:\n'+activePlayers.map(p=>'- '+getDisplayName(p.id)).join('\n')+'\n\nSuruh HOST tekan RESET ROOM atau create room baru.'); } try{ await set(ref(db,'rooms/'+code+'/players/'+key),{name:myUser.name,id:myUser.id,score:totalScore,alive:true,lastSeen:Date.now()}); }catch(e){ return alert('Could not join room: '+e.message); } myRoom=code; myRoomHost=room.host; localStorage.setItem('bb_room',code); localStorage.setItem('bb_room_host',room.host||''); setupRoomDisconnect(code); setupRoomHeartbeat(code); document.getElementById('roomTxt').textContent=code; updateRoomInfo(); listenBattle(); alert('Joined '+code+'! Wait for HOST to press START BATTLE!'); };
+window.hostResetRoom=async function(){ if(!myRoom||!myUser) return; try{ let snap=await get(ref(db,'rooms/'+myRoom)); if(!snap.exists()) return; let room=snap.val(); if(room.host!==myUser.id){ showToast('Only HOST boleh reset!'); return; } let upd={status:'waiting'}; for(let k in (room.players||{})){ if(k!==userKey()) upd['players/'+k]=null; } upd['players/'+userKey()]={name:myUser.name,id:myUser.id,score:totalScore,alive:true,lastSeen:Date.now()}; await update(ref(db,'rooms/'+myRoom),upd); showToast('✅ Room RESET! Ghost semua dah buang. Suruh kawan JOIN balik.'); updateRoomInfo(); }catch(e){ showToast('Reset gagal: '+e.message); } };
+window.leaveRoom=async function(){ if(!myRoom)return; const code=myRoom,user=myUser,key=userKey(); const roomRef=ref(db,'rooms/'+code); if(window._roomHB){ clearInterval(window._roomHB); window._roomHB=null; } try{ const snap=await get(roomRef),room=snap.val(); if(room&&key&&room.players&&room.players[key]){ if(room.status==='playing'){ if(battleMode)await battleEliminate('left room'); else await update(ref(db,'rooms/'+code+'/players/'+key),{alive:false,lastSeen:Date.now()}); } else { await remove(ref(db,'rooms/'+code+'/players/'+key)); } if(myUser){try{await onDisconnect(ref(db,'rooms/'+code+'/players/'+key)).cancel();}catch(e){}} let afterSnap=await get(roomRef); if(afterSnap.exists()){ let after=afterSnap.val(); let remaining=Object.values(after.players||{}); if(remaining.length===0){ await remove(roomRef); } else if(after.host===user?.id){ let next=remaining.find(p=>p&&p.alive!==false)||remaining[0]; if(next) await update(roomRef,{host:next.id}); } } } }catch(e){console.warn('Room leave cleanup failed',e);} stopBattleListener(); myRoom='';myRoomHost=''; localStorage.removeItem('bb_room');localStorage.removeItem('bb_room_host'); document.getElementById('roomTxt').textContent='-'; document.getElementById('roomModal').classList.add('hidden'); updateRoomInfo(); if(openedFromPause&&isPaused)restorePauseAfterOverlay(); syncOverlayPause(); };
+async function updateRoomInfo(roomCode,myRoomData){ const code=roomCode||myRoom; if(!code){ document.getElementById('roomInfo').innerHTML='Not in room'; document.getElementById('roomPlayers').innerHTML=''; document.getElementById('btnHostPlay').style.display='none'; document.getElementById('btnHostReset').style.display='none'; return; } let room=myRoomData; if(!room){const snap=await get(ref(db,'rooms/'+code));room=snap.val();} if(myRoom!==code)return; if(!room){ document.getElementById('roomInfo').innerHTML='Room gone'; document.getElementById('roomPlayers').innerHTML=''; document.getElementById('btnHostPlay').style.display='none'; document.getElementById('btnHostReset').style.display='none'; return; } const allPlayers=Object.entries(room.players||{}); const activePlayers=allPlayers.filter(([k,p])=>p&&p.alive!==false&&!isGhostPlayer(p)); const active=activePlayers.length; const ghostCount=allPlayers.length-active; document.getElementById('roomInfo').innerHTML='<b>Room: '+room.code+' ('+active+'/'+room.max+') | Host: '+getDisplayName(room.host)+' | Status: '+room.status+'</b>'+(ghostCount>0?'<br><span style="color:#ff4757;font-size:11px">⚠️ '+ghostCount+' ghost (auto padam 30s)</span>':''); document.getElementById('roomPlayers').innerHTML=allPlayers.map(([k,p])=>{ let ghost=isGhostPlayer(p); return '<div class="battlePlayer '+(p.alive===false?'dead':'alive')+' '+(p.id===myUser?.id?'me':'')+' '+(ghost?'ghost':'')+'"><span>'+getDisplayName(p.id)+(p.id===room.host?' 👑 HOST':'')+(ghost?' 👻 GHOST':'')+'</span><b>'+(p.alive===false?'💀 OUT':'🟢 ALIVE')+'</b></div>'; }).join(''); const isHost=!!(myUser&&myUser.id===room.host),isFull=active>=Number(room.max||0); if(isHost){ document.getElementById('btnHostReset').style.display='block'; if(room.status==='waiting'||room.status==='finished'){ document.getElementById('btnHostPlay').style.display='block'; document.getElementById('btnHostPlay').disabled=!isFull; document.getElementById('btnHostPlay').textContent=isFull?'▶ HOST: START BATTLE!':'⏳ WAITING '+active+'/'+room.max+' - Need '+Math.max(0,room.max-active)+' more'; document.getElementById('roomWaitTxt').textContent=isFull?'All players joined! Press START!':'Wait for all players to join... Code: '+room.code; }else{ document.getElementById('btnHostPlay').style.display='none'; document.getElementById('roomWaitTxt').textContent='Battle status: '+room.status; } }else{ document.getElementById('btnHostPlay').style.display='none'; document.getElementById('btnHostReset').style.display='none'; if(room.status==='waiting')document.getElementById('roomWaitTxt').textContent=isFull?'All joined! Waiting for HOST to press START...':'Waiting... '+active+'/'+room.max+' joined. Host will start when full.'; else document.getElementById('roomWaitTxt').textContent='Battle status: '+room.status; } }
+window.hostStartBattle=async function(){ if(!myRoom||!myUser)return; const code=myRoom,roomRef=ref(db,'rooms/'+code); const startAt=battleNow()+4000; try{ let snap=await get(roomRef); let room=snap.val(); if(!room) return; let players=room.players||{}; let now=Date.now(); for(let k in players){ if(players[k].lastSeen && now-players[k].lastSeen>30000){ await remove(ref(db,'rooms/'+code+'/players/'+k)); delete players[k]; } } let active=Object.values(players).filter(p=>p&&p.alive!==false).length; if(room.host!==myUser.id) return alert('Only HOST can start!'); if(active<Number(room.max||0)) return alert('Room not full yet! Active: '+active+'/'+room.max+' (Ghost tak kira). Suruh kawan JOIN balik atau tekan RESET.'); let upd={status:'playing',battleStart:startAt,winner:null}; for(let k in players){ upd['players/'+k+'/alive']=true; upd['players/'+k+'/score']=0; upd['players/'+k+'/lastSeen']=Date.now(); } await update(roomRef, upd); }catch(e){return alert('Battle could not start: '+e.message);} };
+function clearBattleCountdown(){ if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;} countdownToken=''; battleCountdownActive=false; }
+function stopBattleListener(){ if(battleCountdownActive)document.getElementById('battleModal').classList.add('hidden'); if(battleUnsubscribe){battleUnsubscribe();battleUnsubscribe=null;} battleListeningRoom=''; clearBattleCountdown(); battleFinishRequestKey=''; }
+function promoteRoomHost(roomCode){ return runTransaction(ref(db,'rooms/'+roomCode),current=>{ if(!current||(current.status!=='waiting'&&current.status!=='finished'))return; const players=Object.values(current.players||{}); if(players.some(p=>p&&p.id===current.host&&p.alive!==false&&!isGhostPlayer(p)))return; const next=players.find(p=>p&&p.id&&p.alive!==false&&!isGhostPlayer(p)); if(!next)return; return Object.assign({},current,{host:next.id}); }).catch(error=>console.warn('Could not promote room host',error)); }
+function listenBattle(){ if(!myRoom){stopBattleListener();return;} if(battleUnsubscribe&&battleListeningRoom===myRoom)return; stopBattleListener(); const roomCode=myRoom,roomRef=ref(db,'rooms/'+roomCode); battleListeningRoom=roomCode; battleUnsubscribe=onValue(roomRef,snap=>{ if(myRoom!==roomCode)return; if(!snap.exists()){ if(battleMode)endBattleLocal(null,activeBattleKey); localStorage.removeItem('bb_room');localStorage.removeItem('bb_room_host'); myRoom='';myRoomHost='';stopBattleListener();updateTopUI();return; } const room=snap.val(),players=Object.values(room.players||{}); if(room.status==='waiting'||room.status==='finished')promoteRoomHost(roomCode); updateRoomInfo(roomCode,room); battleAliveCount=players.filter(p=>p&&p.alive!==false&&!isGhostPlayer(p)).length; const startAt=Number(room.battleStart)||0,key=makeBattleKey(roomCode,startAt); if(room.status==='playing'){ if(battleMode&&activeBattleKey!==key)endBattleLocal(null,activeBattleKey); if(!battleMode&&battlePhase!=='eliminated'&&battlePhase!=='finished')showBattleCountdown(roomCode,room); if(battleAliveCount<=1)finishBattle(roomCode,key); }else if(room.status==='finished'){ clearBattleCountdown(); if(battleMode||battleCountdownActive)endBattleLocal(room.winner||null,key); else if(battlePhase==='countdown'&&activeBattleKey===key)endBattleLocal(room.winner||null,key); }else{ if(battleCountdownActive){clearBattleCountdown();document.getElementById('battleModal').classList.add('hidden');} if(battleMode)endBattleLocal(null,activeBattleKey); } updateTopUI(); },error=>console.warn('Battle room listener failed',error)); }
+function showBattleCountdown(roomCode,room){ const startAt=Number(room.battleStart)||battleNow(),key=makeBattleKey(roomCode,startAt); if((battleMode&&activeBattleKey===key)||(countdownToken===key))return; clearBattleCountdown(); activeBattleKey=key;battleRoomForSession=roomCode;battleEliminated=false;battlePhase='countdown'; countdownToken=key;battleCountdownActive=true;stopFall(); document.getElementById('roomModal').classList.add('hidden'); document.getElementById('battleModal').classList.remove('hidden'); const players=Object.values(room.players||{}); document.getElementById('battlePlayersList').innerHTML=players.map(p=>'<div class="battlePlayer '+(p.alive===false?'dead':'alive')+' '+(p.id===myUser?.id?'me':'')+'"><span>'+getDisplayName(p.id)+'</span><b>'+(p.alive===false?'💀 OUT':'🟢 READY')+'</b></div>').join(''); let lastShown=-1; const tick=()=>{ if(myRoom!==roomCode||countdownToken!==key){clearBattleCountdown();document.getElementById('battleModal').classList.add('hidden');return;} const remain=Math.max(0,Math.ceil((startAt-battleNow())/1000)); if(remain!==lastShown){document.getElementById('battleCountdown').textContent=remain||'GO!';lastShown=remain;} if(battleNow()>=startAt){ clearBattleCountdown();document.getElementById('battleModal').classList.add('hidden'); startBattleLocal(roomCode,startAt,key); } }; tick();countdownInterval=setInterval(tick,200); }
+window.closeBattleModal=function(){ if(battleCountdownActive){showToast('Battle countdown cannot be cancelled.');return;} document.getElementById('battleModal').classList.add('hidden');syncOverlayPause(); };
+let battlePhase='idle';
+function startBattleLocal(roomCode,startAt,key){ if(battleMode&&activeBattleKey===key)return; if(myRoom!==roomCode)return; battleMode=true;battlePhase='playing';battleCountdownActive=false;battleStartTime=startAt; activeBattleKey=key;battleRoomForSession=roomCode;battleElapsed=Math.max(0,Math.floor((battleNow()-startAt)/1000)); battleSpeed=1200;battleSpeedLabel='SLOW';battleEliminated=false;lastBattleScoreWrite=0; gameActive=true;grid=Array(TOTAL).fill(null);levelScore=0;combo=1;isPaused=false;spinPaused=false; document.getElementById('battleModal').classList.add('hidden'); document.getElementById('wrap').classList.add('battleMode'); document.getElementById('battleBanner').style.display='block'; showToast('⚔️ BATTLE START! Slow now, faster soon!');startSuspenseMusic(); spawnBlock();startBattleTimer();syncOverlayPause(); }
+function startBattleTimer(){ if(battleTimer)clearInterval(battleTimer); const tick=()=>{ if(!battleMode){clearInterval(battleTimer);battleTimer=null;return;} const now=battleNow();battleElapsed=Math.max(0,Math.floor((now-battleStartTime)/1000)); let nextSpeed=1200,nextLabel='SLOW'; if(battleElapsed>=60){nextSpeed=350;nextLabel='INSANE 🔥';} else if(battleElapsed>=45){nextSpeed=500;nextLabel='VERY FAST';} else if(battleElapsed>=30){nextSpeed=700;nextLabel='FAST';} else if(battleElapsed>=15){nextSpeed=900;nextLabel='MEDIUM';} const changed=nextSpeed!==battleSpeed;battleSpeed=nextSpeed;battleSpeedLabel=nextLabel; if(changed&&curBlock&&!gameLoopBlocked())startFall(); if(now-lastBattleScoreWrite>=2000&&myUser&&myRoom===battleRoomForSession){ lastBattleScoreWrite=now; const userKey2=myUser.id.replace(/[^a-z0-9-]/g,'_'); update(ref(db,'rooms/'+battleRoomForSession+'/players/'+userKey2),{score:levelScore,lastSeen:Date.now()}).catch(()=>{}); } updateTopUI(); }; tick();battleTimer=setInterval(tick,1000); }
+async function battleEliminate(reason){ if(!battleMode||battleEliminated)return; battleEliminated=true;battleMode=false;battlePhase='eliminated';gameActive=false; if(battleTimer){clearInterval(battleTimer);battleTimer=null;} stopFall();stopSuspenseMusic();document.getElementById('wrap').classList.remove('battleMode'); const roomCode=battleRoomForSession,userKey2=myUser?myUser.id.replace(/[^a-z0-9-]/g,'_'):''; if(roomCode&&userKey2){ try{await update(ref(db,'rooms/'+roomCode+'/players/'+userKey2),{alive:false,score:levelScore,lastSeen:Date.now()});}catch(e){console.warn('Could not save battle elimination',e);} } document.getElementById('battleOverTitle').textContent='💀 YOU ARE OUT!'; document.getElementById('battleOverDesc').textContent='You lived '+battleElapsed+' seconds in Battle. Your Battle Score: '+levelScore+'.'; document.getElementById('battleOverReward').textContent='No Free Spin - Winner gets Free Spin.'; document.getElementById('battleOverModal').classList.remove('hidden'); setTimeout(()=>{if(!document.getElementById('battleOverModal').classList.contains('hidden')&&!battleMode)closeBattleOver();},4000); }
+async function finishBattle(roomCode,key){ if(!roomCode||!key||battleFinishRequestKey===key)return; battleFinishRequestKey=key; try{ const result=await runTransaction(ref(db,'rooms/'+roomCode),current=>{ if(!current||current.status!=='playing')return; const alive=Object.values(current.players||{}).filter(p=>p&&p.alive!==false&&!isGhostPlayer(p)); if(alive.length>1)return; const winner=alive.length===1&&alive[0].id?alive[0].id:'DRAW'; const next=Object.assign({},current,{status:'finished',winner}); return next; }); if(result.committed){ const room=result.snapshot.val(); endBattleLocal(room.winner==='DRAW'?null:room.winner,key); }else battleFinishRequestKey=''; }catch(e){battleFinishRequestKey='';console.warn('Could not finish battle',e);} }
+function awardBattleReward(key){ if(!myUser||!key)return false; let claimed=[]; try{claimed=JSON.parse(localStorage.getItem('bb_battle_rewards')||'[]');if(!Array.isArray(claimed))claimed=[];}catch(e){} const claimKey=myUser.id+':'+key; if(claimed.includes(claimKey))return false; claimed.push(claimKey);if(claimed.length>100)claimed=claimed.slice(-100); localStorage.setItem('bb_battle_rewards',JSON.stringify(claimed)); freeSpins++;persistSave();return true; }
+function endBattleLocal(winner,key){ const battleKey=key||activeBattleKey||''; if(battleKey&&finishedBattleKey===battleKey)return; if(battleKey)finishedBattleKey=battleKey; const wasEliminated=battleEliminated||battlePhase==='eliminated'; battleMode=false;battleCountdownActive=false;battlePhase='finished';gameActive=false; if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;} if(battleTimer){clearInterval(battleTimer);battleTimer=null;} stopFall();stopSuspenseMusic();document.getElementById('wrap').classList.remove('battleMode'); document.getElementById('battleBanner').style.display='none'; document.getElementById('battleModal').classList.add('hidden'); if(wasEliminated)return; const won=winner&&myUser&&winner===myUser.id; const gotReward=won?awardBattleReward(battleKey):false; document.getElementById('battleOverTitle').textContent=won?'🏆 YOU WIN BATTLE!':'⚔️ BATTLE OVER!'; document.getElementById('battleOverDesc').textContent=won?'You are the LAST ONE ALIVE! Battle lasted '+battleElapsed+' seconds.':'Winner: '+(winner?getDisplayName(winner):'No winner')+'. Battle lasted '+battleElapsed+' seconds.'; document.getElementById('battleOverReward').textContent=gotReward?'🎁 +1 FREE SPIN! You can use it any time!':(won?'Reward already saved for this battle.':''); document.getElementById('battleOverModal').classList.remove('hidden'); if(gotReward)showToast('🏆 BATTLE WIN! +1 Free Spin!'); setTimeout(()=>{if(!document.getElementById('battleOverModal').classList.contains('hidden'))closeBattleOver();},4000); }
+window.closeBattleOver=function(){ document.getElementById('battleOverModal').classList.add('hidden'); battleMode=false;battleCountdownActive=false;battlePhase='finished'; if(battleTimer){clearInterval(battleTimer);battleTimer=null;} if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;} stopSuspenseMusic();document.getElementById('wrap').classList.remove('battleMode'); document.getElementById('battleBanner').style.display='none'; grid=Array(TOTAL).fill(null);levelScore=0;gameActive=true;newGame();syncOverlayPause(); };
+function getLevelNeed(lvl){ return 500 + (lvl-1)*200; }
+function renderHow(){
+  const need=getLevelNeed(level),left=Math.max(0,need-levelScore);
+  const levelsToShow=[1,2,3,4,5,6,7,8,9,10,15,20,30,50,100,112,150,200,300,500];
+  const rows=levelsToShow.map(l=>{
+    const n=getLevelNeed(l),mark=l===level?' class="you"':'',tag=l===level?' 📍 YOU':'';
+    return '<tr'+mark+'><td>Level '+l+tag+'</td><td><b>'+n.toLocaleString()+'</b> points</td></tr>';
+  }).join('');
+  document.getElementById('howContent').innerHTML=
+    '<div class="howStep"><b>📍 YOUR LEVEL NOW</b><br>You are <b>Level '+level+'</b>. You have <b>'+levelScore+'</b> points in this level.<br>You need <b>'+need.toLocaleString()+' points</b> to go to Level '+(level+1)+'.<br>Still need <b>'+left.toLocaleString()+' points</b>.</div>'+
+    '<div class="howStep warn"><b>🚀 SPEED BLOCK - STEP!</b><br>Lv 1-49 = <b>900ms</b> (Slow)<br>Lv 50-99 = <b>750ms</b><br>Lv 100-199 = <b>650ms</b><br>Lv 200-299 = <b>550ms</b><br>Lv 300-399 = <b>450ms</b><br>Lv 400-500 = <b>380ms</b> (Paling laju)<br>Paling laju pun <b>380ms</b>, takkan bawah <b>350ms</b>. Lv 400 takkan jatuh macam petir.</div>'+
+    '<div class="howStep warn"><b>💰 SCORE - RULE BARU!</b><br><b>Level 1-200:</b> Kalau MATI / LOGOUT, score tengah jalan <b>MASUK</b> Total. Tak hangus.<br><b>Level 200+:</b> Kalau mati tengah jalan, score <b>HANGUS</b>. Kena habiskan level baru Total naik.</div>'+
+    '<div class="howStep"><b>🗺️ LEVEL STAGE - BARU!</b><br>Lv 1 = <b>🌱 Classic</b><br>Lv 50 = <b>🌃 Neon City</b><br>Lv 100 = <b>🌌 Galaxy</b><br>Lv 200 = <b>👑 Golden Royal</b><br>Lv 300 = <b>💎 Diamond Ice</b><br>Lv 400 = <b>🥋 Sifu Dojo</b><br>Lv 500 = <b>👑 Mahaguru Palace</b></div>'+
+    '<div class="howStep warn"><b>⚠️ IMPORTANT: Line points are SAME in all levels!</b><br><b>Only the target to go up gets bigger.</b><br><br>1 line = <b>80 points</b> in Level 1.<br>1 line = <b>80 points</b> in Level 112 too!<br>2 lines = <b>260 points</b> in ALL levels.<br><br>Level does NOT change your line points. Level only changes how many points you need to go up.</div>'+
+    '<div class="howStep"><b>1️⃣ REGISTER / LOGIN</b><br>Register to get your Blast ID. It saves on this phone. On PC, login with the SAME ID to see your score. Phone sendiri tunjuk ID penuh, orang lain nampak Nama je.</div>'+
+    '<div class="howStep"><b>2️⃣ BOMB 💣</b><br>Tap BOMB. Block stops. Tap the board. BOOM one time. Blocks go away. Fire stops. New block falls.</div>'+
+    '<div class="howStep"><b>3️⃣ FLASH ⚡</b><br>Tap FLASH. Block stops. Tap a row. ZAP one time. Row goes away. New block falls.</div>'+
+    '<div class="howStep"><b>4️⃣ SPIN 🎁 - AUTO PAUSE!</b><br>Tap SPIN. Game stops. Spin slowly. Prize saves. It will not go away. SPIN dapat setiap Level 50.</div>'+
+    '<div class="howStep"><b>5️⃣ SCORE</b><br>1 line = 80 points. 2 lines at once = 260 points. BOMB = 150 points. FLASH = 200 points.<br>Points are SAME in all levels. Higher level only needs more points to go up.</div>'+
+    '<div class="howStep"><b>6️⃣ HOW MANY POINTS FOR NEXT LEVEL?</b><br>Rule is simple: <b>Start 500, +200 each level.</b><br>Formula: 500 + (Level - 1) x 200<br><br><table class="levelTable"><tr><th>Level</th><th>Points Needed</th></tr>'+rows+'</table><small style="color:#aaa">Example: Level 50 needs 10,300. Level 112 needs 22,700. Level 500 needs 100,300.</small></div>'+
+    '<div class="howStep"><b>7️⃣ TOP SCORE</b><br>Top Score is LIVE. It updates every 10 seconds. If you play on phone, PC will see it too. Tap REFRESH to update now.</div>'+
+    '<div class="howStep"><b>8️⃣ PAUSE &amp; MENU</b><br>PAUSE stops the game. Opening MENU also holds the falling block until the menu closes. From PAUSE you can open MENU, TOP 3, STAGE, HOW TO PLAY.</div>'+
+    '<div class="howStep"><b>9️⃣ ROOM BATTLE</b><br>Host makes a room. When all players join, Host taps PLAY. Battle starts SLOW, then gets FASTER. Last one alive WINS. Kalau ROOM FULL, Host tekan RESET ROOM untuk buang ghost.</div>';
+}
+window.openHow=function(){ renderHow(); document.getElementById('howModal').classList.remove('hidden'); stopFall(); syncOverlayPause(); };
+window.closeHow=function(){ document.getElementById('howModal').classList.add('hidden'); if(openedFromPause && isPaused){ openedFromPause=false; document.getElementById('pauseModal').classList.remove('hidden'); } syncOverlayPause(); };
+window.openRank=async function(){
+  document.getElementById('rankModal').classList.remove('hidden');
+  stopFall(); syncOverlayPause();
+  document.getElementById('rankList').innerHTML='Loading...';
+  try{
+    const q=query(ref(db,'leaderboard'),orderByChild('score'),limitToLast(50)),snap=await get(q);
+    const arr=cleanLeaderboard(snap.val()),top3=[];
+    for(let i=0;i<3;i++)top3.push(arr[i]||{id:'-',score:0,empty:true,level:1});
+    let html=top3.map((r,i)=>'<div class="lbRow '+(r.empty?'empty ':'')+(r.id===myUser?.id?'me':'')+'"><span>'+(i+1)+'. '+(i===0?'🥇':i===1?'🥈':'🥉')+' '+(r.empty?'-':getDisplayName(r.id))+' <small style="color:#aaa">Lv'+(r.level||1)+'</small></span><b>'+r.score+'</b></div>').join('');
+    if(myUser){
+      const mine=arr.find(x=>x.id===myUser.id);
+      if(mine){
+        const rank=arr.filter(x=>x.score>mine.score).length+1;
+        if(rank>3)html+='<div class="lbSep">— YOUR RANK —</div><div class="lbRow me"><span>'+rank+'. '+getDisplayName(mine.id)+' <small style="color:#aaa">Lv'+(mine.level||1)+'</small></span><b>'+mine.score+'</b></div>';
+        document.getElementById('rankMy').textContent='Your Rank: #'+rank+' | Your Total: '+mine.score;
+      }else document.getElementById('rankMy').textContent='No score yet!';
+    }
+    document.getElementById('rankList').innerHTML=html;
+  }catch(e){document.getElementById('rankList').textContent='Error: '+e.message;}
+};
+window.closeRank=function(){ document.getElementById('rankModal').classList.add('hidden'); if(openedFromPause && isPaused){ openedFromPause=false; document.getElementById('pauseModal').classList.remove('hidden'); } syncOverlayPause(); };
+const THEMES=[
+  {min:1,name:'Classic',icon:'🌱',desc:'Start',bg:'linear-gradient(180deg,#1a1a3a,#0f0f1a)',board:'#222',cell:'#333',blocks:[{c1:'#FF6B6B',c2:'#C0392B'},{c1:'#FFD93D',c2:'#F39C12'},{c1:'#6BCB77',c2:'#1E8449'},{c1:'#4D96FF',c2:'#1A5276'},{c1:'#9B5DE5',c2:'#6C3483'}]},
+  {min:50,name:'Neon City',icon:'🌃',desc:'Surprise Spin starts',bg:'linear-gradient(180deg,#FF00CC,#7A00FF,#00E5FF)',board:'#160022',cell:'#241038',badge:'🏅 Neon Badge',badgeClass:'',blocks:[{c1:'#FF00CC',c2:'#7A00FF'},{c1:'#00E5FF',c2:'#0099FF'},{c1:'#FF00AA',c2:'#FF0066'},{c1:'#00FFCC',c2:'#00AAFF'},{c1:'#FFCC00',c2:'#FF00CC'}]},
+  {min:100,name:'Galaxy',icon:'🌌',desc:'Galaxy theme',bg:'linear-gradient(180deg,#0F2027,#203A43,#2C5364)',board:'#0F2027',cell:'#2C5364',badge:'🥈 Silver Galaxy',badgeClass:'silver',blocks:[{c1:'#4D96FF',c2:'#0F2027'},{c1:'#00E5FF',c2:'#203A43'},{c1:'#9B5DE5',c2:'#2C5364'},{c1:'#FFFFFF',c2:'#7FB3D5'},{c1:'#00FFCC',c2:'#1A5276'}]},
+  {min:200,name:'Golden Royal',icon:'👑',desc:'Golden theme',bg:'linear-gradient(180deg,#FFD700,#FF8C00,#4A0000)',board:'#2A1800',cell:'#4A3000',badge:'🥇 Golden Royal',badgeClass:'gold',blocks:[{c1:'#FFD700',c2:'#B7950B'},{c1:'#FFA500',c2:'#D35400'},{c1:'#FFCC00',c2:'#FF8C00'},{c1:'#FF6B00',c2:'#4A0000'},{c1:'#FFFACD',c2:'#FFD700'}]},
+  {min:300,name:'Diamond Ice',icon:'💎',desc:'Ice theme',bg:'linear-gradient(180deg,#00E5FF,#7C4DFF,#0A192F)',board:'#081A2C',cell:'#17385A',badge:'💎 Diamond Ice',badgeClass:'diamond',blocks:[{c1:'#00E5FF',c2:'#0099FF'},{c1:'#FFFFFF',c2:'#AED6F1'},{c1:'#B8E6FF',c2:'#5DADE2'},{c1:'#E8F8FF',c2:'#00BBF9'},{c1:'#D6EAF8',c2:'#7C4DFF'}]},
+  {min:400,name:'Sifu Dojo',icon:'🥋',desc:'You are SIFU!',bg:'linear-gradient(180deg,#FF3D00,#FFD600,#250000)',board:'#211008',cell:'#432214',badge:'🥋 SIFU',badgeClass:'sifu',blocks:[{c1:'#FF3D00',c2:'#8B0000'},{c1:'#FFD600',c2:'#FF8C00'},{c1:'#FF6B00',c2:'#C0392B'},{c1:'#2C2C2C',c2:'#000000'},{c1:'#FF4500',c2:'#FFD700'}]},
+  {min:500,name:'Mahaguru Palace',icon:'👑',desc:'LEGEND MAHAGURU!',bg:'linear-gradient(180deg,#FFD700,#FFFFFF,#7A00FF)',board:'#241543',cell:'#3A2468',badge:'👑 MAHAGURU',badgeClass:'mahaguru',blocks:[{c1:'#FFD700',c2:'#B7950B'},{c1:'#FFFFFF',c2:'#FFD700'},{c1:'#E6CCFF',c2:'#7A00FF'},{c1:'#FFCC00',c2:'#7C4DFF'},{c1:'#FFFACD',c2:'#FF8C00'}]}
+];
+function getThemeForLevel(lvl){ let t=THEMES[0]; for(let th of THEMES) if(lvl>=th.min) t=th; return t; }
+function applyTheme(){
+  if(battleMode)return;
+  const t=getThemeForLevel(level);
+  document.getElementById('wrap').style.setProperty('--bg',t.bg);
+  document.getElementById('board').style.setProperty('--boardBg',t.board);
+  document.getElementById('board').style.setProperty('--cell',t.cell);
+  document.getElementById('themeTxt').textContent=t.name;
+  const badges=THEMES.filter(th=>th.min>1&&level>=th.min);
+  document.getElementById('badgeBar').innerHTML=badges.map(b=>'<span class="badge '+(b.badgeClass||'')+'">'+b.badge+'</span>').join('')||'<span style="font-size:10px;color:#aaa">Level 50 to unlock first badge</span>';
+}
+function checkThemeUp(oldLevel){
+  const oldTheme=getThemeForLevel(oldLevel),newTheme=getThemeForLevel(level);
+  if(newTheme.min!==oldTheme.min&&newTheme.min>1){
+    soundLevelUp();
+    let special='';
+    if(newTheme.min===400)special='\n\n🥋 CONGRATS! You are now SIFU!';
+    if(newTheme.min===500)special='\n\n👑 LEGEND! You are now MAHAGURU!';
+    alert('🎉 NEW THEME! '+newTheme.name+'\n🏅 Badge: '+newTheme.badge+special);
+  }
+}
+window.openStage=function(){
+  document.getElementById('stageModal').classList.remove('hidden');
+  stopFall(); syncOverlayPause();
+  const pct=Math.min(100,Math.floor(level/500*100));
+  document.getElementById('stageProgress').style.width=pct+'%';
+  document.getElementById('stageCurrent').textContent='You are at Level '+level+' - '+getThemeForLevel(level).name+' ('+pct+'% to Mahaguru)';
+  const next=THEMES.find(th=>th.min>level);
+  document.getElementById('stageNext').textContent=next?(next.min-level)+' more levels to '+next.name+' - '+(next.badge||''):'YOU ARE MAHAGURU!';
+  document.getElementById('stageList').innerHTML=THEMES.map(th=>{
+    const idx=THEMES.indexOf(th),nextLevel=THEMES[idx+1]?.min||999;
+    const cls=level>=th.min?(level<nextLevel?'current':'unlocked'):'';
+    const status=cls==='current'?'📍 YOU ARE HERE':cls==='unlocked'?'✅ UNLOCKED':'🔒 LOCK - Level '+th.min;
+    return '<div class="stageItem '+cls+'"><div style="font-size:24px;min-width:32px;text-align:center">'+th.icon+'</div><div><b>Level '+th.min+' - '+th.name+'</b><br><small>'+th.desc+'</small><br><small>'+(th.badge?'🏅 '+th.badge+' | ':'')+status+'</small></div></div>';
+  }).join('');
+};
+window.closeStage=function(){ document.getElementById('stageModal').classList.add('hidden'); if(openedFromPause && isPaused){ openedFromPause=false; document.getElementById('pauseModal').classList.remove('hidden'); } syncOverlayPause(); };
+const COLS=8, ROWS=14, TOTAL=COLS*ROWS;
+const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[0,1]],[[0,0],[1,0],[2,0]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[1,1],[2,1]],[[0,0],[0,1],[1,1],[1,2]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]]];
+let grid=Array(TOTAL).fill(null);
+let totalScore=getSave().totalScore, levelScore=0, combo=1, freeSpins=getSave().freeSpins, bombs=getSave().bombs, flash=getSave().flash, level=getSave().level, gameActive=true;
+let curBlock=null, cursorX=3, cursorY=0, fallTimer=null, fallSpeed=900, bombMode=false, flashMode=false, spinning=false;
+const boardEl=document.getElementById('board');
+function randomBlock(){ if(battleMode){ let neon=[{c1:'#FF00CC',c2:'#7A00FF'},{c1:'#00E5FF',c2:'#0099FF'},{c1:'#FFCC00',c2:'#FF00CC'},{c1:'#FF4757',c2:'#FF00CC'},{c1:'#00FFCC',c2:'#00AAFF'}]; let col=neon[Math.floor(Math.random()*neon.length)]; let shape=SHAPES[Math.floor(Math.random()*SHAPES.length)]; return {c1:col.c1, c2:col.c2, cells:shape.map(c=>[...c])}; } let theme=getThemeForLevel(level); let palette=theme.blocks; let col=palette[Math.floor(Math.random()*palette.length)]; let shape=SHAPES[Math.floor(Math.random()*SHAPES.length)]; return {c1:col.c1, c2:col.c2, cells:shape.map(c=>[...c])}; }
+function spawnBlock(){ curBlock=randomBlock(); cursorX=3; cursorY=0; if(!canPlaceAt(curBlock,cursorX,cursorY)){ gameOver(); return; } renderBoard(); if(!isPaused && !spinPaused && !isExploding && !gameLoopBlocked()) startFall(); }
+function canPlaceAt(piece, px, py){ for(let [dx,dy] of piece.cells){ let x=px+dx, y=py+dy; if(x<0||x>=COLS||y<0||y>=ROWS) return false; if(grid[y*COLS+x]) return false; } return true; }
+function startFall(){
+  stopFall();
+  if(!curBlock||!gameActive||gameLoopBlocked())return;
+  const speed=battleMode?battleSpeed:getFallSpeed(level);
+  fallSpeed=speed;
+  fallTimer=setInterval(()=>{
+    if(!curBlock||!gameActive||gameLoopBlocked()){stopFall();return;}
+    if(canPlaceAt(curBlock,cursorX,cursorY+1)){cursorY++;renderBoard();}
+    else{stopFall();lockBlock();}
+  },speed);
+}
+function stopFall(){ if(fallTimer){ clearInterval(fallTimer); fallTimer=null; } }
+function lockBlock(){ stopFall(); if(!curBlock) return; for(let [dx,dy] of curBlock.cells) grid[(cursorY+dy)*COLS+cursorX+dx]={c1:curBlock.c1, c2:curBlock.c2}; curBlock=null; checkLines(); if(!battleMode) checkLevel(); if(!isGameOver()) spawnBlock(); else gameOver(); renderBoard(); }
+window.moveCursor=function(dx,dy){
+  if(!curBlock||gameInputBlocked())return;
+  let nx=cursorX+dx,ny=cursorY+dy;
+  const maxX=Math.max(...curBlock.cells.map(c=>c[0])),maxY=Math.max(...curBlock.cells.map(c=>c[1]));
+  nx=Math.max(0,Math.min(COLS-1-maxX,nx));ny=Math.max(0,Math.min(ROWS-1-maxY,ny));
+  if(canPlaceAt(curBlock,nx,ny)){cursorX=nx;cursorY=ny;playTone(600,0.05,'sine',0.08);}
+  renderBoard();
+};
+window.dropCursor=function(){
+  if(!curBlock||gameInputBlocked())return;
+  stopFall();while(canPlaceAt(curBlock,cursorX,cursorY+1))cursorY++;lockBlock();
+};
+window.rotateBlock=function(){
+  if(!curBlock||gameInputBlocked())return;
+  let rotated=curBlock.cells.map(([x,y])=>[y,-x]);
+  const minX=Math.min(...rotated.map(c=>c[0])),minY=Math.min(...rotated.map(c=>c[1]));
+  rotated=rotated.map(([x,y])=>[x-minX,y-minY]);
+  const test={c1:curBlock.c1,c2:curBlock.c2,cells:rotated};
+  if(canPlaceAt(test,cursorX,cursorY)){curBlock.cells=rotated;playTone(800,0.08,'sine',0.12);renderBoard();}
+  else if(canPlaceAt(test,cursorX-1,cursorY)){cursorX--;curBlock.cells=rotated;renderBoard();}
+  else if(canPlaceAt(test,cursorX+1,cursorY)){cursorX++;curBlock.cells=rotated;renderBoard();}
+};
+function renderBoard(){
+  if(isExploding)return;
+  const fx=document.getElementById('fxLayer'),fxHTML=fx?fx.outerHTML:'';
+  boardEl.innerHTML=fxHTML;
+  const fallingSet=new Map();
+  if(curBlock)for(const [dx,dy] of curBlock.cells){
+    const x=cursorX+dx,y=cursorY+dy;
+    if(x>=0&&x<COLS&&y>=0&&y<ROWS)fallingSet.set(y*COLS+x,curBlock);
+  }
+  grid.forEach((cell,i)=>{
+    const d=document.createElement('div');
+    if(cell){d.className='cell filled';d.style.setProperty('--c1',cell.c1);d.style.setProperty('--c2',cell.c2);}
+    else if(fallingSet.has(i)){const b=fallingSet.get(i);d.className='cell falling';d.style.setProperty('--c1',b.c1);d.style.setProperty('--c2',b.c2);}
+    else d.className='cell';
+    d.onclick=()=>{
+      if(gameInputBlocked())return;
+      if(bombMode){doBomb(i);return;}
+      if(flashMode){doFlash(i);return;}
+      if(!curBlock)return;
+      const sx=i%COLS,sy=Math.floor(i/COLS);
+      if(canPlaceAt(curBlock,sx,sy)){cursorX=sx;cursorY=sy;renderBoard();}
+    };
+    boardEl.appendChild(d);
+  });
+  if(bombMode)boardEl.classList.add('bomb-mode');else boardEl.classList.remove('bomb-mode');
+  if(flashMode)boardEl.classList.add('flash-mode');else boardEl.classList.remove('flash-mode');
+  updateTopUI();applyTheme();
+}
+function checkLevel(){
+  let leveled=false;const prevLevel=level;
+  while(levelScore>=getLevelNeed(level)){
+    const need=getLevelNeed(level);levelScore-=need;totalScore+=need;level++;leveled=true;
+    if(level>=50&&level%50===0){freeSpins++;showToast('🎁 Free Spin Added! Level '+level+'!');}
+  }
+  if(leveled){
+    soundLevelUp();checkThemeUp(prevLevel);
+    document.getElementById('levelUpMsg').textContent='🎉 LEVEL UP! Level '+level+' | Need '+getLevelNeed(level)+' points for next';
+    setTimeout(()=>document.getElementById('levelUpMsg').textContent='',3000);
+    persistSave(); syncAll();
+  }
+}
+function checkLines(){ let toClear=new Set(); for(let y=0;y<ROWS;y++){ if(grid.slice(y*COLS,y*COLS+COLS).every(c=>c)) for(let x=0;x<COLS;x++) toClear.add(y*COLS+x); } for(let x=0;x<COLS;x++){ let full=true; for(let y=0;y<ROWS;y++) if(!grid[y*COLS+x]) full=false; if(full) for(let y=0;y<ROWS;y++) toClear.add(y*COLS+x); } if(toClear.size>0){ soundBlast(); let lines=Math.floor(toClear.size/COLS); let pts=toClear.size*10 + (lines>1?lines*100:0); levelScore+=pts; if(lines>1) combo=Math.min(combo+1,3); else combo=1; toClear.forEach(i=>grid[i]=null); setTimeout(()=>renderBoard(),120); } else combo=1; }
+function isGameOver(){ if(curBlock) return false; let test=randomBlock(); return !canPlaceAt(test,3,0); }
+function gameOver(){
+  gameActive=false;stopFall();
+  if(battleMode){battleEliminate('game over');return;}
+  soundLose();
+  if(level<=200 && levelScore>0){ totalScore+=levelScore; persistSave(); syncAll(); document.getElementById('msgDesc').textContent='GAME OVER! This Level Score: '+levelScore+' MASUK Total (Lv 1-200 tak hangus) | Total: '+totalScore+' | Level: '+level+' | ID: '+(myUser?myUser.id:'-'); levelScore=0; }
+  else { document.getElementById('msgDesc').textContent='GAME OVER! This Level Score: '+levelScore+' (not added - Lv 200+ hangus, level not finished) | Total: '+totalScore+' | Level: '+level+' | ID: '+(myUser?myUser.id:'-'); }
+  document.getElementById('msg').classList.remove('hidden');
+}
+window.newGame=function(){
+  if(battleMode||battleCountdownActive){showToast('You cannot reset during Battle.');return;}
+  grid=Array(TOTAL).fill(null);levelScore=0;combo=1;gameActive=true;cursorX=3;cursorY=0;
+  stopFall();bombMode=false;flashMode=false;isPaused=false;spinPaused=false;isExploding=false;
+  document.getElementById('wrap').classList.remove('battleMode');
+  document.getElementById('pauseModal').classList.add('hidden');
+  document.getElementById('battleBanner').style.display='none';
+  document.getElementById('bombBanner').style.display='none';document.getElementById('flashBanner').style.display='none';
+  const fx=document.getElementById('fxLayer');if(fx)fx.classList.remove('show');
+  stopSuspenseMusic();spawnBlock();renderBoard();syncOverlayPause();
+};
+window.closeMsg=function(){ document.getElementById('msg').classList.add('hidden'); syncOverlayPause(); };
+const PRIZES=[ {label:"💣 BOMB x1", type:"bomb", val:1}, {label:"🎁 FREE SPIN x2", type:"spin", val:2}, {label:"⚡ FLASH x1", type:"flash", val:1}, {label:"💣 BOMB x2", type:"bomb", val:2}, {label:"⚡ FLASH x2", type:"flash", val:2}, {label:"💣 BOMB x3", type:"bomb", val:3}, ];
+window.openSpin=function(){
+  if(battleMode||battleCountdownActive){showToast('Spin is unavailable during Battle.');return;}
+  if(freeSpins<=0){alert('No SPIN! Free Spin is after Level 50, and only every 50 levels.');return;}
+  wasPausedBeforeSpin=isPaused;spinPaused=true;stopFall();
+  document.getElementById('spinModal').classList.remove('hidden');
+  document.getElementById('spinResultBox').classList.remove('show');
+  document.getElementById('spinResult').textContent='';document.getElementById('spinSavedTxt').textContent='';
+  document.getElementById('spinGoBtn').disabled=false;document.getElementById('spinGoBtn').textContent='🎰 SPIN!';
+  document.getElementById('spinGoBtn').onclick=window.doSpinWheel;
+  document.getElementById('wheel').style.transform='rotate(0deg)';
+};
+window.closeSpin=function(){
+  document.getElementById('spinModal').classList.add('hidden');spinPaused=false;
+  if(openedFromPause&&isPaused)restorePauseAfterOverlay();
+  if(!wasPausedBeforeSpin&&!isPaused&&curBlock)startFall();
+  syncOverlayPause();
+};
+function showFX(emoji){ let fx=document.getElementById('fxLayer'); if(!fx) return; fx.textContent=emoji; fx.classList.remove('show'); void fx.offsetWidth; fx.classList.add('show'); setTimeout(()=>{ fx.classList.remove('show'); },600); }
+function clearBombFlashUI(){ bombMode=false; flashMode=false; document.getElementById('bombBanner').style.display='none'; document.getElementById('flashBanner').style.display='none'; document.getElementById('bombSideBtn').classList.remove('active-bomb'); document.getElementById('flashSideBtn').classList.remove('active-flash'); }
+window.cancelBombFlash=function(){ clearBombFlashUI(); if(curBlock && !isPaused && !spinPaused && !isExploding) startFall(); showToast('Cancelled'); renderBoard(); };
+window.useBomb=function(){
+  if(battleMode||battleCountdownActive||gameInputBlocked())return;
+  if(isExploding)return;
+  if(bombs<=0){alert('No BOMB! Spin first.');return;}
+  if(bombMode){cancelBombFlash();return;}
+  flashMode=false;bombMode=true;stopFall();
+  document.getElementById('flashBanner').style.display='none';document.getElementById('bombBanner').style.display='block';
+  document.getElementById('bombSideBtn').classList.add('active-bomb');document.getElementById('flashSideBtn').classList.remove('active-flash');
+  showToast('💣 Block stopped! Tap board to explode!');renderBoard();
+};
+window.useFlash=function(){
+  if(battleMode||battleCountdownActive||gameInputBlocked())return;
+  if(isExploding)return;
+  if(flash<=0){alert('No FLASH! Spin first.');return;}
+  if(flashMode){cancelBombFlash();return;}
+  bombMode=false;flashMode=true;stopFall();
+  document.getElementById('bombBanner').style.display='none';document.getElementById('flashBanner').style.display='block';
+  document.getElementById('flashSideBtn').classList.add('active-flash');document.getElementById('bombSideBtn').classList.remove('active-bomb');
+  showToast('⚡ Block stopped! Tap row to zap!');renderBoard();
+};
+function doBomb(idx){
+  if(!bombMode||isExploding||gameInputBlocked()||battleMode)return;
+  isExploding=true;stopFall();const cx=idx%COLS,cy=Math.floor(idx/COLS),cells=document.querySelectorAll('#board .cell');
+  for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+    const x=cx+dx,y=cy+dy;if(x>=0&&x<COLS&&y>=0&&y<ROWS){const ci=y*COLS+x;if(cells[ci])cells[ci].classList.add('explode');}
+  }
+  showFX('💥');soundBlast();
+  setTimeout(()=>{
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const x=cx+dx,y=cy+dy;if(x>=0&&x<COLS&&y>=0&&y<ROWS)grid[y*COLS+x]=null;}
+    bombs--;levelScore+=150;clearBombFlashUI();isExploding=false;checkLines();checkLevel();
+    renderBoard();persistSave();syncAll();showToast('💥 BOOM! 3x3 exploded! +150 points');
+    if(curBlock&&!gameLoopBlocked())startFall();
+  },600);
+}
+function doFlash(idx){
+  if(!flashMode||isExploding||gameInputBlocked())return;
+  isExploding=true;stopFall();
+  const row=Math.floor(idx/COLS),cells=document.querySelectorAll('#board .cell');
+  for(let x=0;x<COLS;x++){const ci=row*COLS+x;if(cells[ci])cells[ci].classList.add('zap');}
+  showFX('⚡');soundBlast();
+  setTimeout(()=>{
+    for(let x=0;x<COLS;x++)grid[row*COLS+x]=null;
+    flash--;levelScore+=200;clearBombFlashUI();isExploding=false;checkLines();
+    if(!battleMode)checkLevel();
+    renderBoard();persistSave();syncAll();showToast('⚡ Row '+(row+1)+' gone! +200 points');
+    if(curBlock&&!gameInputBlocked())startFall();
+  },600);
+}
+let surpriseSpinning=false;
+function scheduleSurpriseSpin(){ let delay=90000+Math.random()*90000; setTimeout(()=>{ let chance=Math.random(); if(gameActive&&!isPaused&&!battleMode&&!surpriseSpinning&&!spinPaused&&!isExploding&&level>=50&&chance<0.05){ soundSurprise(); document.getElementById('surpriseModal').classList.remove('hidden'); document.getElementById('surpriseResult').textContent=''; document.getElementById('surpriseBtn').textContent='🎰 SPIN JACKPOT!'; document.getElementById('surpriseBtn').disabled=false; } scheduleSurpriseSpin(); },delay); }
+window.spinSurprise=function(){
+  if(surpriseSpinning||battleMode||isPaused||spinPaused)return;
+  surpriseSpinning=true;
+  const btn=document.getElementById('surpriseBtn'),icons=['⬆️','⬇️','🎁','⬆️','⬇️','🎁'];
+  btn.disabled=true;btn.textContent='Spinning...';
+  let idx=0;const wheel=document.getElementById('surpriseWheel');
+  const interval=setInterval(()=>{wheel.textContent=icons[idx%icons.length];idx++;playTone(500+idx*50,0.08,'square',0.1);},120);
+  setTimeout(()=>{
+    clearInterval(interval);
+    const roll=Math.random();let result='',emoji='';
+    if(roll<0.33){
+      emoji='⬆️';const old=level;level++;result='⬆️ JACKPOT! Up 1 Level! '+old+' → '+level;
+      soundLevelUp();checkThemeUp(old);
+    }else if(roll<0.66){
+      emoji='⬇️';const old=level;level=Math.max(1,level-1);result='⬇️ OH NO! Down 1 Level! '+old+' → '+level;soundLose();
+    }else{
+      emoji='🎁';const pts=300;levelScore+=pts;result='🎁 Got '+pts+' Free Points!';soundLevelUp();checkLevel();
+    }
+    checkLevel();wheel.textContent=emoji;
+    document.getElementById('surpriseResult').textContent=result;
+    btn.textContent='✅ OK, CONTINUE';btn.disabled=false;
+    btn.onclick=()=>{
+      document.getElementById('surpriseModal').classList.add('hidden');surpriseSpinning=false;
+      btn.onclick=window.spinSurprise;renderBoard();applyTheme();persistSave();syncAll(); syncOverlayPause();
+    };
+    renderBoard();applyTheme();persistSave();syncAll();
+  },1800);
+};
+let lbListenerStarted=false;
+window.loadLeaderboard=async function(force=false){
+  document.getElementById('lbList').textContent='Loading...';
+  try{
+    if(myRoom){
+      const snap=await get(ref(db,'rooms/'+myRoom+'/players'));
+      if(snap.val()){
+        const arr=cleanLeaderboard(snap.val());
+        document.getElementById('lbList').innerHTML=arr.map((r,i)=>'<div class="lbRow '+(r.id===myUser?.id?'me':'')+'"><span>'+(i+1)+'. '+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'')+' '+getDisplayName(r.id)+'</span><b>'+r.score+'</b></div>').join('');
+      }
+    }else{
+      const q=query(ref(db,'leaderboard'),orderByChild('score'),limitToLast(50)),snap=await get(q);
+      document.getElementById('lbList').innerHTML=renderLeaderboardHTML(cleanLeaderboard(snap.val()));
+    }
+  }catch(e){document.getElementById('lbList').textContent='Error: '+e.message;}
+};
+function startLiveLeaderboard(){ if(lbListenerStarted) return; lbListenerStarted=true; onValue(ref(db,'leaderboard'), (snap)=>{ let data=snap.val(); let arr=cleanLeaderboard(data); if(!myRoom) document.getElementById('lbList').innerHTML=renderLeaderboardHTML(arr); }); setInterval(()=>{ loadLeaderboard(true); },10000); }
+window.doSpinWheel=function(){
+  if(spinning||freeSpins<=0) return;
+  spinning=true; freeSpins--; persistSave(); syncAll(); updateTopUI();
+  const wheel=document.getElementById('wheel');
+  const seg=Math.floor(Math.random()*6);
+  const deg=360*5 + (seg*60) + 30;
+  wheel.style.transform='rotate('+deg+'deg)';
+  playTone(600,0.3,'square',0.15,1200);
+  setTimeout(()=>{
+    const p=PRIZES[seg];
+    if(p.type==='bomb') bombs+=p.val;
+    if(p.type==='flash') flash+=p.val;
+    if(p.type==='spin') freeSpins+=p.val;
+    document.getElementById('spinResultBox').classList.add('show');
+    document.getElementById('spinResult').textContent=p.label;
+    document.getElementById('spinSavedTxt').textContent='✅ Saved! BOMB:'+bombs+' FLASH:'+flash+' SPIN:'+freeSpins;
+    persistSave(); syncAll(); updateTopUI();
+    spinning=false;
+    document.getElementById('spinGoBtn').textContent='🎰 SPIN AGAIN? ('+freeSpins+' left)';
+    document.getElementById('spinGoBtn').disabled=freeSpins<=0;
+    if(freeSpins<=0) document.getElementById('spinGoBtn').textContent='No more spins';
+  },3200);
+};
+document.addEventListener('keydown',e=>{
+  if(e.key==='p'||e.key==='P'){togglePause();return;}
+  if(gameInputBlocked())return;
+  if(e.key==='ArrowLeft')moveCursor(-1,0);
+  else if(e.key==='ArrowRight')moveCursor(1,0);
+  else if(e.key==='ArrowDown')moveCursor(0,1);
+  else if(e.key==='Enter'||e.key===' ')dropCursor();
+  else if(e.key==='r'||e.key==='R')rotateBlock();
+});
+function fitBoard(){ let w=Math.min(window.innerWidth-16,414); let availW=w-128; let boardW=Math.max(200,availW); let h=boardW*14/8; let maxH=window.innerHeight*0.62; if(h>maxH){ h=maxH; boardW=h*8/14; } let b=document.getElementById('board'); if(b){ b.style.width=boardW+'px'; b.style.height=h+'px'; } let ga=document.getElementById('gameArea'); if(ga){ ga.style.width=(boardW+128)+'px'; ga.style.margin='0 auto'; } }
+window.addEventListener('resize', fitBoard); window.addEventListener('orientationchange', ()=>setTimeout(fitBoard,200)); fitBoard();
+setInterval(()=>{ if(!battleMode && hasBlockingOverlay()){ try{ stopFall(); }catch(e){} } },200);
+document.addEventListener('visibilitychange', ()=>{
+  if(document.hidden && gameActive && !battleMode && !isPaused && !hasBlockingOverlay()){
+    try{ togglePause(); }catch(e){ stopFall(); }
+  }
+});
+setInterval(()=>{ if(myUser && !battleMode) syncAll(); },10000);
+checkLogin(); updateTopUI(); newGame(); loadLeaderboard(true); startLiveLeaderboard(); scheduleSurpriseSpin();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js');
+}
+</script>
+</body>
+</html>
