@@ -1,15 +1,13 @@
 {
-  "id": "/",
-  "name": "BLOCK BLAST 2026",
-  "short_name": "BLOCK BLAST",
+  "name": "Block Blast - Shadow Block",
+  "short_name": "Block Blast",
   "description": "Block Blast 2026 - Battle blocks with friends. Designed by ShadowNetwork@Baem",
-  "lang": "en",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0f0f1a",
-  "theme_color": "#1a1a3a",
+  "background_color": "#111122",
+  "theme_color": "#ff6b00",
   "icons": [
     {
       "src": "icon-192.png",
