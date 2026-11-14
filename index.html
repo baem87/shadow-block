@@ -6,7 +6,11 @@
 <title>BLOCK BLAST 2026</title>
 <meta name="theme-color" content="#1a1a3a">
 <link rel="manifest" href="./manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Block Blast">
 <link rel="icon" href="./icon-512.png" type="image/png">
+<link rel="apple-touch-icon" href="./icon-512.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:auto;overflow-y:auto;background:#0f0f1a}
@@ -759,7 +763,7 @@ async function endBattleLocal(winner,key,playersObj){
   document.getElementById('battleOverModal').classList.remove('hidden');
   if(gotReward)showToast('🏆 BATTLE WIN! +1 Free Spin!');
 
-  // AUTO-DELETE ROOM DATA FROM FIREBASE
+  // AUTO-DELETE ROOM DATA FROM FIREBASE SEBAIK SAHAJA BATTLE TAMAT
   if(myRoom){
     const roomCodeToDel=myRoom;
     try{ await remove(ref(db,'rooms/'+roomCodeToDel)); }catch(e){}
@@ -1182,6 +1186,24 @@ document.addEventListener('visibilitychange', ()=>{
 });
 setInterval(()=>{ if(myUser && !battleMode) syncAll(); },10000);
 checkLogin(); updateTopUI(); newGame(); loadLeaderboard(true); startLiveLeaderboard(); scheduleSurpriseSpin();
+
+// Panduan Install iOS Safari
+function checkIOSInstallPrompt() {
+  const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+  const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone);
+  if (isIos && !isInStandaloneMode && !localStorage.getItem('ios_banner_closed')) {
+    showIOSInstallBanner();
+  }
+}
+function showIOSInstallBanner() {
+  const banner = document.createElement('div');
+  banner.style.position = 'fixed'; banner.style.bottom = '0'; banner.style.left = '0'; banner.style.right = '0';
+  banner.style.background = '#1a1a3a'; banner.style.color = '#fff'; banner.style.padding = '14px'; banner.style.textAlign = 'center';
+  banner.style.borderTop = '2px solid #ffcc00'; banner.style.zIndex = '99999'; banner.style.fontSize = '12px';
+  banner.innerHTML = `<b>📱 JADIKAN SEBAGAI APLIKASI iPHONE!</b><br>Tekan butang <b>Share (📤)</b> di Safari bawah, kemudian pilih <b>"Add to Home Screen"</b>.<br><button onclick="localStorage.setItem('ios_banner_closed','true');this.parentElement.remove()" style="margin-top:6px;background:#ffcc00;color:#000;border:none;padding:4px 14px;border-radius:6px;font-weight:bold;">TUTUP</button>`;
+  document.body.appendChild(banner);
+}
+window.addEventListener('load', () => { setTimeout(checkIOSInstallPrompt, 2000); });
 </script>
 <script>
 if ('serviceWorker' in navigator) {
