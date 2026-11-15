@@ -6,28 +6,24 @@
 <title>BLOCK BLAST 2026</title>
 <meta name="theme-color" content="#1a1a3a">
 <link rel="manifest" href="./manifest.webmanifest">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Block Blast">
 <link rel="icon" href="./icon-512.png" type="image/png">
-<link rel="apple-touch-icon" href="./icon-512.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:auto;overflow-y:auto;background:#0f0f1a}
 body{color:#fff;font-family:Arial,sans-serif}
-#wrap{max-width:430px;margin:0 auto;height:auto;min-height:100vh;display:flex;flex-direction:column;padding:15px 8px calc(15px + env(safe-area-inset-bottom));gap:4px;background:var(--bg,linear-gradient(180deg,#1a1a3a,#0f0f1a));transition:.8s;width:100%}
+#wrap{max-width:430px;margin:0 auto;height:auto;min-height:100vh;display:flex;flex-direction:column;padding:5px 8px calc(15px + env(safe-area-inset-bottom));gap:4px;background:var(--bg,linear-gradient(180deg,#1a1a3a,#0f0f1a));transition:.8s;width:100%}
 #wrap.battleMode{background:linear-gradient(180deg,#1a0000,#2a0033,#000000,#FF00CC22)!important;animation:battleShake.8s infinite}
 @keyframes battleShake{0%{filter:brightness(1)}50%{filter:brightness(1.15)}100%{filter:brightness(1)}}
 #wrap.battleMode #board{border:3px solid #FF00CC!important;box-shadow:0 0 20px #FF00CC,0 0 40px #FF00CC66!important;animation:boardBlink 1.2s infinite}
 @keyframes boardBlink{0%{box-shadow:0 0 15px #FF00CC}50%{box-shadow:0 0 30px #FF00CC,0 0 50px #00E5FF}100%{box-shadow:0 0 15px #FF00CC}}
-#top{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;margin-top:10px}
+#top{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;margin-top:22px;padding-top:6px}
 #top h1{font-size:18px} #top h1 span{color:#ffcc00}
 .pill{background:rgba(255,255,255,.15);padding:5px 9px;border-radius:20px;font-size:11px;border:1px solid #333}
-#topBtns{display:flex;gap:4px}
-.topBtn{background:#222;border:1px solid #555;color:#fff;padding:6px 10px;border-radius:8px;font-size:11px;cursor:pointer;font-weight:bold}
+#topBtns{display:flex;gap:6px}
+.topBtn{background:#222;border:1px solid #555;color:#fff;padding:8px 13px;border-radius:9px;font-size:12px;cursor:pointer;font-weight:bold}
 .topBtn.pause{background:#FFA500;color:#000;border:none}
 .topBtn.logout{background:#ffcc00;border:none}
-.topBtn.menuBtn{background:#ffcc00;color:#000;border:none;font-size:16px;padding:6px 12px}
+.topBtn.menuBtn{background:#ffcc00;color:#000;border:none;font-size:17px;padding:8px 14px}
 #statsBar{display:flex;gap:3px;flex-shrink:0}
 .statBox{flex:1;background:rgba(0,0,0,.45);border-radius:12px;padding:8px 2px;text-align:center;font-size:10px;border:1px solid rgba(255,255,255,.2)}
 .statBox b{display:block;font-size:14px;color:#ffcc00}
@@ -39,11 +35,10 @@ body{color:#fff;font-family:Arial,sans-serif}
 .badge.mahaguru{background:linear-gradient(180deg,#FFD700,#fff,#FFD700);color:#000;border:2px solid #FFD700;box-shadow:0 0 18px #FFD700}
 #scoreBox{text-align:center;flex-shrink:0;line-height:1}
 #scoreBox b{font-size:18px;color:#ffcc00}
-#best{font-size:11px;color:#ddd}
 #battleBanner{display:none;background:linear-gradient(90deg,#ff00cc,#ffcc00,#ff00cc);color:#000;text-align:center;padding:6px;border-radius:10px;font-weight:bold;font-size:12px;flex-shrink:0;animation:glow 1s infinite}
 @keyframes glow{0%{box-shadow:0 0 5px #ff00cc}50%{box-shadow:0 0 14px #ff00cc}100%{box-shadow:0 0 5px #ff00cc}}
-#gameArea{display:flex;gap:6px;align-items:stretch;justify-content:center;width:100%}
-.sideCol{display:flex;flex-direction:column;gap:6px;width:58px;flex-shrink:0}
+#gameArea{display:flex;gap:2px;align-items:stretch;justify-content:center;width:100%}
+.sideCol{display:flex;flex-direction:column;gap:6px;width:48px;flex-shrink:0}
 .sideBtn{flex:1;background:linear-gradient(180deg,#3a3a4a,#222);border:2px solid rgba(255,255,255,.3);color:#fff;border-radius:12px;padding:8px 2px;font-weight:bold;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;line-height:1.1;user-select:none;touch-action:manipulation;text-align:center}
 .sideBtn:active{background:#ffcc00;color:#000}
 .sideBtn.active-bomb{box-shadow:0 0 15px #ffcc00;animation:pulseBtn.6s infinite}
@@ -127,7 +122,6 @@ button:disabled{opacity:.4}
 .levelTable td{ padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.15)}
 .levelTable tr.you{ background:rgba(255,204,0,.25);font-weight:bold}
 .levelTable tr.you td{ color:#ffcc00}
-#wrap{ padding-top: 10px !important; }
 </style>
 </head>
 <body>
@@ -143,7 +137,7 @@ button:disabled{opacity:.4}
  </div>
  <div id="battleBanner">⚔️ BATTLE MODE - <span id="battleSpeedTxt">Speed: SLOW</span> | Alive: <span id="battleAliveTxt">-</span> | <span id="battleTimerTxt">0s</span></div>
  <div id="badgeBar"></div>
- <div id="scoreBox"><b id="scoreTxt">0</b><div id="best">Best Total: <span id="bestTxt">0</span> | Combo: <span id="comboTxt">x1</span></div></div>
+ <div id="scoreBox"><b id="scoreTxt">0</b></div>
  <div id="bombBanner">💣 TAP BOARD TO EXPLODE! Block stopped! <button onclick="cancelBombFlash()">❌ CANCEL</button></div>
  <div id="flashBanner">⚡ TAP ANY ROW! Block stopped! <button onclick="cancelBombFlash()">❌ CANCEL</button></div>
  <div id="gameArea">
@@ -305,7 +299,7 @@ function renderLeaderboardHTML(arr){
   if(myUser){ const mine=arr.find(x=>x.id===myUser.id); if(mine){ const rank=arr.filter(x=>x.score>mine.score).length+1; if(rank>3) html+='<div class="lbSep">— YOUR RANK —</div><div class="lbRow me"><span>'+rank+'. '+getDisplayName(mine.id)+'</span><b>'+mine.score+'</b></div>'; document.getElementById('myRank').textContent='Your Rank: #'+rank+' | Your Total: '+mine.score; }else document.getElementById('myRank').textContent='No score yet! Login with your ID to see your rank.'; }else document.getElementById('myRank').textContent='Login to see your rank!';
   return html;
 }
-function updateTopUI(){ document.getElementById('totalTxt').textContent=totalScore; if(document.getElementById('totalTxt2')) document.getElementById('totalTxt2').textContent=totalScore; document.getElementById('levelScoreTxt').textContent=levelScore; document.getElementById('scoreTxt').textContent=levelScore; document.getElementById('bestTxt').textContent=Math.max(totalScore, parseInt(localStorage.getItem('bb_best')||0)); document.getElementById('myIdPill').textContent=myUser?myUser.id:'-'; document.getElementById('roomTxt').textContent=myRoom||'-'; document.getElementById('loginStatus').textContent=myUser?'Logged in: '+getDisplayName(myUser.id)+' | Lv '+level:'Not logged in'; document.getElementById('spinTxt').textContent=freeSpins; document.getElementById('spinBtnTxt').textContent=freeSpins; document.getElementById('bombTxt').textContent=bombs; document.getElementById('bombBtnTxt').textContent=bombs; document.getElementById('flashTxt').textContent=flash; document.getElementById('flashBtnTxt').textContent=flash; document.getElementById('levelTxt').textContent=level; if(document.getElementById('themeTxt2')) document.getElementById('themeTxt2').textContent=document.getElementById('themeTxt').textContent; if(battleMode){ document.getElementById('battleBanner').style.display='block'; document.getElementById('battleSpeedTxt').textContent='Speed: '+battleSpeedLabel; document.getElementById('battleAliveTxt').textContent=battleAliveCount; document.getElementById('battleTimerTxt').textContent=battleElapsed+'s'; } else document.getElementById('battleBanner').style.display='none'; }
+function updateTopUI(){ document.getElementById('totalTxt').textContent=totalScore; if(document.getElementById('totalTxt2')) document.getElementById('totalTxt2').textContent=totalScore; document.getElementById('levelScoreTxt').textContent=levelScore; document.getElementById('scoreTxt').textContent=levelScore; document.getElementById('myIdPill').textContent=myUser?myUser.id:'-'; document.getElementById('roomTxt').textContent=myRoom||'-'; document.getElementById('loginStatus').textContent=myUser?'Logged in: '+getDisplayName(myUser.id)+' | Lv '+level:'Not logged in'; document.getElementById('spinTxt').textContent=freeSpins; document.getElementById('spinBtnTxt').textContent=freeSpins; document.getElementById('bombTxt').textContent=bombs; document.getElementById('bombBtnTxt').textContent=bombs; document.getElementById('flashTxt').textContent=flash; document.getElementById('flashBtnTxt').textContent=flash; document.getElementById('levelTxt').textContent=level; if(document.getElementById('themeTxt2')) document.getElementById('themeTxt2').textContent=document.getElementById('themeTxt').textContent; if(battleMode){ document.getElementById('battleBanner').style.display='block'; document.getElementById('battleSpeedTxt').textContent='Speed: '+battleSpeedLabel; document.getElementById('battleAliveTxt').textContent=battleAliveCount; document.getElementById('battleTimerTxt').textContent=battleElapsed+'s'; } else document.getElementById('battleBanner').style.display='none'; }
 let openedFromPause=false,spinPaused=false,wasPausedBeforeSpin=false,isExploding=false;
 let battleMode=false,battleStartTime=0,battleElapsed=0,battleTimer=null,battleSpeedLabel='SLOW',battleAliveCount=0,battleSpeed=1200;
 let battleUnsubscribe=null,battleListeningRoom='',countdownInterval=null,countdownToken='',battleCountdownActive=false;
@@ -736,7 +730,7 @@ function awardBattleReward(key){
   localStorage.setItem('bb_battle_rewards',JSON.stringify(claimed));
   freeSpins++;persistSave();return true;
 }
-async function endBattleLocal(winner,key,playersObj){
+function endBattleLocal(winner,key,playersObj){
   const battleKey=key||activeBattleKey||'';
   if(battleKey&&finishedBattleKey===battleKey)return;
   if(battleKey)finishedBattleKey=battleKey;
@@ -762,26 +756,15 @@ async function endBattleLocal(winner,key,playersObj){
   document.getElementById('battleOverReward').textContent=gotReward?'🎁 +1 FREE SPIN DITAMBAH!':(won?'Ganjaran sudah dituntut.':'Cuba lagi untuk menang!');
   document.getElementById('battleOverModal').classList.remove('hidden');
   if(gotReward)showToast('🏆 BATTLE WIN! +1 Free Spin!');
-
-  // AUTO-DELETE ROOM DATA FROM FIREBASE SEBAIK SAHAJA BATTLE TAMAT
-  if(myRoom){
-    const roomCodeToDel=myRoom;
-    try{ await remove(ref(db,'rooms/'+roomCodeToDel)); }catch(e){}
-  }
 }
-window.closeBattleOver=async function(){
+window.closeBattleOver=function(){
   document.getElementById('battleOverModal').classList.add('hidden');
   battleMode=false;battleCountdownActive=false;battlePhase='finished';
   if(battleTimer){clearInterval(battleTimer);battleTimer=null;}
   if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;}
-  if(myRoom){
-    try{ localStorage.removeItem('bb_room'); localStorage.removeItem('bb_room_host'); }catch(e){}
-    myRoom=''; myRoomHost='';
-  }
   stopSuspenseMusic();document.getElementById('wrap').classList.remove('battleMode');
   document.getElementById('battleBanner').style.display='none';
   grid=Array(TOTAL).fill(null);levelScore=0;gameActive=true;newGame();syncOverlayPause();
-  updateTopUI();
 };
 
 function getLevelNeed(lvl){ return 400; }
@@ -790,7 +773,6 @@ function checkLevel(){
   let leveled=false; const prevLevel=level;
   while(levelScore>=getLevelNeed(level)){
     const need=getLevelNeed(level); levelScore-=need; totalScore+=need; level++; leveled=true;
-    // Free spin setiap kenaikan 40 level
     if(level%40===0){ freeSpins++; showToast('🎁 Free Spin Diberikan! Level '+level+'!'); }
   }
   if(leveled){
@@ -806,7 +788,7 @@ function renderHow(){
   document.getElementById('howContent').innerHTML=
     '<div class="howStep"><b>📍 LEVEL & SKOR</b><br>Level: <b>'+level+'</b> / 350 | Skor: <b>'+levelScore+'/'+need+'</b> (Setiap 400 skor naik 1 level).</div>'+
     '<div class="howStep warn"><b>🎁 FREE SPIN & STAGE</b><br>- Free Spin diberikan setiap kenaikan <b>40 level</b>.<br>- Kenaikan Stage setiap <b>50 level</b> (Jumlah 350 level ke Mahaguru).<br>- Skor terkumpul dimasukkan ke Total Score (Top 3 Listed).</div>'+
-    '<div class="howStep"><b>🗺️ ROOM BATTLE</b><br>Host buat room, player request join, Host Accept. Bila penuh, Host tekan START BATTLE! Selepas game tamat, pop-up kedudukan pemenang dipaparkan dan data bilik dipadam secara auto dari Firebase.</div>';
+    '<div class="howStep"><b>🗺️ ROOM BATTLE</b><br>Host buat room, player request join, Host Accept. Bila penuh, Host tekan START BATTLE! Selepas game tamat, pop-up kedudukan pemenang No.1 dan seterusnya akan dipaparkan.</div>';
 }
 window.openHow=function(){ renderHow(); document.getElementById('howModal').classList.remove('hidden'); stopFall(); syncOverlayPause(); };
 window.closeHow=function(){ document.getElementById('howModal').classList.add('hidden'); if(openedFromPause && isPaused){ openedFromPause=false; document.getElementById('pauseModal').classList.remove('hidden'); } syncOverlayPause(); };
@@ -850,7 +832,7 @@ function applyTheme(){
   document.getElementById('board').style.setProperty('--cell',t.cell);
   document.getElementById('themeTxt').textContent=t.name;
   const badges=THEMES.filter(th=>th.min>1&&level>=th.min);
-  document.getElementById('badgeBar').innerHTML=badges.map(b=>'<span class="badge '+(b.badgeClass||'')+'">'+b.badge+'</span>').join('')||'<span style="font-size:10px;color:#aaa">Level 50 to unlock stage badge</span>';
+  document.getElementById('badgeBar').innerHTML=badges.map(b=>'<span class="badge '+(b.badgeClass||'')+'">'+b.badge+'</span>').join('');
 }
 function checkThemeUp(oldLevel){
   const oldTheme=getThemeForLevel(oldLevel),newTheme=getThemeForLevel(level);
@@ -1186,24 +1168,6 @@ document.addEventListener('visibilitychange', ()=>{
 });
 setInterval(()=>{ if(myUser && !battleMode) syncAll(); },10000);
 checkLogin(); updateTopUI(); newGame(); loadLeaderboard(true); startLiveLeaderboard(); scheduleSurpriseSpin();
-
-// Panduan Install iOS Safari
-function checkIOSInstallPrompt() {
-  const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-  const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone);
-  if (isIos && !isInStandaloneMode && !localStorage.getItem('ios_banner_closed')) {
-    showIOSInstallBanner();
-  }
-}
-function showIOSInstallBanner() {
-  const banner = document.createElement('div');
-  banner.style.position = 'fixed'; banner.style.bottom = '0'; banner.style.left = '0'; banner.style.right = '0';
-  banner.style.background = '#1a1a3a'; banner.style.color = '#fff'; banner.style.padding = '14px'; banner.style.textAlign = 'center';
-  banner.style.borderTop = '2px solid #ffcc00'; banner.style.zIndex = '99999'; banner.style.fontSize = '12px';
-  banner.innerHTML = `<b>📱 JADIKAN SEBAGAI APLIKASI iPHONE!</b><br>Tekan butang <b>Share (📤)</b> di Safari bawah, kemudian pilih <b>"Add to Home Screen"</b>.<br><button onclick="localStorage.setItem('ios_banner_closed','true');this.parentElement.remove()" style="margin-top:6px;background:#ffcc00;color:#000;border:none;padding:4px 14px;border-radius:6px;font-weight:bold;">TUTUP</button>`;
-  document.body.appendChild(banner);
-}
-window.addEventListener('load', () => { setTimeout(checkIOSInstallPrompt, 2000); });
 </script>
 <script>
 if ('serviceWorker' in navigator) {
