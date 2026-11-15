@@ -422,7 +422,7 @@ function renderLeaderboardHTML(arr){
 }
 
 /* ==================== DAILY 24-HOUR DIAMOND CLAIM SYSTEM ==================== */
-const DAILY_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const DAILY_COOLDOWN_MS = 24 * 60 * 60 * 1000;
 let lastDailyClaim = getSave().lastDailyClaim || 0;
 
 function formatCooldown(ms){
