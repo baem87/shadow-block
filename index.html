@@ -83,18 +83,19 @@ button:disabled{opacity:.4}
 .lbSep{border-top:1px dashed rgba(255,255,255,.4);margin:6px 0;padding-top:6px;font-size:12px;color:#aaa;text-align:center}
 #footer{text-align:center;font-size:10px;color:#aaa;padding:0;flex-shrink:0;line-height:1.3}
 #footer b{color:#ffcc00}
-#msg,#inviteModal,#loginModal,#roomModal,#surpriseModal,#howModal,#rankModal,#stageModal,#spinModal,#pauseModal,#battleModal,#battleOverModal,#menuModal,#shopModal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:99;padding:14px}
+#msg,#loginModal,#roomModal,#surpriseModal,#howModal,#rankModal,#stageModal,#spinModal,#pauseModal,#battleModal,#battleOverModal,#menuModal,#shopModal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:99;padding:14px}
 .msgBox{background:linear-gradient(180deg,#2a2a3a,#1a1a2a);border:2px solid #ffcc00;padding:18px;border-radius:18px;text-align:center;width:100%;max-width:350px;max-height:92dvh;overflow-y:auto}
 .msgBox input,.msgBox select{width:100%;padding:11px;border-radius:10px;border:1px solid #555;background:#111;color:#fff;margin:8px 0;text-align:center;font-size:15px}
 .menuItem{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.07);border-radius:10px;padding:11px 10px;margin:6px 0;text-align:left;font-size:14px}
 .menuItem b{color:#ffcc00}
-.menuItem button{flex:none;min-width:75px;padding:8px}
+.menuItem button{flex:none;min-width:85px;padding:8px}
 .menuSection{font-size:11px;color:#aaa;margin:12px 0 4px;text-align:left;letter-spacing:1px}
 .shopCard{display:flex;justify-content:space-between;align-items:center;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.35);border-radius:12px;padding:10px 12px;margin:7px 0;text-align:left}
 .shopCard.gold{background:rgba(255,204,0,.1);border-color:rgba(255,204,0,.4)}
+.shopCard.daily{background:rgba(46,213,115,.12);border-color:#2ed573}
 .shopCard b{font-size:14px;display:block;color:#fff}
 .shopCard small{font-size:11px;color:#bbb}
-.shopCard button{flex:none;min-width:85px;padding:9px 8px;border-radius:10px;font-size:12px;border:none;font-weight:bold}
+.shopCard button{flex:none;min-width:90px;padding:9px 8px;border-radius:10px;font-size:11px;border:none;font-weight:bold}
 .billingBadge{display:inline-block;background:rgba(46,213,115,.15);border:1px solid #2ed573;color:#2ed573;font-size:10px;padding:3px 8px;border-radius:20px;margin-top:4px}
 #wheelWrap{position:relative;width:240px;height:240px;margin:12px auto}
 #wheel{width:100%;height:100%;border-radius:50%;border:5px solid #fff;position:relative;overflow:hidden;transition:transform 3s cubic-bezier(.15,.9,.25,1);background:conic-gradient(#ff4757 0 60deg,#ffa502 60deg 120deg,#2ed573 120deg 180deg,#1e90ff 180deg 240deg,#eccc68 240deg 300deg,#ff00cc 300deg 360deg);box-shadow:0 0 25px rgba(255,0,204,.6)}
@@ -145,7 +146,7 @@ button:disabled{opacity:.4}
  </div>
  <div id="battleBanner">⚔️ BATTLE MODE - <span id="battleSpeedTxt">Speed: SLOW</span> | Alive: <span id="battleAliveTxt">-</span> | <span id="battleTimerTxt">0s</span></div>
  <div id="badgeBar"></div>
- <div id="scoreBox" style="display:flex;justify-content:space-around;align-items:center;font-size:11px;color:#ccc"><span>🎨 Theme: <b id="themeTxt" style="font-size:12px;color:#00E5FF">Classic</b></span><span>Skor Semasa: <b id="scoreTxt">0</b></span></div>
+ <div id="scoreBox" style="display:flex;justify-content:space-around;align-items:center;font-size:11px;color:#ccc"><span>🎨 Theme: <b id="themeTxt" style="font-size:12px;color:#00E5FF">Classic</b></span><span>Current Score: <b id="scoreTxt">0</b></span></div>
  <div id="bombBanner">💣 TAP BOARD TO EXPLODE! Block stopped! <button onclick="cancelBombFlash()">❌ CANCEL</button></div>
  <div id="flashBanner">⚡ TAP ANY ROW! Block stopped! <button onclick="cancelBombFlash()">❌ CANCEL</button></div>
  <div id="gameArea">
@@ -172,17 +173,26 @@ button:disabled{opacity:.4}
  <div id="footer">BLOCKBLAST 2026<br><b>Designed and Inspired by ShadowNetwork@Baem</b></div>
 </div>
 
-<!-- SHOP MODAL (GOOGLE PLAY BILLING READY & TUKAR ITEM) -->
+<!-- SHOP MODAL (DAILY CLAIM, GOOGLE PLAY BILLING & ITEM REDEEM) -->
 <div id="shopModal" class="hidden"><div class="msgBox" style="border-color:#00E5FF">
   <h2>💎 DIAMOND SHOP</h2>
   <div class="billingBadge" id="playBillingStatus">🛡️ Google Play Billing Ready</div>
   <div style="background:rgba(0,229,255,.15);border:1px solid #00E5FF;border-radius:12px;padding:10px;margin:8px 0">
-    <span style="font-size:12px;color:#ccc">BAKI DIAMOND ANDA:</span><br>
+    <span style="font-size:12px;color:#ccc">YOUR DIAMOND BALANCE:</span><br>
     <b style="font-size:26px;color:#00E5FF">💎 <span id="shopDiamondTxt">0</span></b>
     <div style="font-size:11px;color:#ffcc00;margin-top:4px">💣 Bomb: <b id="shopBombTxt">0</b> | ⚡ Flash: <b id="shopFlashTxt">0</b> | ⭐ Lv: <b id="shopLevelTxt">1</b></div>
   </div>
 
-  <div class="menuSection" style="color:#00E5FF">— 1. BELI DIAMOND (GOOGLE PLAY) —</div>
+  <div class="menuSection" style="color:#2ed573">— DAILY ONLINE REWARD (24H) —</div>
+  <div class="shopCard daily">
+    <div>
+      <b>🎁 Daily Free Diamond</b>
+      <small id="dailyShopDesc">Claim 💎 +1 Diamond every 24 hours</small>
+    </div>
+    <button id="btnDailyShopClaim" onclick="claimDailyDiamond()" style="background:#2ed573;color:#000">CLAIM +1 💎</button>
+  </div>
+
+  <div class="menuSection" style="color:#00E5FF">— 1. BUY DIAMONDS (GOOGLE PLAY) —</div>
   <div class="shopCard">
     <div>
       <b>💎 5 Diamonds</b>
@@ -205,34 +215,39 @@ button:disabled{opacity:.4}
     <button id="btnBuy_diamond_25" onclick="purchasePlayProduct('diamond_25')" style="background:linear-gradient(90deg,#00E5FF,#00BBF9);color:#000">RM 15.00</button>
   </div>
 
-  <div class="menuSection" style="color:#ffcc00">— 2. TUKAR DIAMOND KEPADA ITEM —</div>
+  <div class="menuSection" style="color:#ffcc00">— 2. EXCHANGE DIAMONDS FOR ITEMS —</div>
   <div class="shopCard gold">
     <div>
       <b>💣 +1 BOMB</b>
-      <small>Letupkan kawasan 3x3</small>
+      <small>Explode a 3x3 area</small>
     </div>
     <button onclick="redeemItem('bomb', 1)" style="background:#ffcc00;color:#000">💎 1</button>
   </div>
   <div class="shopCard gold">
     <div>
       <b>⚡ +1 FLASH</b>
-      <small>Kosongkan 1 baris penuh</small>
+      <small>Clear 1 full row instantly</small>
     </div>
     <button onclick="redeemItem('flash', 2)" style="background:#ffcc00;color:#000">💎 2</button>
   </div>
   <div class="shopCard gold">
     <div>
       <b>⬆️ +1 LEVEL UP</b>
-      <small>Terus naik 1 Level (+400 skor)</small>
+      <small>Advance 1 Level instantly (+400 score)</small>
     </div>
     <button onclick="redeemItem('level', 3)" style="background:linear-gradient(90deg,#FFD700,#FF8C00);color:#000">💎 3</button>
   </div>
 
-  <button onclick="restorePlayPurchases()" style="background:#1b263b;border:1px solid #00E5FF;color:#00E5FF;padding:9px;border-radius:10px;width:100%;margin-top:8px;font-size:11px">🔄 SEMAK / PULIHKAN PEMBELIAN PLAY STORE</button>
-  <button onclick="closeShop()" style="background:#222;border:1px solid #555;padding:11px;border-radius:10px;width:100%;margin-top:6px">✅ TUTUP KEDAI</button>
+  <button onclick="restorePlayPurchases()" style="background:#1b263b;border:1px solid #00E5FF;color:#00E5FF;padding:9px;border-radius:10px;width:100%;margin-top:8px;font-size:11px">🔄 CHECK / RESTORE PLAY STORE PURCHASES</button>
+  <button onclick="closeShop()" style="background:#222;border:1px solid #555;padding:11px;border-radius:10px;width:100%;margin-top:6px">✅ CLOSE SHOP</button>
 </div></div>
 
 <div id="menuModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">☰ MENU</h2>
+ <div class="menuSection">— DAILY REWARD —</div>
+ <div class="menuItem" style="border:1px solid #2ed573;background:rgba(46,213,115,.1)">
+   <span>🎁 Daily Diamond<br><small id="dailyMenuStatus" style="color:#2ed573;font-size:11px">Ready to claim +1 💎</small></span>
+   <button id="btnDailyMenuClaim" onclick="claimDailyDiamond()" style="background:#2ed573;color:#000;border:none">CLAIM 💎</button>
+ </div>
  <div class="menuSection">— GAME INFO —</div>
  <div class="menuItem"><span>🟢 Online Now</span><b id="onlineCount">1</b></div>
  <div class="menuItem"><span>💎 Diamonds</span><span><b id="diamondTxt2" style="color:#00E5FF">0</b> <button onclick="openMenuModal(openShop)" style="background:#00E5FF;color:#000;border:none">SHOP</button></span></div>
@@ -247,42 +262,33 @@ button:disabled{opacity:.4}
  <div class="menuItem"><span>❓ HOW TO PLAY</span><button onclick="openMenuModal(openHow)" style="background:#ffcc00;color:#000;border:none">OPEN</button></div>
  <div class="menuItem"><span>🏆 TOP 3 + MY RANK</span><button onclick="openMenuModal(openRank)" style="background:#FFA500;border:none;color:#000">OPEN</button></div>
  <div class="menuItem"><span>🗺️ LEVEL STAGE</span><button onclick="openMenuModal(openStage)" style="background:linear-gradient(90deg,#FFD700,#FF00CC);border:none;color:#000">OPEN</button></div>
- <div class="menuItem"><span>📤 INVITE</span><button onclick="closeMenu();inviteBattle()" style="background:#2ed573;color:#000;border:none">INVITE</button></div>
  <button onclick="closeMenu()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:10px">✅ CLOSE</button>
 </div></div>
-<div id="inviteModal" class="hidden"><div class="msgBox">
-  <h2>📤 INVITE FRIENDS</h2>
-  <p style="font-size:13px">Copy link ni bagi kat kawan.</p>
-  <input id="inviteLinkInput" readonly>
-  <p id="inviteIdTxt" style="font-size:13px;color:#ffcc00"></p>
-  <button onclick="copyInviteLink()" style="background:#2ed573;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">📋 COPY LINK</button>
-  <button onclick="shareInviteWhatsApp()" style="background:#25D366;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:8px;color:#000">💬 SHARE WHATSAPP</button>
-  <button onclick="closeInvite()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button>
-</div></div>
+
 <div id="toast"><b id="toastTxt">🎁 Free Spin Added!</b></div>
 <div id="spinModal" class="hidden"><div class="msgBox">
   <h2>🎰 SPIN WHEEL!</h2>
-  <p style="font-size:13px">Baki Free Spin: <b id="spinModalCount" style="color:#ffcc00">0</b></p>
+  <p style="font-size:13px">Remaining Free Spins: <b id="spinModalCount" style="color:#ffcc00">0</b></p>
   <div id="wheelWrap"><div id="wheelPointer">⬇️</div><div id="wheel"></div><div id="wheelCenter">🎰</div></div>
   <div id="spinResultBox">
-    <div style="font-size:12px;color:#aaa">🎁 HADIAH DIMENANGI:</div>
+    <div style="font-size:12px;color:#aaa">🎁 PRIZE WON:</div>
     <div id="spinResult" style="font-weight:bold;color:#ffcc00;min-height:24px;font-size:18px"></div>
     <div id="spinSavedTxt" style="font-size:12px;color:#ffcc00"></div>
   </div>
-  <button id="spinGoBtn" onclick="doSpinWheel()" style="background:linear-gradient(90deg,#ffcc00,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000">🎰 SPIN SEKARANG!</button>
+  <button id="spinGoBtn" onclick="doSpinWheel()" style="background:linear-gradient(90deg,#ffcc00,#FFA500);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000">🎰 SPIN NOW!</button>
   <button onclick="closeSpin()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE &amp; RESUME GAME</button>
 </div></div>
 <div id="loginModal"><div class="msgBox">
  <h2>💥 BLOCK BLAST</h2>
- <p style="font-size:13px">Login saves on this phone, or type your ID!</p>
+ <p style="font-size:13px">Login saves on this phone, or enter your ID!</p>
  <div id="autoLoginBox" style="display:none;background:rgba(46,213,115,.15);border:1px solid #ffcc00;border-radius:10px;padding:10px;margin:8px 0"><b>Found saved account!</b><br><span id="autoLoginId" style="color:#ffcc00"></span><br><button onclick="autoLogin()" style="background:#ffcc00;border:none;padding:10px;border-radius:10px;width:100%;font-weight:bold;margin-top:6px;color:#000">✅ LOGIN WITH THIS ID</button></div>
  <p style="font-size:12px;color:#aaa;margin-top:8px">— OR —</p>
  <input id="loginId" placeholder="Enter your ID" style="text-transform:lowercase">
  <button onclick="loginWithId()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">🔑 LOGIN WITH ID</button>
  <p style="font-size:12px;color:#aaa;margin-top:10px">— NEW? REGISTER —</p>
  <input id="regName" placeholder="e.g. baem" autocomplete="off">
- <p style="font-size:11px;color:#aaa;margin-top:2px">Type your name, e.g. <b style="color:#ffcc00">baem</b> - number is auto</p>
- <button onclick="doRegister()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">✅ REGISTER & GET ID</button>
+ <p style="font-size:11px;color:#aaa;margin-top:2px">Type your name, e.g. <b style="color:#ffcc00">baem</b> - number is auto-generated</p>
+ <button onclick="doRegister()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">✅ REGISTER &amp; GET ID</button>
  <p id="regResult" style="margin-top:10px;color:#ffcc00;font-weight:bold;min-height:20px"></p>
  <p style="font-size:10px;color:#666;margin-top:10px">BLOCKBLAST 2026<br>Designed and Inspired by ShadowNetwork@Baem</p>
 </div></div>
@@ -293,19 +299,19 @@ button:disabled{opacity:.4}
 <button onclick="openRankFromPause()" class="pauseBtn" style="background:#FFA500;border:none;color:#000">🏆 TOP 3 + MY RANK</button>
 <button onclick="openStageFromPause()" class="pauseBtn" style="background:linear-gradient(90deg,#FFD700,#FF00CC);border:none;color:#000">🗺️ LEVEL STAGE</button>
 <button onclick="openHowFromPause()" class="pauseBtn" style="background:#ffcc00;color:#000;border:none">❓ HOW TO PLAY</button>
-<button onclick="doLogout()" class="pauseBtn" style="background:#ffcc00;color:#000;border:none">🚪 SAVE & LOGOUT</button>
+<button onclick="doLogout()" class="pauseBtn" style="background:#ffcc00;color:#000;border:none">🚪 SAVE &amp; LOGOUT</button>
 </div></div>
 <div id="roomModal" class="hidden">
   <div class="msgBox">
     <h2>🏠 ROOM BATTLE</h2>
-    <p>Host pilih player &amp; tetapkan capacity room</p>
+    <p>Host selects players &amp; sets room capacity</p>
     <select id="roomSize"><option value="2">2 Players</option><option value="3">3 Players</option><option value="4">4 Players</option></select>
     <button onclick="createRoom()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">➕ CREATE NEW ROOM</button>
     <input id="joinCode" placeholder="Room Code" maxlength="6" style="text-transform:uppercase">
     <button onclick="requestJoinRoom()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">🚪 REQUEST TO JOIN</button>
     <div id="roomInfo" style="margin-top:10px;text-align:left;font-size:13px"></div>
     <div id="roomPlayers" style="margin-top:8px;text-align:left"></div>
-    <button id="btnHostPlay" onclick="hostStartBattle()" style="display:none;background:linear-gradient(90deg,#ffcc00,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000;margin-top:10px">▶ HOST: START BATTLE!</button>
+    <button id="btnHostPlay" onclick="hostStartBattle()" style="display:none;background:linear-gradient(90deg,#ffcc00,#FFA500);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000;margin-top:10px">▶ HOST: START BATTLE!</button>
     <button id="btnHostReset" onclick="hostResetRoom()" style="display:none;background:#ff6b00;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:8px;color:#fff">🔄 HOST: RESET ROOM</button>
     <p id="roomWaitTxt" style="font-size:11px;color:#aaa;margin-top:6px"></p>
     <button onclick="closeRoom()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button>
@@ -314,16 +320,16 @@ button:disabled{opacity:.4}
 </div>
 <div id="battleModal" class="hidden"><div class="msgBox" style="border-color:#ffcc00;background:linear-gradient(180deg,#2a0033,#1a1a2a)"><h2>⚔️ BATTLE START!</h2><p style="font-size:14px">Special Block Blast Battle!</p><p style="font-size:12px;color:#ffcc00">Starts SLOW, gets FASTER every 15 seconds!<br>Last one alive WINS + Free Spin!</p><div id="battleCountdown" style="font-size:42px;font-weight:bold;color:#ffcc00;margin:10px">3</div><div id="battlePlayersList"></div><button onclick="closeBattleModal()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button></div></div>
 <div id="battleOverModal" class="hidden"><div class="msgBox" style="border-color:#ffcc00">
-  <h2 id="battleOverTitle">🏆 KEPUTUSAN BATTLE</h2>
+  <h2 id="battleOverTitle">🏆 BATTLE RESULTS</h2>
   <p id="battleOverDesc" style="font-size:13px;margin:6px 0"></p>
   <div id="battleRankingList" style="margin:10px 0;text-align:left;background:rgba(0,0,0,0.4);border-radius:10px;padding:8px"></div>
   <p id="battleOverReward" style="color:#ffcc00;font-weight:bold;font-size:13px"></p>
-  <button onclick="closeBattleOver()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:10px">✅ KEMBALI KE GAME</button>
+  <button onclick="closeBattleOver()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:10px">✅ BACK TO GAME</button>
 </div></div>
 <div id="howModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">❓ HOW TO PLAY</h2><div id="howContent"></div><button onclick="closeHow()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:10px">✅ GOT IT, LET'S PLAY!</button></div></div>
 <div id="rankModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">🏆 TOP 3 + MY RANK</h2><p style="font-size:11px;color:#aaa;text-align:center">Top 3 only + your rank</p><div id="rankList" style="margin-top:10px"></div><div id="rankMy" style="color:#ffcc00;font-weight:bold;margin-top:10px;text-align:center"></div><button onclick="closeRank()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:10px">CLOSE</button></div></div>
-<div id="stageModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">🗺️ LEVEL STAGE</h2><p style="text-align:center;font-size:12px;color:#aaa">350 Level untuk ke Mahaguru!</p><div style="text-align:center;margin-top:8px"><b id="stageCurrent">You are at Level 1</b><div class="progressBar"><div class="progressFill" id="stageProgress" style="width:0%"></div></div><small id="stageNext"></small></div><div class="stageList" id="stageList"></div><button onclick="closeStage()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:10px">CLOSE</button></div></div>
-<div id="surpriseModal" class="hidden"><div class="msgBox" style="border-color:#ff00cc"><h2 style="font-size:24px;color:#ffcc00">🎰 MISTERY JACKPORT!</h2><p style="font-size:11px;color:#00E5FF;font-weight:bold">PELUANG 10% HADIAH RAWAK!</p><div id="surpriseWheel" style="font-size:50px;margin:10px">🎰</div><div id="surpriseResult" style="font-size:18px;font-weight:bold;color:#ffcc00;min-height:28px"></div><button id="surpriseBtn" onclick="spinSurprise()" style="background:linear-gradient(90deg,#ff00cc,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000">🎰 KLIK UNTUK MISTERY JACKPORT!</button></div></div>
+<div id="stageModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">🗺️ LEVEL STAGE</h2><p style="text-align:center;font-size:12px;color:#aaa">350 Levels to reach Mahaguru!</p><div style="text-align:center;margin-top:8px"><b id="stageCurrent">You are at Level 1</b><div class="progressBar"><div class="progressFill" id="stageProgress" style="width:0%"></div></div><small id="stageNext"></small></div><div class="stageList" id="stageList"></div><button onclick="closeStage()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:10px">CLOSE</button></div></div>
+<div id="surpriseModal" class="hidden"><div class="msgBox" style="border-color:#ff00cc"><h2 style="font-size:24px;color:#ffcc00">🎰 MISTERY JACKPORT!</h2><p style="font-size:11px;color:#00E5FF;font-weight:bold">10% CHANCE FOR RANDOM REWARDS!</p><div id="surpriseWheel" style="font-size:50px;margin:10px">🎰</div><div id="surpriseResult" style="font-size:18px;font-weight:bold;color:#ffcc00;min-height:28px"></div><button id="surpriseBtn" onclick="spinSurprise()" style="background:linear-gradient(90deg,#ff00cc,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000">🎰 TAP FOR MISTERY JACKPORT!</button></div></div>
 <div id="msg" class="hidden"><div class="msgBox"><h2>GAME OVER!</h2><p id="msgDesc"></p><p id="levelUpMsg" style="color:#ffcc00;font-weight:bold"></p><button onclick="closeMsg();newGame()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">▶ PLAY AGAIN</button></div></div>
 
 <script type="module">
@@ -360,7 +366,8 @@ function getSave(){
     flash: saveData.flash||0,
     freeSpins: saveData.freeSpins||0,
     level: saveData.level||1,
-    diamonds: saveData.diamonds||0
+    diamonds: saveData.diamonds||0,
+    lastDailyClaim: saveData.lastDailyClaim||0
   };
 }
 
@@ -371,6 +378,7 @@ function persistSave(){
   saveData.freeSpins=freeSpins;
   saveData.level=level;
   saveData.diamonds=diamonds;
+  saveData.lastDailyClaim=lastDailyClaim;
   localStorage.setItem('bb_save', JSON.stringify(saveData));
   if(myUser) localStorage.setItem('bb_user', JSON.stringify(myUser));
 }
@@ -393,6 +401,7 @@ async function syncAll(){
    flash:flash,
    freeSpins:freeSpins,
    diamonds:diamonds,
+   lastDailyClaim:lastDailyClaim,
    room:myRoom||'global',
    time:Date.now(),
    lastSeen:Date.now()
@@ -411,6 +420,64 @@ function renderLeaderboardHTML(arr){
   if(myUser){ const mine=arr.find(x=>x.id===myUser.id); if(mine){ const rank=arr.filter(x=>x.score>mine.score).length+1; if(rank>3) html+='<div class="lbSep">— YOUR RANK —</div><div class="lbRow me"><span>'+rank+'. '+getDisplayName(mine.id)+'</span><b>'+mine.score+'</b></div>'; document.getElementById('myRank').textContent='Your Rank: #'+rank+' | Your Total: '+mine.score; }else document.getElementById('myRank').textContent='No score yet! Login with your ID to see your rank.'; }else document.getElementById('myRank').textContent='Login to see your rank!';
   return html;
 }
+
+/* ==================== DAILY 24-HOUR DIAMOND CLAIM SYSTEM ==================== */
+const DAILY_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+let lastDailyClaim = getSave().lastDailyClaim || 0;
+
+function formatCooldown(ms){
+  const totalSec = Math.max(0, Math.ceil(ms / 1000));
+  const h = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+  const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+  const s = String(totalSec % 60).padStart(2, '0');
+  return `${h}:${m}:${s}`;
+}
+
+function updateDailyClaimUI(){
+  const now = battleNow();
+  const elapsed = now - lastDailyClaim;
+  const canClaim = elapsed >= DAILY_COOLDOWN_MS;
+  const remain = Math.max(0, DAILY_COOLDOWN_MS - elapsed);
+
+  const btnMenu = document.getElementById('btnDailyMenuClaim');
+  const statusMenu = document.getElementById('dailyMenuStatus');
+  const btnShop = document.getElementById('btnDailyShopClaim');
+  const descShop = document.getElementById('dailyShopDesc');
+
+  if(canClaim){
+    if(btnMenu){ btnMenu.disabled = false; btnMenu.textContent = 'CLAIM +1 💎'; btnMenu.style.background = '#2ed573'; btnMenu.style.color = '#000'; }
+    if(statusMenu){ statusMenu.textContent = 'Ready to claim +1 💎 today!'; statusMenu.style.color = '#2ed573'; }
+    if(btnShop){ btnShop.disabled = false; btnShop.textContent = 'CLAIM +1 💎'; btnShop.style.background = '#2ed573'; btnShop.style.color = '#000'; }
+    if(descShop){ descShop.textContent = 'Available now! Claim 💎 +1 Diamond'; }
+  } else {
+    const timeStr = formatCooldown(remain);
+    if(btnMenu){ btnMenu.disabled = true; btnMenu.textContent = timeStr; btnMenu.style.background = '#444'; btnMenu.style.color = '#ccc'; }
+    if(statusMenu){ statusMenu.textContent = 'Next claim in ' + timeStr; statusMenu.style.color = '#aaa'; }
+    if(btnShop){ btnShop.disabled = true; btnShop.textContent = timeStr; btnShop.style.background = '#444'; btnShop.style.color = '#ccc'; }
+    if(descShop){ descShop.textContent = 'Already claimed today • Next in ' + timeStr; }
+  }
+}
+
+window.claimDailyDiamond = async function(){
+  if(!myUser) return alert('Please login or register an ID first to claim your daily diamond!');
+  const now = battleNow();
+  if(now - lastDailyClaim < DAILY_COOLDOWN_MS){
+    const remain = formatCooldown(DAILY_COOLDOWN_MS - (now - lastDailyClaim));
+    return showToast('⏳ Come back in ' + remain + ' for your next Diamond!');
+  }
+
+  lastDailyClaim = now;
+  diamonds += 1;
+  soundCoin();
+  persistSave();
+  await syncAll();
+  updateTopUI();
+  updateDailyClaimUI();
+  showToast('🎁 Daily Reward Claimed! +1 💎 Diamond!');
+};
+
+setInterval(updateDailyClaimUI, 1000);
+/* ========================================================================== */
 
 function updateTopUI(){
   document.getElementById('totalTxt').textContent=totalScore;
@@ -435,6 +502,7 @@ function updateTopUI(){
   document.getElementById('flashBtnTxt').textContent=flash;
   document.getElementById('levelTxt').textContent=level;
   if(document.getElementById('themeTxt2')) document.getElementById('themeTxt2').textContent=document.getElementById('themeTxt').textContent;
+  updateDailyClaimUI();
   if(battleMode){
     document.getElementById('battleBanner').style.display='block';
     document.getElementById('battleSpeedTxt').textContent='Speed: '+battleSpeedLabel;
@@ -516,7 +584,7 @@ async function grantVerifiedPurchase(sku, purchaseToken, source){
   persistSave();
   await syncAll();
   updateTopUI();
-  showToast('💎 +'+product.diamonds+' Diamonds diterima!');
+  showToast('💎 +'+product.diamonds+' Diamonds credited!');
   return true;
 }
 
@@ -524,11 +592,11 @@ window.onPlayPurchaseSuccess = async function(sku, purchaseToken){
   await grantVerifiedPurchase(sku, purchaseToken, 'android_bridge');
 };
 window.onPlayPurchaseError = function(errMsg){
-  alert('Pembayaran Play Store dibatalkan atau gagal: ' + (errMsg || 'Cancelled'));
+  alert('Play Store payment cancelled or failed: ' + (errMsg || 'Cancelled'));
 };
 
 window.purchasePlayProduct = async function(sku){
-  if(!myUser) return alert('Sila login atau daftar ID terlebih dahulu sebelum membeli Diamond!');
+  if(!myUser) return alert('Please login or register an ID first before buying Diamonds!');
   const product = PLAY_PRODUCTS[sku];
   if(!product) return;
 
@@ -554,7 +622,7 @@ window.purchasePlayProduct = async function(sku){
       return;
     }catch(err){
       if(err.name !== 'AbortError'){
-        alert('Ralat transaksi Google Play: ' + err.message);
+        alert('Google Play transaction error: ' + err.message);
       }
       return;
     }
@@ -566,11 +634,11 @@ window.purchasePlayProduct = async function(sku){
   }
 
   const ok = confirm(
-    '[MOD UJIAN GOOGLE PLAY BILLING]\n\n' +
-    'Produk: 💎 ' + product.diamonds + ' Diamonds\n' +
-    'SKU Play Console: ' + product.sku + '\n' +
-    'Harga: ' + product.defaultPrice + '\n\n' +
-    'Teruskan simulasi pembayaran?'
+    '[GOOGLE PLAY BILLING TEST SANDBOX]\n\n' +
+    'Product: 💎 ' + product.diamonds + ' Diamonds\n' +
+    'Play Console SKU: ' + product.sku + '\n' +
+    'Price: ' + product.defaultPrice + '\n\n' +
+    'Proceed with simulated purchase?'
   );
   if(ok){
     await grantVerifiedPurchase(product.sku, 'sandbox_' + Date.now(), 'web_sandbox');
@@ -590,11 +658,11 @@ window.restorePlayPurchases = async function(silent = false){
         }
       }
       if(!silent){
-        showToast(restored > 0 ? '✅ '+restored+' pembelian berjaya dipulihkan!' : 'Tiada pembelian tertunggak.');
+        showToast(restored > 0 ? '✅ '+restored+' purchase(s) restored!' : 'No pending purchases found.');
       }
       return;
     }catch(e){
-      if(!silent) alert('Gagal menyemak Play Store: ' + e.message);
+      if(!silent) alert('Failed to check Play Store: ' + e.message);
       return;
     }
   }
@@ -602,11 +670,11 @@ window.restorePlayPurchases = async function(silent = false){
     window.AndroidBilling.queryPurchases();
     return;
   }
-  if(!silent) showToast('Semua rekod pembelian anda telah disegerakkan.');
+  if(!silent) showToast('All purchase records are up to date.');
 };
 
 window.openShop=function(){
-  if(battleMode||battleCountdownActive){showToast('Shop tidak tersedia semasa Battle.');return;}
+  if(battleMode||battleCountdownActive){showToast('Shop is unavailable during Battle.');return;}
   if(hasBlockingOverlayExcept('pauseModal') && !document.getElementById('shopModal').classList.contains('hidden')) return;
   updateTopUI();
   document.getElementById('shopModal').classList.remove('hidden');
@@ -630,9 +698,9 @@ window.openShopFromPause=function(){
 };
 
 window.redeemItem=async function(type, cost){
-  if(!myUser) return alert('Sila login atau daftar ID terlebih dahulu!');
+  if(!myUser) return alert('Please login or register an ID first!');
   if(diamonds < cost){
-    alert('Baki Diamond tidak mencukupi! Perlukan 💎 '+cost+' Diamond.\n\nSila beli Diamond dahulu (RM 3.00 = 5 Diamonds).');
+    alert('Insufficient Diamonds! You need 💎 '+cost+' Diamond(s).\n\nClaim your free daily diamond or buy a pack in the Shop (RM 3.00 = 5 Diamonds).');
     return;
   }
 
@@ -641,23 +709,23 @@ window.redeemItem=async function(type, cost){
   if(type === 'bomb'){
     bombs += 1;
     soundCoin();
-    showToast('💣 Berjaya tebus +1 BOMB! (-1 💎)');
+    showToast('💣 Redeemed +1 BOMB! (-1 💎)');
   } else if(type === 'flash'){
     flash += 1;
     soundCoin();
-    showToast('⚡ Berjaya tebus +1 FLASH! (-2 💎)');
+    showToast('⚡ Redeemed +1 FLASH! (-2 💎)');
   } else if(type === 'level'){
     const prevLevel = level;
     level += 1;
     totalScore += 400;
     if(level % 30 === 0){
       freeSpins++;
-      showToast('🎁 Bonus Free Spin Level '+level+'!');
+      showToast('🎁 Bonus Free Spin unlocked at Level '+level+'!');
     }
     soundLevelUp();
     checkThemeUp(prevLevel);
     applyTheme();
-    showToast('⬆️ Tahniah! Naik ke Level '+level+'! (-3 💎)');
+    showToast('⬆️ Congratulations! Leveled up to Lv '+level+'! (-3 💎)');
   }
 
   persistSave();
@@ -673,7 +741,7 @@ let battleUnsubscribe=null,battleListeningRoom='',countdownInterval=null,countdo
 let activeBattleKey='',finishedBattleKey='',battleEliminated=false,battleFinishRequestKey='',battleRoomForSession='',lastBattleScoreWrite=0;
 let firebaseServerOffset=0,overlaySyncTimer=null;
 
-const BLOCKING_OVERLAYS=['loginModal','roomModal','inviteModal','surpriseModal','howModal','rankModal','stageModal','spinModal','pauseModal','battleModal','battleOverModal','menuModal','shopModal','msg'];
+const BLOCKING_OVERLAYS=['loginModal','roomModal','surpriseModal','howModal','rankModal','stageModal','spinModal','pauseModal','battleModal','battleOverModal','menuModal','shopModal','msg'];
 function hasBlockingOverlayExcept(exceptId){ return BLOCKING_OVERLAYS.some(id=>id!==exceptId&&document.getElementById(id)&&!document.getElementById(id).classList.contains('hidden')); }
 function hasBlockingOverlay(){return hasBlockingOverlayExcept('');}
 function gameInputBlocked(){return isPaused||spinPaused||isExploding||hasBlockingOverlay();}
@@ -708,7 +776,7 @@ function checkLogin(){
 window.autoLogin=function(){
   myUser=JSON.parse(localStorage.getItem('bb_user'));
   let s=getSave();
-  totalScore=s.totalScore; bombs=s.bombs; flash=s.flash; freeSpins=s.freeSpins; level=s.level; diamonds=s.diamonds;
+  totalScore=s.totalScore; bombs=s.bombs; flash=s.flash; freeSpins=s.freeSpins; level=s.level; diamonds=s.diamonds; lastDailyClaim=s.lastDailyClaim;
   levelScore=0;
   document.getElementById('loginModal').classList.add('hidden');
   updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle(); syncAll();
@@ -734,7 +802,8 @@ window.loginWithId=async function(){
       freeSpins=t.freeSpins||0;
       level=t.level||1;
       diamonds=t.diamonds||0;
-      saveData={totalScore,bombs,flash,freeSpins,level,diamonds};
+      lastDailyClaim=Math.max(lastDailyClaim, t.lastDailyClaim||0);
+      saveData={totalScore,bombs,flash,freeSpins,level,diamonds,lastDailyClaim};
       localStorage.setItem('bb_save', JSON.stringify(saveData));
     } else {
       totalScore=0; diamonds=0;
@@ -756,7 +825,7 @@ window.doRegister=async function(){
     myUser={name,id,created:Date.now(),globalNum:next};
     localStorage.setItem('bb_user',JSON.stringify(myUser));
     await set(ref(db,'users/'+id.replace(/[^a-z0-9-]/g,'_')),myUser);
-    totalScore=0; levelScore=0; bombs=0; flash=0; freeSpins=0; level=1; diamonds=0;
+    totalScore=0; levelScore=0; bombs=0; flash=0; freeSpins=0; level=1; diamonds=0; lastDailyClaim=0;
     persistSave();
     document.getElementById('regResult').textContent='Your ID: '+id;
     document.getElementById('regResult').style.color='#2ed573';
@@ -773,15 +842,10 @@ window.doRegister=async function(){
 };
 
 async function goOnline(){ if(!myUser) return; try{ let key=myUser.id.replace(/[^a-z0-9-]/g,'_'); let onlineRef=ref(db,'online/'+key); await set(onlineRef,{id:myUser.id, name:myUser.name, time:Date.now(), room:myRoom||''}); onDisconnect(onlineRef).remove(); setInterval(()=>set(onlineRef,{id:myUser.id, name:myUser.name, time:Date.now(), room:myRoom||''}),30000); }catch(e){} }
-onValue(ref(db,'.info/serverTimeOffset'),s=>{firebaseServerOffset=Number(s.val())||0;});
+onValue(ref(db,'.info/serverTimeOffset'),s=>{firebaseServerOffset=Number(s.val())||0; updateDailyClaimUI();});
 onValue(ref(db,'online'), s=>{ let v=s.val()||{}; document.getElementById('onlineCount').textContent=Object.keys(v).length; });
 
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){ navigator.serviceWorker.register(new URL('./service-worker.js',location.href)).catch(error=>console.warn('Service worker registration failed',error)); }
-
-window.inviteBattle=function(){ const url=location.href.split('#')[0].split('?')[0]; document.getElementById('inviteLinkInput').value=url; document.getElementById('inviteIdTxt').textContent=myUser?'Your ID: '+myUser.id+(myRoom?' | Room: '+myRoom:''):'Login dulu untuk dapat ID'; document.getElementById('inviteModal').classList.remove('hidden'); stopFall(); syncOverlayPause(); };
-window.closeInvite=function(){ document.getElementById('inviteModal').classList.add('hidden'); syncOverlayPause(); };
-window.copyInviteLink=async function(){ const text=document.getElementById('inviteLinkInput').value+(myUser?' | My ID: '+myUser.id:'')+(myRoom?' | Room: '+myRoom:''); try{ if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); } else throw new Error('no clipboard'); showToast('✅ Link Copied!'); }catch(e){ const inp=document.getElementById('inviteLinkInput'); inp.select(); inp.setSelectionRange(0,99999); try{ document.execCommand('copy'); showToast('✅ Link Copied!'); } catch(e2){ prompt('Copy link ni manually:', text); } } };
-window.shareInviteWhatsApp=function(){ const text=encodeURIComponent('Play BLOCK BLAST 2026! My ID: '+(myUser?myUser.id:'')+' Room: '+(myRoom||'-')+' Link: '+document.getElementById('inviteLinkInput').value); window.open('https://wa.me/?text='+text,'_blank'); };
 
 let isPaused=false;
 window.togglePause=function(){
@@ -791,7 +855,7 @@ window.togglePause=function(){
   if(isPaused){
     stopFall();
     document.getElementById('pauseModal').classList.remove('hidden');
-    document.getElementById('pauseInfo').textContent='Level '+level+' | Skor: '+levelScore+' | Total: '+totalScore+' | 💎 '+diamonds+' | BOMB: '+bombs+' | FLASH: '+flash;
+    document.getElementById('pauseInfo').textContent='Level '+level+' | Score: '+levelScore+' | Total: '+totalScore+' | 💎 '+diamonds+' | BOMB: '+bombs+' | FLASH: '+flash;
   }else{
     openedFromPause=false;
     document.getElementById('pauseModal').classList.add('hidden');
@@ -850,7 +914,7 @@ window.createRoom=async function(){
   setupRoomDisconnect(code); setupRoomHeartbeat(code);
   document.getElementById('roomTxt').textContent=code;
   updateRoomInfo(); listenBattle();
-  alert('Room '+code+' created! You are HOST.');
+  alert('Room '+code+' created! You are the HOST.');
 };
 
 window.requestJoinRoom=async function(){
@@ -858,7 +922,7 @@ window.requestJoinRoom=async function(){
   if(battleMode||battleCountdownActive)return showToast('Finish the current battle first.');
   const code=String(document.getElementById('joinCode').value||'').trim().toUpperCase();
   if(!code)return alert('Enter room code!');
-  if(myRoom===code){ showToast('Kau dah cuba request / dalam room ni!'); updateRoomInfo(); return; }
+  if(myRoom===code){ showToast('You already requested or joined this room!'); updateRoomInfo(); return; }
   if(myRoom&&myRoom!==code)await leaveRoom();
 
   const roomRef=ref(db,'rooms/'+code);
@@ -870,7 +934,7 @@ window.requestJoinRoom=async function(){
   const key=userKey();
 
   await set(ref(db,'rooms/'+code+'/requests/'+key),{name:myUser.name, id:myUser.id, score:totalScore, lastSeen:Date.now()});
-  alert('Permohonan dihantar kepada Host. Sila tunggu Host accept!');
+  alert('Join request sent to Host. Please wait for Host approval!');
   myRoom=code;
   localStorage.setItem('bb_room',code);
   updateRoomInfo(); listenBattle();
@@ -886,7 +950,7 @@ window.hostApprovePlayer=async function(playerKey){
   if(!req)return;
 
   const currentPlayers=Object.keys(room.players||{}).length;
-  if(currentPlayers>=Number(room.max||2))return alert('Room sudah penuh mengikut kapasiti!');
+  if(currentPlayers>=Number(room.max||2))return alert('Room has reached full capacity!');
 
   await set(ref(db,'rooms/'+myRoom+'/players/'+playerKey),{
     name:req.name, id:req.id, score:req.score, alive:true, lastSeen:Date.now()
@@ -905,7 +969,7 @@ window.hostResetRoom=async function(){
     let snap=await get(ref(db,'rooms/'+myRoom));
     if(!snap.exists()) return;
     let room=snap.val();
-    if(room.host!==myUser.id){ showToast('Only HOST boleh reset!'); return; }
+    if(room.host!==myUser.id){ showToast('Only the HOST can reset the room!'); return; }
     let upd={status:'waiting',requests:null};
     for(let k in (room.players||{})){
       if(k!==userKey()) upd['players/'+k]=null;
@@ -914,7 +978,7 @@ window.hostResetRoom=async function(){
     await update(ref(db,'rooms/'+myRoom), upd);
     showToast('✅ Room RESET!');
     updateRoomInfo();
-  }catch(e){ showToast('Reset gagal: '+e.message); }
+  }catch(e){ showToast('Reset failed: '+e.message); }
 };
 
 window.leaveRoom=async function(){
@@ -961,7 +1025,7 @@ window.leaveRoom=async function(){
 async function updateRoomInfo(roomCode,myRoomData){
   const code=roomCode||myRoom;
   if(!code){
-    document.getElementById('roomInfo').innerHTML='Not in room';
+    document.getElementById('roomInfo').innerHTML='Not in a room';
     document.getElementById('roomPlayers').innerHTML='';
     document.getElementById('btnHostPlay').style.display='none';
     document.getElementById('btnHostReset').style.display='none';
@@ -982,13 +1046,13 @@ async function updateRoomInfo(roomCode,myRoomData){
 
   document.getElementById('roomInfo').innerHTML='<b>Room: '+room.code+' ('+active+'/'+room.max+') | Host: '+getDisplayName(room.host)+' | Status: '+room.status+'</b>';
   
-  let html = '<b>Players dalam Room:</b>';
+  let html = '<b>Players in Room:</b>';
   allPlayers.forEach(([k,p])=>{
     html += '<div class="battlePlayer alive '+(p.id===myUser?.id?'me':'')+'"><span>'+getDisplayName(p.id)+(p.id===room.host?' 👑 HOST':'')+'</span><b>🟢 READY</b></div>';
   });
 
   if(isHost && requests.length > 0){
-    html += '<br><b style="color:#ffcc00">Permohonan Masuk (Requests):</b>';
+    html += '<br><b style="color:#ffcc00">Join Requests:</b>';
     requests.forEach(([k,p])=>{
       html += '<div class="battlePlayer" style="background:rgba(255,165,0,0.2)"><span>'+getDisplayName(p.id)+'</span><div><button onclick="hostApprovePlayer(\''+k+'\')" style="background:#2ed573;color:#000;padding:4px 8px;margin-right:4px">Accept</button><button onclick="hostRejectPlayer(\''+k+'\')" style="background:#ff4757;padding:4px 8px">Reject</button></div></div>';
     });
@@ -1003,7 +1067,7 @@ async function updateRoomInfo(roomCode,myRoomData){
       document.getElementById('btnHostPlay').style.display='block';
       document.getElementById('btnHostPlay').disabled=!isFull;
       document.getElementById('btnHostPlay').textContent=isFull?'▶ HOST: START BATTLE!':'⏳ WAITING '+active+'/'+room.max+' - Need '+Math.max(0,room.max-active)+' more';
-      document.getElementById('roomWaitTxt').textContent=isFull?'Room penuh! Host boleh tekan START!':'Sila Accept player sampai penuh.';
+      document.getElementById('roomWaitTxt').textContent=isFull?'Room is full! Host can press START!':'Approve players until the room is full.';
     }else{
       document.getElementById('btnHostPlay').style.display='none';
       document.getElementById('roomWaitTxt').textContent='Battle status: '+room.status;
@@ -1013,7 +1077,7 @@ async function updateRoomInfo(roomCode,myRoomData){
     document.getElementById('btnHostReset').style.display='none';
     if(room.status==='waiting') {
       const inside=room.players && room.players[userKey()];
-      document.getElementById('roomWaitTxt').textContent = inside ? 'Berjaya masuk room! Menunggu Host tekan START...' : 'Permohonan dihantar. Menunggu Host accept...';
+      document.getElementById('roomWaitTxt').textContent = inside ? 'Joined room! Waiting for Host to press START...' : 'Request sent. Waiting for Host approval...';
     } else {
       document.getElementById('roomWaitTxt').textContent='Battle status: '+room.status;
     }
@@ -1031,7 +1095,7 @@ window.hostStartBattle=async function(){
     let players=room.players||{};
     let active=Object.values(players).filter(p=>p&&p.alive!==false).length;
     if(room.host!==myUser.id) return alert('Only HOST can start!');
-    if(active<Number(room.max||0)) return alert('Room belum penuh! Active: '+active+'/'+room.max);
+    if(active<Number(room.max||0)) return alert('Room is not full yet! Active: '+active+'/'+room.max);
     
     let upd={status:'playing',battleStart:startAt,winner:null};
     for(let k in players){
@@ -1208,8 +1272,8 @@ function endBattleLocal(winner,key,playersObj){
 
   const won=winner&&myUser&&winner===myUser.id;
   const gotReward=won?awardBattleReward(battleKey):false;
-  document.getElementById('battleOverTitle').textContent=won?'🏆 YOU WIN BATTLE!':'⚔️ BATTLE OVER!';
-  document.getElementById('battleOverDesc').textContent='Pemenang: '+(winner?getDisplayName(winner):'Tiada')+'. Tempoh: '+battleElapsed+'s';
+  document.getElementById('battleOverTitle').textContent=won?'🏆 YOU WIN THE BATTLE!':'⚔️ BATTLE OVER!';
+  document.getElementById('battleOverDesc').textContent='Winner: '+(winner?getDisplayName(winner):'None')+'. Duration: '+battleElapsed+'s';
   
   let pArr=playersObj?Object.values(playersObj):[];
   pArr.sort((a,b)=>(b.score||0)-(a.score||0));
@@ -1217,8 +1281,8 @@ function endBattleLocal(winner,key,playersObj){
     let medal=idx===0?'🥇':idx===1?'🥈':idx===2?'🥉':'👤';
     return '<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.1)"><span>'+medal+' '+(idx+1)+'. '+getDisplayName(p.id)+'</span><b>'+(p.score||0)+' pts</b></div>';
   }).join('');
-  document.getElementById('battleRankingList').innerHTML=rankHtml||'<span>Tiada rekod pemain</span>';
-  document.getElementById('battleOverReward').textContent=gotReward?'🎁 +1 FREE SPIN DITAMBAH!':(won?'Ganjaran sudah dituntut.':'Cuba lagi untuk menang!');
+  document.getElementById('battleRankingList').innerHTML=rankHtml||'<span>No player records</span>';
+  document.getElementById('battleOverReward').textContent=gotReward?'🎁 +1 FREE SPIN ADDED!':(won?'Reward already claimed.':'Try again to win!');
   document.getElementById('battleOverModal').classList.remove('hidden');
   if(gotReward)showToast('🏆 BATTLE WIN! +1 Free Spin!');
 }
@@ -1238,7 +1302,7 @@ function checkLevel(){
   let leveled=false; const prevLevel=level;
   while(levelScore>=getLevelNeed(level)){
     const need=getLevelNeed(level); levelScore-=need; totalScore+=need; level++; leveled=true;
-    if(level%30===0){ freeSpins++; showToast('🎁 Free Spin Diberikan! Level '+level+'!'); }
+    if(level%30===0){ freeSpins++; showToast('🎁 Free Spin Awarded! Level '+level+'!'); }
   }
   if(leveled){
     soundLevelUp(); checkThemeUp(prevLevel);
@@ -1251,9 +1315,9 @@ function checkLevel(){
 function renderHow(){
   const need=getLevelNeed(level);
   document.getElementById('howContent').innerHTML=
-    '<div class="howStep"><b>📍 LEVEL & SKOR</b><br>Level: <b>'+level+'</b> / 350 | Skor: <b>'+levelScore+'/'+need+'</b> (Setiap 400 skor naik 1 level).</div>'+
-    '<div class="howStep warn"><b>💎 DIAMOND SHOP</b><br>- <b>RM 3.00 = 5 Diamonds</b><br>- 💣 1 Bomb = 1 Diamond<br>- ⚡ 1 Flash = 2 Diamonds<br>- ⬆️ 1 Level Up = 3 Diamonds</div>'+
-    '<div class="howStep"><b>🎰 FREE SPIN & MISTERY JACKPORT</b><br>- Free Spin percuma setiap kenaikan <b>30 level</b>.<br>- <b>Mistery Jackport</b> berpeluang muncul <b>10%</b> dengan hadiah rawak: 💎 2 Diamond, 💎 1 Diamond, 💣 1x/2x Bomb, ⚡ 1x/2x Flash & 🎁 2x Spin!</div>';
+    '<div class="howStep"><b>📍 LEVEL &amp; SCORE</b><br>Level: <b>'+level+'</b> / 350 | Score: <b>'+levelScore+'/'+need+'</b> (Every 400 points advances 1 level).</div>'+
+    '<div class="howStep warn"><b>💎 DIAMOND SHOP &amp; DAILY CLAIM</b><br>- Claim <b>💎 +1 Free Diamond</b> every <b>24 hours</b> when online!<br>- Top-up Pack: <b>RM 3.00 = 5 Diamonds</b><br>- 💣 1 Bomb = 1 Diamond<br>- ⚡ 1 Flash = 2 Diamonds<br>- ⬆️ 1 Level Up = 3 Diamonds</div>'+
+    '<div class="howStep"><b>🎰 FREE SPIN &amp; MISTERY JACKPORT</b><br>- Earn 1 Free Spin every <b>30 levels</b>.<br>- <b>Mistery Jackport</b> has a <b>10%</b> chance to appear with random prizes: 💎 2 Diamonds, 💎 1 Diamond, 💣 1x/2x Bomb, ⚡ 1x/2x Flash &amp; 🎁 2x Spins!</div>';
 }
 window.openHow=function(){ renderHow(); document.getElementById('howModal').classList.remove('hidden'); stopFall(); syncOverlayPause(); };
 window.closeHow=function(){ document.getElementById('howModal').classList.add('hidden'); if(openedFromPause && isPaused){ openedFromPause=false; document.getElementById('pauseModal').classList.remove('hidden'); } syncOverlayPause(); };
@@ -1303,7 +1367,7 @@ function checkThemeUp(oldLevel){
   const oldTheme=getThemeForLevel(oldLevel),newTheme=getThemeForLevel(level);
   if(newTheme.min!==oldTheme.min&&newTheme.min>1){
     soundLevelUp();
-    alert('🎉 STAGE NAIK! Selamat datang ke tahap '+newTheme.name+'\n🏅 Badge: '+newTheme.badge);
+    alert('🎉 STAGE UP! Welcome to stage '+newTheme.name+'\n🏅 Badge: '+newTheme.badge);
   }
 }
 window.openStage=function(){
@@ -1313,11 +1377,11 @@ window.openStage=function(){
   document.getElementById('stageProgress').style.width=pct+'%';
   document.getElementById('stageCurrent').textContent='You are at Level '+level+' / 350 - '+getThemeForLevel(level).name;
   const next=THEMES.find(th=>th.min>level);
-  document.getElementById('stageNext').textContent=next?(next.min-level)+' more levels to stage '+next.name:'ANDA DI PUNCAK MAHAGURU (350 LEVEL)!';
+  document.getElementById('stageNext').textContent=next?(next.min-level)+' more levels to stage '+next.name:'YOU HAVE REACHED THE PINNACLE OF MAHAGURU (350 LEVELS)!';
   document.getElementById('stageList').innerHTML=THEMES.map(th=>{
     const idx=THEMES.indexOf(th),nextLevel=THEMES[idx+1]?.min||350;
     const cls=level>=th.min?(level<nextLevel?'current':'unlocked'):'';
-    const status=cls==='current'?'📍 STAGE SEMASA':cls==='unlocked'?'✅ SELESAI':'🔒 LOCK - Level '+th.min;
+    const status=cls==='current'?'📍 CURRENT STAGE':cls==='unlocked'?'✅ COMPLETED':'🔒 LOCKED - Level '+th.min;
     return '<div class="stageItem '+cls+'"><div style="font-size:24px;min-width:32px;text-align:center">'+th.icon+'</div><div><b>Level '+th.min+' - '+th.name+'</b><br><small>'+th.desc+'</small><br><small>'+(th.badge?'🏅 '+th.badge+' | ':'')+status+'</small></div></div>';
   }).join('');
 };
@@ -1327,13 +1391,13 @@ const PRIZES=[ {label:"💣 BOMB x1", type:"bomb", val:1}, {label:"🎁 FREE SPI
 let spinning=false;
 window.openSpin=function(){
   if(battleMode||battleCountdownActive){showToast('Spin is unavailable during Battle.');return;}
-  if(freeSpins<=0){alert('Tiada baki Free Spin! Anda akan dapat percuma setiap kenaikan 30 level.');return;}
+  if(freeSpins<=0){alert('No Free Spins remaining! You earn 1 free spin every 30 levels.');return;}
   wasPausedBeforeSpin=isPaused; spinPaused=true; stopFall();
   document.getElementById('spinModal').classList.remove('hidden');
   document.getElementById('spinModalCount').textContent=freeSpins;
   document.getElementById('spinResultBox').classList.remove('show');
   document.getElementById('spinResult').textContent=''; document.getElementById('spinSavedTxt').textContent='';
-  document.getElementById('spinGoBtn').disabled=false; document.getElementById('spinGoBtn').textContent='🎰 SPIN SEKARANG!';
+  document.getElementById('spinGoBtn').disabled=false; document.getElementById('spinGoBtn').textContent='🎰 SPIN NOW!';
   document.getElementById('wheel').style.transform='rotate(0deg)';
 };
 window.closeSpin=function(){
@@ -1358,25 +1422,25 @@ window.doSpinWheel=function(){
     if(p.type==='spin') freeSpins+=p.val;
     document.getElementById('spinResultBox').classList.add('show');
     document.getElementById('spinResult').textContent=p.label;
-    document.getElementById('spinSavedTxt').textContent='✅ Berjaya Disimpan! BOMB:'+bombs+' | FLASH:'+flash+' | SPIN:'+freeSpins;
+    document.getElementById('spinSavedTxt').textContent='✅ Saved! BOMB:'+bombs+' | FLASH:'+flash+' | SPIN:'+freeSpins;
     persistSave(); syncAll(); updateTopUI();
     document.getElementById('spinModalCount').textContent=freeSpins;
     spinning=false;
-    document.getElementById('spinGoBtn').textContent=freeSpins>0?'🎰 SPIN LAGI? ('+freeSpins+' baki)':'Tiada baki spin';
+    document.getElementById('spinGoBtn').textContent=freeSpins>0?'🎰 SPIN AGAIN? ('+freeSpins+' left)':'No spins left';
     document.getElementById('spinGoBtn').disabled=freeSpins<=0;
   },3200);
 };
 
-/* ==================== MISTERY JACKPORT (PELUANG 10% UNTUK SEMUA HADIAH) ==================== */
+/* ==================== MISTERY JACKPORT (10% CHANCE FOR ALL REWARDS) ==================== */
 let surpriseSpinning=false;
 const MISTERY_JACKPORT_PRIZES = [
-  { emoji: '💎', msg: 'JACKPOT! +2 Diamonds dimasukkan!', apply: () => { diamonds += 2; soundCoin(); } },
-  { emoji: '💎', msg: 'Tahniah! +1 Diamond dimasukkan!', apply: () => { diamonds += 1; soundCoin(); } },
-  { emoji: '💣', msg: 'Bonus! +1x BOMB dimasukkan!', apply: () => { bombs += 1; soundLevelUp(); } },
-  { emoji: '💣', msg: 'Bonus! +2x BOMB dimasukkan!', apply: () => { bombs += 2; soundLevelUp(); } },
-  { emoji: '⚡', msg: 'Bonus! +1x FLASH dimasukkan!', apply: () => { flash += 1; soundLevelUp(); } },
-  { emoji: '⚡', msg: 'Bonus! +2x FLASH dimasukkan!', apply: () => { flash += 2; soundLevelUp(); } },
-  { emoji: '🎁', msg: 'Bonus! +2x SPIN dimasukkan!', apply: () => { freeSpins += 2; soundLevelUp(); } }
+  { emoji: '💎', msg: 'JACKPOT! +2 Diamonds added!', apply: () => { diamonds += 2; soundCoin(); } },
+  { emoji: '💎', msg: 'Congratulations! +1 Diamond added!', apply: () => { diamonds += 1; soundCoin(); } },
+  { emoji: '💣', msg: 'Bonus! +1x BOMB added!', apply: () => { bombs += 1; soundLevelUp(); } },
+  { emoji: '💣', msg: 'Bonus! +2x BOMB added!', apply: () => { bombs += 2; soundLevelUp(); } },
+  { emoji: '⚡', msg: 'Bonus! +1x FLASH added!', apply: () => { flash += 1; soundLevelUp(); } },
+  { emoji: '⚡', msg: 'Bonus! +2x FLASH added!', apply: () => { flash += 2; soundLevelUp(); } },
+  { emoji: '🎁', msg: 'Bonus! +2x SPIN added!', apply: () => { freeSpins += 2; soundLevelUp(); } }
 ];
 
 function scheduleSurpriseSpin(){
@@ -1385,8 +1449,8 @@ function scheduleSurpriseSpin(){
       soundSurprise();
       document.getElementById('surpriseWheel').textContent='🎰';
       document.getElementById('surpriseModal').classList.remove('hidden');
-      document.getElementById('surpriseResult').textContent='Mistery Jackport Muncul!';
-      document.getElementById('surpriseBtn').textContent='🎰 TEKAN UNTUK MISTERY JACKPORT!';
+      document.getElementById('surpriseResult').textContent='Mistery Jackport Appeared!';
+      document.getElementById('surpriseBtn').textContent='🎰 TAP FOR MISTERY JACKPORT!';
       document.getElementById('surpriseBtn').disabled=false;
     }
     scheduleSurpriseSpin();
@@ -1397,13 +1461,13 @@ window.spinSurprise=function(){
   if(surpriseSpinning) return;
   surpriseSpinning=true;
   const btn=document.getElementById('surpriseBtn');
-  btn.disabled=true; btn.textContent='Membuka Mistery Jackport...';
+  btn.disabled=true; btn.textContent='Opening Mistery Jackport...';
   setTimeout(()=>{
     const prize = MISTERY_JACKPORT_PRIZES[Math.floor(Math.random() * MISTERY_JACKPORT_PRIZES.length)];
     prize.apply();
     document.getElementById('surpriseWheel').textContent=prize.emoji;
     document.getElementById('surpriseResult').textContent=prize.msg;
-    btn.textContent='✅ TERUSKAN PERMAINAN'; btn.disabled=false;
+    btn.textContent='✅ CONTINUE GAME'; btn.disabled=false;
     btn.onclick=()=>{
       document.getElementById('surpriseModal').classList.add('hidden');
       surpriseSpinning=false;
@@ -1413,7 +1477,7 @@ window.spinSurprise=function(){
     persistSave(); syncAll(); updateTopUI();
   },1000);
 };
-/* ============================================================================================== */
+/* ======================================================================================= */
 
 const COLS=8, ROWS=14, TOTAL=COLS*ROWS;
 const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[0,1]],[[0,0],[1,0],[2,0]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[1,1],[2,1]],[[0,0],[0,1],[1,1],[1,2]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]]];
@@ -1538,7 +1602,7 @@ function gameOver(){
   gameActive=false; stopFall();
   if(battleMode){ battleEliminate('game over'); return; }
   soundLose();
-  document.getElementById('msgDesc').textContent='GAME OVER! Skor Terkumpul: '+levelScore+' | Jumlah Total: '+totalScore+' | Level: '+level;
+  document.getElementById('msgDesc').textContent='GAME OVER! Level Score: '+levelScore+' | Total Score: '+totalScore+' | Level: '+level;
   document.getElementById('msg').classList.remove('hidden');
   persistSave(); syncAll();
 }
@@ -1561,27 +1625,27 @@ window.useBomb=function(){
   if(battleMode||battleCountdownActive||gameInputBlocked())return;
   if(isExploding)return;
   if(bombs<=0){
-    if(confirm('Tiada BOMB! Mahu beli di Diamond Shop? (1 Bomb = 1 💎)')) openShop();
+    if(confirm('Out of BOMBS! Buy in Diamond Shop? (1 Bomb = 1 💎)')) openShop();
     return;
   }
   if(bombMode){cancelBombFlash();return;}
   flashMode=false; bombMode=true; stopFall();
   document.getElementById('flashBanner').style.display='none'; document.getElementById('bombBanner').style.display='block';
   document.getElementById('bombSideBtn').classList.add('active-bomb'); document.getElementById('flashSideBtn').classList.remove('active-flash');
-  showToast('💣 Pilih kawasan 3x3 pada papan!'); renderBoard();
+  showToast('💣 Tap a 3x3 area on the board!'); renderBoard();
 };
 window.useFlash=function(){
   if(battleMode||battleCountdownActive||gameInputBlocked())return;
   if(isExploding)return;
   if(flash<=0){
-    if(confirm('Tiada FLASH! Mahu beli di Diamond Shop? (1 Flash = 2 💎)')) openShop();
+    if(confirm('Out of FLASH! Buy in Diamond Shop? (1 Flash = 2 💎)')) openShop();
     return;
   }
   if(flashMode){cancelBombFlash();return;}
   bombMode=false; flashMode=true; stopFall();
   document.getElementById('bombBanner').style.display='none'; document.getElementById('flashBanner').style.display='block';
   document.getElementById('flashSideBtn').classList.add('active-flash'); document.getElementById('bombSideBtn').classList.remove('active-bomb');
-  showToast('⚡ Pilih baris untuk di-zap!'); renderBoard();
+  showToast('⚡ Tap any row to zap!'); renderBoard();
 };
 function doBomb(idx){
   if(!bombMode||isExploding||gameInputBlocked()||battleMode)return;
@@ -1593,7 +1657,7 @@ function doBomb(idx){
   setTimeout(()=>{
     for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const x=cx+dx, y=cy+dy; if(x>=0&&x<COLS&&y>=0&&y<ROWS) grid[y*COLS+x]=null;}
     bombs--; levelScore+=150; totalScore+=150; clearBombFlashUI(); isExploding=false; checkLines(); checkLevel();
-    renderBoard(); persistSave(); syncAll(); showToast('💥 BOOM! +150 mata');
+    renderBoard(); persistSave(); syncAll(); showToast('💥 BOOM! +150 pts');
     if(curBlock&&!gameLoopBlocked()) startFall();
   },600);
 }
@@ -1607,7 +1671,7 @@ function doFlash(idx){
     for(let x=0;x<COLS;x++) grid[row*COLS+x]=null;
     flash--; levelScore+=200; totalScore+=200; clearBombFlashUI(); isExploding=false; checkLines();
     if(!battleMode) checkLevel();
-    renderBoard(); persistSave(); syncAll(); showToast('⚡ Zap! +200 mata');
+    renderBoard(); persistSave(); syncAll(); showToast('⚡ Zap! +200 pts');
     if(curBlock&&!gameLoopBlocked()) startFall();
   },600);
 }
