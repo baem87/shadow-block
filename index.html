@@ -22,13 +22,15 @@ body{color:#fff;font-family:Arial,sans-serif}
 #topBtns{display:flex;gap:6px}
 .topBtn{background:#222;border:1px solid #555;color:#fff;padding:8px 13px;border-radius:9px;font-size:12px;cursor:pointer;font-weight:bold}
 .topBtn.pause{background:#FFA500;color:#000;border:none}
-.topBtn.logout{background:#ffcc00;border:none}
+.topBtn.logout{background:#ffcc00;color:#000;border:none}
 .topBtn.menuBtn{background:#ffcc00;color:#000;border:none;font-size:17px;padding:8px 14px}
 #statsBar{display:flex;gap:3px;flex-shrink:0}
 .statBox{flex:1;background:rgba(0,0,0,.45);border-radius:12px;padding:8px 2px;text-align:center;font-size:10px;border:1px solid rgba(255,255,255,.2)}
 .statBox b{display:block;font-size:14px;color:#ffcc00}
 .statBox.total{background:linear-gradient(180deg,rgba(255,204,0,.25),rgba(0,0,0,.45));border-color:#ffcc00}
-.statBox.total b{color:#FFE600;font-size:22px!important}
+.statBox.total b{color:#FFE600;font-size:20px!important}
+.statBox.diamond{background:linear-gradient(180deg,rgba(0,229,255,.25),rgba(0,0,0,.45));border-color:#00E5FF;cursor:pointer}
+.statBox.diamond b{color:#00E5FF;font-size:16px!important}
 #badgeBar{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;min-height:22px}
 .badge{background:linear-gradient(180deg,#FFD700,#FFA500);color:#000;font-size:10px;font-weight:bold;padding:3px 8px;border-radius:20px}
 .badge.sifu{background:linear-gradient(180deg,#FF3D00,#FFD600);color:#000;border:2px solid #fff}
@@ -81,13 +83,19 @@ button:disabled{opacity:.4}
 .lbSep{border-top:1px dashed rgba(255,255,255,.4);margin:6px 0;padding-top:6px;font-size:12px;color:#aaa;text-align:center}
 #footer{text-align:center;font-size:10px;color:#aaa;padding:0;flex-shrink:0;line-height:1.3}
 #footer b{color:#ffcc00}
-#msg,#inviteModal,#loginModal,#roomModal,#surpriseModal,#howModal,#rankModal,#stageModal,#spinModal,#pauseModal,#battleModal,#battleOverModal,#menuModal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:99;padding:14px}
+#msg,#inviteModal,#loginModal,#roomModal,#surpriseModal,#howModal,#rankModal,#stageModal,#spinModal,#pauseModal,#battleModal,#battleOverModal,#menuModal,#shopModal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:99;padding:14px}
 .msgBox{background:linear-gradient(180deg,#2a2a3a,#1a1a2a);border:2px solid #ffcc00;padding:18px;border-radius:18px;text-align:center;width:100%;max-width:350px;max-height:92dvh;overflow-y:auto}
 .msgBox input,.msgBox select{width:100%;padding:11px;border-radius:10px;border:1px solid #555;background:#111;color:#fff;margin:8px 0;text-align:center;font-size:15px}
 .menuItem{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.07);border-radius:10px;padding:11px 10px;margin:6px 0;text-align:left;font-size:14px}
 .menuItem b{color:#ffcc00}
-.menuItem button{flex:none;min-width:70px;padding:8px}
+.menuItem button{flex:none;min-width:75px;padding:8px}
 .menuSection{font-size:11px;color:#aaa;margin:12px 0 4px;text-align:left;letter-spacing:1px}
+.shopCard{display:flex;justify-content:space-between;align-items:center;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.35);border-radius:12px;padding:10px 12px;margin:7px 0;text-align:left}
+.shopCard.gold{background:rgba(255,204,0,.1);border-color:rgba(255,204,0,.4)}
+.shopCard b{font-size:14px;display:block;color:#fff}
+.shopCard small{font-size:11px;color:#bbb}
+.shopCard button{flex:none;min-width:85px;padding:9px 8px;border-radius:10px;font-size:12px;border:none;font-weight:bold}
+.billingBadge{display:inline-block;background:rgba(46,213,115,.15);border:1px solid #2ed573;color:#2ed573;font-size:10px;padding:3px 8px;border-radius:20px;margin-top:4px}
 #wheelWrap{position:relative;width:240px;height:240px;margin:12px auto}
 #wheel{width:100%;height:100%;border-radius:50%;border:5px solid #fff;position:relative;overflow:hidden;transition:transform 3s cubic-bezier(.15,.9,.25,1);background:conic-gradient(#ff4757 0 60deg,#ffa502 60deg 120deg,#2ed573 120deg 180deg,#1e90ff 180deg 240deg,#eccc68 240deg 300deg,#ff00cc 300deg 360deg);box-shadow:0 0 25px rgba(255,0,204,.6)}
 #wheelCenter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;z-index:2;border:3px solid #ffcc00;color:#000;font-weight:bold}
@@ -125,19 +133,19 @@ button:disabled{opacity:.4}
 </style>
 </head>
 <body>
-<div id="epicBar">🎵 🎁 SURPRISE SPIN! 🎵</div>
+<div id="epicBar">🎵 🎰 MISTERY JACKPORT! 🎵</div>
 <div id="wrap">
  <div id="top"><h1>💥 BLOCK <span>BLAST</span></h1><div id="topBtns"><button onclick="openMenu()" class="topBtn menuBtn">☰</button><button onclick="togglePause()" class="topBtn pause">⏸ PAUSE</button><button onclick="doLogout()" class="topBtn logout">🚪 LOGOUT</button></div></div>
  <div style="display:flex;justify-content:space-between;font-size:11px"><span class="pill" id="myIdPill">-</span><span class="pill" id="loginStatus">Not logged in</span></div>
  <div id="statsBar">
- <div class="statBox total"><span>🏆 TOTAL SCORE</span><b id="totalTxt">0</b></div>
- <div class="statBox"><span>⭐ This Level Score</span><b id="levelScoreTxt">0</b></div>
+ <div class="statBox total"><span>🏆 TOTAL</span><b id="totalTxt">0</b></div>
+ <div class="statBox"><span>⭐ Level Score</span><b id="levelScoreTxt">0</b></div>
  <div class="statBox"><span>⭐ Level</span><b id="levelTxt">1</b></div>
- <div class="statBox"><span>🎨 Theme</span><b id="themeTxt">Classic</b></div>
+ <div class="statBox diamond" onclick="openShop()"><span>💎 DIAMOND</span><b id="diamondTxt">0</b></div>
  </div>
  <div id="battleBanner">⚔️ BATTLE MODE - <span id="battleSpeedTxt">Speed: SLOW</span> | Alive: <span id="battleAliveTxt">-</span> | <span id="battleTimerTxt">0s</span></div>
  <div id="badgeBar"></div>
- <div id="scoreBox"><b id="scoreTxt">0</b></div>
+ <div id="scoreBox" style="display:flex;justify-content:space-around;align-items:center;font-size:11px;color:#ccc"><span>🎨 Theme: <b id="themeTxt" style="font-size:12px;color:#00E5FF">Classic</b></span><span>Skor Semasa: <b id="scoreTxt">0</b></span></div>
  <div id="bombBanner">💣 TAP BOARD TO EXPLODE! Block stopped! <button onclick="cancelBombFlash()">❌ CANCEL</button></div>
  <div id="flashBanner">⚡ TAP ANY ROW! Block stopped! <button onclick="cancelBombFlash()">❌ CANCEL</button></div>
  <div id="gameArea">
@@ -157,28 +165,89 @@ button:disabled{opacity:.4}
  <div id="trayLabel">Block falls by itself - move the falling block!</div>
  <div id="btnRow">
  <button onclick="newGame()">🔄 NEW</button>
- <button style="background:linear-gradient(180deg,#ffcc00,#ffcc00);border:none" onclick="openRoom()">🏠 ROOM</button>
+ <button style="background:linear-gradient(180deg,#00E5FF,#0077B6);color:#000;border:none" onclick="openShop()">💎 SHOP</button>
+ <button style="background:linear-gradient(180deg,#ffcc00,#FFA500);color:#000;border:none" onclick="openRoom()">🏠 ROOM</button>
  </div>
  <div id="leaderboard"><div style="display:flex;justify-content:space-between;align-items:center"><b>🏆 TOP 3 - TOP SCORE</b><span id="lbLive">🟢 LIVE</span></div><div id="lbList">Loading...</div><div id="myRank" style="color:#ffcc00;font-weight:bold;margin-top:4px;font-size:14px"></div><button onclick="loadLeaderboard(true)" style="background:#222;border:1px solid #555;padding:6px;border-radius:8px;width:100%;margin-top:6px;font-size:11px">🔄 REFRESH TOP SCORE</button></div>
  <div id="footer">BLOCKBLAST 2026<br><b>Designed and Inspired by ShadowNetwork@Baem</b></div>
 </div>
+
+<!-- SHOP MODAL (GOOGLE PLAY BILLING READY & TUKAR ITEM) -->
+<div id="shopModal" class="hidden"><div class="msgBox" style="border-color:#00E5FF">
+  <h2>💎 DIAMOND SHOP</h2>
+  <div class="billingBadge" id="playBillingStatus">🛡️ Google Play Billing Ready</div>
+  <div style="background:rgba(0,229,255,.15);border:1px solid #00E5FF;border-radius:12px;padding:10px;margin:8px 0">
+    <span style="font-size:12px;color:#ccc">BAKI DIAMOND ANDA:</span><br>
+    <b style="font-size:26px;color:#00E5FF">💎 <span id="shopDiamondTxt">0</span></b>
+    <div style="font-size:11px;color:#ffcc00;margin-top:4px">💣 Bomb: <b id="shopBombTxt">0</b> | ⚡ Flash: <b id="shopFlashTxt">0</b> | ⭐ Lv: <b id="shopLevelTxt">1</b></div>
+  </div>
+
+  <div class="menuSection" style="color:#00E5FF">— 1. BELI DIAMOND (GOOGLE PLAY) —</div>
+  <div class="shopCard">
+    <div>
+      <b>💎 5 Diamonds</b>
+      <small>SKU: diamond_5 • RM 3.00</small>
+    </div>
+    <button id="btnBuy_diamond_5" onclick="purchasePlayProduct('diamond_5')" style="background:linear-gradient(90deg,#00E5FF,#00BBF9);color:#000">RM 3.00</button>
+  </div>
+  <div class="shopCard">
+    <div>
+      <b>💎 10 Diamonds</b>
+      <small>SKU: diamond_10 • RM 6.00</small>
+    </div>
+    <button id="btnBuy_diamond_10" onclick="purchasePlayProduct('diamond_10')" style="background:linear-gradient(90deg,#00E5FF,#00BBF9);color:#000">RM 6.00</button>
+  </div>
+  <div class="shopCard">
+    <div>
+      <b>💎 25 Diamonds</b>
+      <small>SKU: diamond_25 • RM 15.00</small>
+    </div>
+    <button id="btnBuy_diamond_25" onclick="purchasePlayProduct('diamond_25')" style="background:linear-gradient(90deg,#00E5FF,#00BBF9);color:#000">RM 15.00</button>
+  </div>
+
+  <div class="menuSection" style="color:#ffcc00">— 2. TUKAR DIAMOND KEPADA ITEM —</div>
+  <div class="shopCard gold">
+    <div>
+      <b>💣 +1 BOMB</b>
+      <small>Letupkan kawasan 3x3</small>
+    </div>
+    <button onclick="redeemItem('bomb', 1)" style="background:#ffcc00;color:#000">💎 1</button>
+  </div>
+  <div class="shopCard gold">
+    <div>
+      <b>⚡ +1 FLASH</b>
+      <small>Kosongkan 1 baris penuh</small>
+    </div>
+    <button onclick="redeemItem('flash', 2)" style="background:#ffcc00;color:#000">💎 2</button>
+  </div>
+  <div class="shopCard gold">
+    <div>
+      <b>⬆️ +1 LEVEL UP</b>
+      <small>Terus naik 1 Level (+400 skor)</small>
+    </div>
+    <button onclick="redeemItem('level', 3)" style="background:linear-gradient(90deg,#FFD700,#FF8C00);color:#000">💎 3</button>
+  </div>
+
+  <button onclick="restorePlayPurchases()" style="background:#1b263b;border:1px solid #00E5FF;color:#00E5FF;padding:9px;border-radius:10px;width:100%;margin-top:8px;font-size:11px">🔄 SEMAK / PULIHKAN PEMBELIAN PLAY STORE</button>
+  <button onclick="closeShop()" style="background:#222;border:1px solid #555;padding:11px;border-radius:10px;width:100%;margin-top:6px">✅ TUTUP KEDAI</button>
+</div></div>
+
 <div id="menuModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">☰ MENU</h2>
  <div class="menuSection">— GAME INFO —</div>
  <div class="menuItem"><span>🟢 Online Now</span><b id="onlineCount">1</b></div>
- <div class="menuItem"><span>🏠 Room</span><span><b id="roomTxt">-</b> <button onclick="openMenuModal(openRoom)" style="background:#ffcc00;border:none">OPEN</button></span></div>
+ <div class="menuItem"><span>💎 Diamonds</span><span><b id="diamondTxt2" style="color:#00E5FF">0</b> <button onclick="openMenuModal(openShop)" style="background:#00E5FF;color:#000;border:none">SHOP</button></span></div>
+ <div class="menuItem"><span>🏠 Room</span><span><b id="roomTxt">-</b> <button onclick="openMenuModal(openRoom)" style="background:#ffcc00;color:#000;border:none">OPEN</button></span></div>
  <div class="menuItem"><span>🎨 Theme</span><b id="themeTxt2">Classic</b></div>
  <div class="menuItem"><span>🏆 Total Score</span><b id="totalTxt2">0</b></div>
  <div class="menuSection">— POWER-UPS —</div>
- <div class="menuItem"><span>💣 BOMB</span><span><b id="bombTxt">0</b> <button onclick="closeMenu();useBomb()" style="background:#ffcc00;border:none">USE</button></span></div>
- <div class="menuItem"><span>⚡ FLASH</span><span><b id="flashTxt">0</b> <button onclick="closeMenu();useFlash()" style="background:#ffcc00;border:none">USE</button></span></div>
- <div class="menuItem"><span>🎁 SPIN</span><span><b id="spinTxt">0</b> <button onclick="openMenuModal(openSpin)" style="background:#ffcc00;border:none">SPIN</button></span></div>
+ <div class="menuItem"><span>💣 BOMB</span><span><b id="bombTxt">0</b> <button onclick="closeMenu();useBomb()" style="background:#ffcc00;color:#000;border:none">USE</button></span></div>
+ <div class="menuItem"><span>⚡ FLASH</span><span><b id="flashTxt">0</b> <button onclick="closeMenu();useFlash()" style="background:#ffcc00;color:#000;border:none">USE</button></span></div>
+ <div class="menuItem"><span>🎁 SPIN</span><span><b id="spinTxt">0</b> <button onclick="openMenuModal(openSpin)" style="background:#ffcc00;color:#000;border:none">SPIN</button></span></div>
  <div class="menuSection">— MORE —</div>
- <div class="menuItem"><span>❓ HOW TO PLAY</span><button onclick="openMenuModal(openHow)" style="background:#ffcc00;border:none">OPEN</button></div>
+ <div class="menuItem"><span>❓ HOW TO PLAY</span><button onclick="openMenuModal(openHow)" style="background:#ffcc00;color:#000;border:none">OPEN</button></div>
  <div class="menuItem"><span>🏆 TOP 3 + MY RANK</span><button onclick="openMenuModal(openRank)" style="background:#FFA500;border:none;color:#000">OPEN</button></div>
  <div class="menuItem"><span>🗺️ LEVEL STAGE</span><button onclick="openMenuModal(openStage)" style="background:linear-gradient(90deg,#FFD700,#FF00CC);border:none;color:#000">OPEN</button></div>
-  <div class="menuItem"><span>📱 INSTALL APP</span><button id="installAppBtn" onclick="installApp()" style="background:#00E5FF;color:#000;border:none">INSTALL</button></div>
-  <div style="font-size:11px;color:#aaa;text-align:center;padding:2px 6px">Install and sharing require a public HTTPS hosted URL.</div>
-  <div class="menuItem"><span>📤 INVITE</span><button onclick="closeMenu();inviteBattle()" style="background:#2ed573;border:none">INVITE</button></div>
+ <div class="menuItem"><span>📤 INVITE</span><button onclick="closeMenu();inviteBattle()" style="background:#2ed573;color:#000;border:none">INVITE</button></div>
  <button onclick="closeMenu()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:10px">✅ CLOSE</button>
 </div></div>
 <div id="inviteModal" class="hidden"><div class="msgBox">
@@ -186,7 +255,7 @@ button:disabled{opacity:.4}
   <p style="font-size:13px">Copy link ni bagi kat kawan.</p>
   <input id="inviteLinkInput" readonly>
   <p id="inviteIdTxt" style="font-size:13px;color:#ffcc00"></p>
-  <button onclick="copyInviteLink()" style="background:#2ed573;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">📋 COPY LINK</button>
+  <button onclick="copyInviteLink()" style="background:#2ed573;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">📋 COPY LINK</button>
   <button onclick="shareInviteWhatsApp()" style="background:#25D366;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:8px;color:#000">💬 SHARE WHATSAPP</button>
   <button onclick="closeInvite()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button>
 </div></div>
@@ -209,7 +278,7 @@ button:disabled{opacity:.4}
  <div id="autoLoginBox" style="display:none;background:rgba(46,213,115,.15);border:1px solid #ffcc00;border-radius:10px;padding:10px;margin:8px 0"><b>Found saved account!</b><br><span id="autoLoginId" style="color:#ffcc00"></span><br><button onclick="autoLogin()" style="background:#ffcc00;border:none;padding:10px;border-radius:10px;width:100%;font-weight:bold;margin-top:6px;color:#000">✅ LOGIN WITH THIS ID</button></div>
  <p style="font-size:12px;color:#aaa;margin-top:8px">— OR —</p>
  <input id="loginId" placeholder="Enter your ID" style="text-transform:lowercase">
- <button onclick="loginWithId()" style="background:#ffcc00;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">🔑 LOGIN WITH ID</button>
+ <button onclick="loginWithId()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">🔑 LOGIN WITH ID</button>
  <p style="font-size:12px;color:#aaa;margin-top:10px">— NEW? REGISTER —</p>
  <input id="regName" placeholder="e.g. baem" autocomplete="off">
  <p style="font-size:11px;color:#aaa;margin-top:2px">Type your name, e.g. <b style="color:#ffcc00">baem</b> - number is auto</p>
@@ -219,30 +288,31 @@ button:disabled{opacity:.4}
 </div></div>
 <div id="pauseModal" class="hidden"><div class="msgBox"><h2>⏸ PAUSE</h2><p>Game paused. Block stopped.</p><p style="font-size:13px;color:#ffcc00" id="pauseInfo"></p>
 <button onclick="togglePause()" class="pauseBtn" style="background:#ffcc00;color:#000;border:none">▶ RESUME</button>
+<button onclick="openShopFromPause()" class="pauseBtn" style="background:#00E5FF;color:#000;border:none">💎 DIAMOND SHOP</button>
 <button onclick="openMenuFromPause()" class="pauseBtn" style="background:#ffcc00;color:#000;border:none">☰ OPEN MENU</button>
 <button onclick="openRankFromPause()" class="pauseBtn" style="background:#FFA500;border:none;color:#000">🏆 TOP 3 + MY RANK</button>
 <button onclick="openStageFromPause()" class="pauseBtn" style="background:linear-gradient(90deg,#FFD700,#FF00CC);border:none;color:#000">🗺️ LEVEL STAGE</button>
-<button onclick="openHowFromPause()" class="pauseBtn" style="background:#ffcc00;border:none">❓ HOW TO PLAY</button>
-<button onclick="doLogout()" class="pauseBtn" style="background:#ffcc00;border:none">🚪 SAVE & LOGOUT</button>
+<button onclick="openHowFromPause()" class="pauseBtn" style="background:#ffcc00;color:#000;border:none">❓ HOW TO PLAY</button>
+<button onclick="doLogout()" class="pauseBtn" style="background:#ffcc00;color:#000;border:none">🚪 SAVE & LOGOUT</button>
 </div></div>
 <div id="roomModal" class="hidden">
   <div class="msgBox">
     <h2>🏠 ROOM BATTLE</h2>
     <p>Host pilih player &amp; tetapkan capacity room</p>
     <select id="roomSize"><option value="2">2 Players</option><option value="3">3 Players</option><option value="4">4 Players</option></select>
-    <button onclick="createRoom()" style="background:#ffcc00;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">➕ CREATE NEW ROOM</button>
+    <button onclick="createRoom()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">➕ CREATE NEW ROOM</button>
     <input id="joinCode" placeholder="Room Code" maxlength="6" style="text-transform:uppercase">
-    <button onclick="requestJoinRoom()" style="background:#ffcc00;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">🚪 REQUEST TO JOIN</button>
+    <button onclick="requestJoinRoom()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">🚪 REQUEST TO JOIN</button>
     <div id="roomInfo" style="margin-top:10px;text-align:left;font-size:13px"></div>
     <div id="roomPlayers" style="margin-top:8px;text-align:left"></div>
     <button id="btnHostPlay" onclick="hostStartBattle()" style="display:none;background:linear-gradient(90deg,#ffcc00,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000;margin-top:10px">▶ HOST: START BATTLE!</button>
     <button id="btnHostReset" onclick="hostResetRoom()" style="display:none;background:#ff6b00;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:8px;color:#fff">🔄 HOST: RESET ROOM</button>
     <p id="roomWaitTxt" style="font-size:11px;color:#aaa;margin-top:6px"></p>
     <button onclick="closeRoom()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button>
-    <button onclick="leaveRoom()" style="background:#ffcc00;border:none;padding:10px;border-radius:10px;width:100%;margin-top:6px">❌ LEAVE ROOM</button>
+    <button onclick="leaveRoom()" style="background:#ff4757;color:#fff;border:none;padding:10px;border-radius:10px;width:100%;margin-top:6px">❌ LEAVE ROOM</button>
   </div>
 </div>
-<div id="battleModal" class="hidden"><div class="msgBox" style="border-color:#ffcc00;background:linear-gradient(180deg,#ffcc00,#ffcc00)"><h2>⚔️ BATTLE START!</h2><p style="font-size:14px">Special Block Blast Battle!</p><p style="font-size:12px;color:#ffcc00">Starts SLOW, gets FASTER every 15 seconds!<br>Last one alive WINS + Free Spin!</p><div id="battleCountdown" style="font-size:42px;font-weight:bold;color:#ffcc00;margin:10px">3</div><div id="battlePlayersList"></div><button onclick="closeBattleModal()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button></div></div>
+<div id="battleModal" class="hidden"><div class="msgBox" style="border-color:#ffcc00;background:linear-gradient(180deg,#2a0033,#1a1a2a)"><h2>⚔️ BATTLE START!</h2><p style="font-size:14px">Special Block Blast Battle!</p><p style="font-size:12px;color:#ffcc00">Starts SLOW, gets FASTER every 15 seconds!<br>Last one alive WINS + Free Spin!</p><div id="battleCountdown" style="font-size:42px;font-weight:bold;color:#ffcc00;margin:10px">3</div><div id="battlePlayersList"></div><button onclick="closeBattleModal()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:8px">CLOSE</button></div></div>
 <div id="battleOverModal" class="hidden"><div class="msgBox" style="border-color:#ffcc00">
   <h2 id="battleOverTitle">🏆 KEPUTUSAN BATTLE</h2>
   <p id="battleOverDesc" style="font-size:13px;margin:6px 0"></p>
@@ -253,14 +323,16 @@ button:disabled{opacity:.4}
 <div id="howModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">❓ HOW TO PLAY</h2><div id="howContent"></div><button onclick="closeHow()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold;margin-top:10px">✅ GOT IT, LET'S PLAY!</button></div></div>
 <div id="rankModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">🏆 TOP 3 + MY RANK</h2><p style="font-size:11px;color:#aaa;text-align:center">Top 3 only + your rank</p><div id="rankList" style="margin-top:10px"></div><div id="rankMy" style="color:#ffcc00;font-weight:bold;margin-top:10px;text-align:center"></div><button onclick="closeRank()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:10px">CLOSE</button></div></div>
 <div id="stageModal" class="hidden"><div class="msgBox" style="text-align:left"><h2 style="text-align:center">🗺️ LEVEL STAGE</h2><p style="text-align:center;font-size:12px;color:#aaa">350 Level untuk ke Mahaguru!</p><div style="text-align:center;margin-top:8px"><b id="stageCurrent">You are at Level 1</b><div class="progressBar"><div class="progressFill" id="stageProgress" style="width:0%"></div></div><small id="stageNext"></small></div><div class="stageList" id="stageList"></div><button onclick="closeStage()" style="background:#222;border:1px solid #555;padding:10px;border-radius:10px;width:100%;margin-top:10px">CLOSE</button></div></div>
-<div id="surpriseModal" class="hidden"><div class="msgBox"><h2 style="font-size:26px">🎰 SURPRISE SPIN!</h2><p style="font-size:11px;color:#ffcc00;font-weight:bold">JACKPOT PANTAS!</p><div id="surpriseWheel" style="font-size:50px;margin:10px">🎰</div><div id="surpriseResult" style="font-size:18px;font-weight:bold;color:#ffcc00;min-height:28px"></div><button id="surpriseBtn" onclick="spinSurprise()" style="background:linear-gradient(90deg,#ffcc00,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000">🎰 KLIK UNTUK SPIN!</button></div></div>
+<div id="surpriseModal" class="hidden"><div class="msgBox" style="border-color:#ff00cc"><h2 style="font-size:24px;color:#ffcc00">🎰 MISTERY JACKPORT!</h2><p style="font-size:11px;color:#00E5FF;font-weight:bold">PELUANG 10% HADIAH RAWAK!</p><div id="surpriseWheel" style="font-size:50px;margin:10px">🎰</div><div id="surpriseResult" style="font-size:18px;font-weight:bold;color:#ffcc00;min-height:28px"></div><button id="surpriseBtn" onclick="spinSurprise()" style="background:linear-gradient(90deg,#ff00cc,#ffcc00);border:none;padding:14px;border-radius:12px;width:100%;font-weight:bold;font-size:16px;color:#000">🎰 KLIK UNTUK MISTERY JACKPORT!</button></div></div>
 <div id="msg" class="hidden"><div class="msgBox"><h2>GAME OVER!</h2><p id="msgDesc"></p><p id="levelUpMsg" style="color:#ffcc00;font-weight:bold"></p><button onclick="closeMsg();newGame()" style="background:#ffcc00;color:#000;border:none;padding:12px;border-radius:10px;width:100%;font-weight:bold">▶ PLAY AGAIN</button></div></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, get, query, orderByChild, limitToLast, onValue, update, onDisconnect, runTransaction, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 const firebaseConfig = { apiKey: "AIzaSyBeen0199XOEHELRY8LKjbf3clvc9c7UxA", authDomain: "shadow-blast.firebaseapp.com", databaseURL: "https://shadow-blast-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "shadow-blast", storageBucket: "shadow-blast.firebasestorage.app", messagingSenderId: "642271317286", appId: "1:642271317286:web:91420d6429e6059fec05e7" };
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+
 let audioCtx=null, epicPlaying=false, suspenseInterval=null, suspensePlaying=false;
 function getAudio(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); return audioCtx; }
 function playTone(f,d,ty='sine',v=0.2,slide=null,delay=0){ try{ let ctx=getAudio(); setTimeout(()=>{ let o=ctx.createOscillator(), g=ctx.createGain(); o.type=ty; o.frequency.setValueAtTime(f, ctx.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(slide, ctx.currentTime+d); g.gain.setValueAtTime(v, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime+d); o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+d); },delay); }catch(e){} }
@@ -268,18 +340,41 @@ function soundBlast(){ playTone(150,0.3,'sawtooth',0.25,40); playTone(800,0.15,'
 function soundLose(){ playTone(400,0.3,'sine',0.25,300); playTone(300,0.3,'sine',0.25,200,300); playTone(200,0.5,'sine',0.25,100,600); }
 function soundLevelUp(){ [523,659,784,1046].forEach((n,i)=>playTone(n,0.2,'square',0.15,n,i*120)); }
 function soundSurprise(){ [600,800,1000,1200,1500,2000].forEach((n,i)=>playTone(n,0.15,'square',0.15,n,i*100)); }
+function soundCoin(){ [987,1318].forEach((n,i)=>playTone(n,0.18,'sine',0.2,n,i*90)); }
 function playEpic(){ if(epicPlaying) return; epicPlaying=true; document.getElementById('epicBar').style.display='block'; let notes=[523,659,784,1046,784,1046,1318,1568,2093]; notes.forEach((n,i)=>{ playTone(n,0.35,'sawtooth',0.12,n*1.02,i*250); }); setTimeout(()=>{ epicPlaying=false; document.getElementById('epicBar').style.display='none'; },5000); }
 function startSuspenseMusic(){ if(suspensePlaying) return; suspensePlaying=true; let beat=0; suspenseInterval=setInterval(()=>{ if(!suspensePlaying) return; beat++; let speed=battleMode?battleSpeed:1200; let vol=speed<=500?0.35:0.22; playTone(55,0.25,'sawtooth',vol,40); playTone(110,0.15,'sine',vol*0.8,80,80); if(beat%4===0) playTone(220,0.12,'square',0.08,180); },400); }
 function stopSuspenseMusic(){ suspensePlaying=false; if(suspenseInterval){ clearInterval(suspenseInterval); suspenseInterval=null; } playTone(200,0.6,'sawtooth',0.25,50); }
 function showToast(msg){ let t=document.getElementById('toast'); document.getElementById('toastTxt').textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 function getDisplayName(id){ if(!id) return 'GUEST'; let n=String(id).replace(/^blast-/i,'').replace(/-\d+$/,''); if(!n) return String(id); return n.charAt(0).toUpperCase()+n.slice(1); }
 function getFallSpeed(lvl){ if(lvl>=300) return 380; if(lvl>=200) return 450; if(lvl>=100) return 550; if(lvl>=50) return 650; return 800; }
+
 let myUser = JSON.parse(localStorage.getItem('bb_user')||'null');
 let myRoom = localStorage.getItem('bb_room')||'';
 let myRoomHost = localStorage.getItem('bb_room_host')||'';
 let saveData = JSON.parse(localStorage.getItem('bb_save')||'{}');
-function getSave(){ return { totalScore: saveData.totalScore||0, bombs: saveData.bombs||0, flash: saveData.flash||0, freeSpins: saveData.freeSpins||0, level: saveData.level||1 }; }
-function persistSave(){ saveData.totalScore=totalScore; saveData.bombs=bombs; saveData.flash=flash; saveData.freeSpins=freeSpins; saveData.level=level; localStorage.setItem('bb_save', JSON.stringify(saveData)); if(myUser) localStorage.setItem('bb_user', JSON.stringify(myUser)); }
+
+function getSave(){
+  return {
+    totalScore: saveData.totalScore||0,
+    bombs: saveData.bombs||0,
+    flash: saveData.flash||0,
+    freeSpins: saveData.freeSpins||0,
+    level: saveData.level||1,
+    diamonds: saveData.diamonds||0
+  };
+}
+
+function persistSave(){
+  saveData.totalScore=totalScore;
+  saveData.bombs=bombs;
+  saveData.flash=flash;
+  saveData.freeSpins=freeSpins;
+  saveData.level=level;
+  saveData.diamonds=diamonds;
+  localStorage.setItem('bb_save', JSON.stringify(saveData));
+  if(myUser) localStorage.setItem('bb_user', JSON.stringify(myUser));
+}
+
 function userKey(){ return myUser ? myUser.id.replace(/[^a-z0-9-]/g,'_') : ''; }
 function isValidId(id){ return id && typeof id==='string' && id.startsWith('blast-') && id.length>8; }
 function isGhostPlayer(p){ return !p || !p.lastSeen || (Date.now()-p.lastSeen>30000); }
@@ -288,8 +383,25 @@ async function syncAll(){
  if(!myUser) return;
  persistSave();
  const key=userKey();
- const payload={ id:myUser.id, name:myUser.name, totalScore:totalScore, score:totalScore, level:level, bombs:bombs, flash:flash, freeSpins:freeSpins, room:myRoom||'global', time:Date.now(), lastSeen:Date.now() };
- try{ await update(ref(db,'users/'+key), payload); await set(ref(db,'totals/'+key), payload); await set(ref(db,'leaderboard/'+key), payload); }catch(e){ console.warn('syncAll failed', e); }
+ const payload={
+   id:myUser.id,
+   name:myUser.name,
+   totalScore:totalScore,
+   score:totalScore,
+   level:level,
+   bombs:bombs,
+   flash:flash,
+   freeSpins:freeSpins,
+   diamonds:diamonds,
+   room:myRoom||'global',
+   time:Date.now(),
+   lastSeen:Date.now()
+ };
+ try{
+   await update(ref(db,'users/'+key), payload);
+   await set(ref(db,'totals/'+key), payload);
+   await set(ref(db,'leaderboard/'+key), payload);
+ }catch(e){ console.warn('syncAll failed', e); }
 }
 
 function cleanLeaderboard(data){ let byId={}; Object.values(data||{}).forEach(r=>{ if(!r||!isValidId(r.id)) return; if(!byId[r.id]||(r.score||0)>byId[r.id].score) byId[r.id]=r; }); return Object.values(byId).sort((a,b)=>(b.score||0)-(a.score||0)); }
@@ -299,13 +411,269 @@ function renderLeaderboardHTML(arr){
   if(myUser){ const mine=arr.find(x=>x.id===myUser.id); if(mine){ const rank=arr.filter(x=>x.score>mine.score).length+1; if(rank>3) html+='<div class="lbSep">— YOUR RANK —</div><div class="lbRow me"><span>'+rank+'. '+getDisplayName(mine.id)+'</span><b>'+mine.score+'</b></div>'; document.getElementById('myRank').textContent='Your Rank: #'+rank+' | Your Total: '+mine.score; }else document.getElementById('myRank').textContent='No score yet! Login with your ID to see your rank.'; }else document.getElementById('myRank').textContent='Login to see your rank!';
   return html;
 }
-function updateTopUI(){ document.getElementById('totalTxt').textContent=totalScore; if(document.getElementById('totalTxt2')) document.getElementById('totalTxt2').textContent=totalScore; document.getElementById('levelScoreTxt').textContent=levelScore; document.getElementById('scoreTxt').textContent=levelScore; document.getElementById('myIdPill').textContent=myUser?myUser.id:'-'; document.getElementById('roomTxt').textContent=myRoom||'-'; document.getElementById('loginStatus').textContent=myUser?'Logged in: '+getDisplayName(myUser.id)+' | Lv '+level:'Not logged in'; document.getElementById('spinTxt').textContent=freeSpins; document.getElementById('spinBtnTxt').textContent=freeSpins; document.getElementById('bombTxt').textContent=bombs; document.getElementById('bombBtnTxt').textContent=bombs; document.getElementById('flashTxt').textContent=flash; document.getElementById('flashBtnTxt').textContent=flash; document.getElementById('levelTxt').textContent=level; if(document.getElementById('themeTxt2')) document.getElementById('themeTxt2').textContent=document.getElementById('themeTxt').textContent; if(battleMode){ document.getElementById('battleBanner').style.display='block'; document.getElementById('battleSpeedTxt').textContent='Speed: '+battleSpeedLabel; document.getElementById('battleAliveTxt').textContent=battleAliveCount; document.getElementById('battleTimerTxt').textContent=battleElapsed+'s'; } else document.getElementById('battleBanner').style.display='none'; }
+
+function updateTopUI(){
+  document.getElementById('totalTxt').textContent=totalScore;
+  if(document.getElementById('totalTxt2')) document.getElementById('totalTxt2').textContent=totalScore;
+  document.getElementById('levelScoreTxt').textContent=levelScore;
+  document.getElementById('scoreTxt').textContent=levelScore;
+  document.getElementById('diamondTxt').textContent=diamonds;
+  if(document.getElementById('diamondTxt2')) document.getElementById('diamondTxt2').textContent=diamonds;
+  if(document.getElementById('shopDiamondTxt')) document.getElementById('shopDiamondTxt').textContent=diamonds;
+  if(document.getElementById('shopBombTxt')) document.getElementById('shopBombTxt').textContent=bombs;
+  if(document.getElementById('shopFlashTxt')) document.getElementById('shopFlashTxt').textContent=flash;
+  if(document.getElementById('shopLevelTxt')) document.getElementById('shopLevelTxt').textContent=level;
+
+  document.getElementById('myIdPill').textContent=myUser?myUser.id:'-';
+  document.getElementById('roomTxt').textContent=myRoom||'-';
+  document.getElementById('loginStatus').textContent=myUser?'Logged in: '+getDisplayName(myUser.id)+' | Lv '+level:'Not logged in';
+  document.getElementById('spinTxt').textContent=freeSpins;
+  document.getElementById('spinBtnTxt').textContent=freeSpins;
+  document.getElementById('bombTxt').textContent=bombs;
+  document.getElementById('bombBtnTxt').textContent=bombs;
+  document.getElementById('flashTxt').textContent=flash;
+  document.getElementById('flashBtnTxt').textContent=flash;
+  document.getElementById('levelTxt').textContent=level;
+  if(document.getElementById('themeTxt2')) document.getElementById('themeTxt2').textContent=document.getElementById('themeTxt').textContent;
+  if(battleMode){
+    document.getElementById('battleBanner').style.display='block';
+    document.getElementById('battleSpeedTxt').textContent='Speed: '+battleSpeedLabel;
+    document.getElementById('battleAliveTxt').textContent=battleAliveCount;
+    document.getElementById('battleTimerTxt').textContent=battleElapsed+'s';
+  } else document.getElementById('battleBanner').style.display='none';
+}
+
+/* ==================== GOOGLE PLAY BILLING & SHOP SYSTEM ==================== */
+const PLAY_PRODUCTS = {
+  'diamond_5':  { sku: 'diamond_5',  diamonds: 5,  defaultPrice: 'RM 3.00' },
+  'diamond_10': { sku: 'diamond_10', diamonds: 10, defaultPrice: 'RM 6.00' },
+  'diamond_25': { sku: 'diamond_25', diamonds: 25, defaultPrice: 'RM 15.00' }
+};
+
+let digitalGoodsService = null;
+
+async function initPlayBilling(){
+  const statusEl = document.getElementById('playBillingStatus');
+  try{
+    if('getDigitalGoodsService' in window){
+      digitalGoodsService = await window.getDigitalGoodsService('https://play.google.com/billing');
+      if(digitalGoodsService){
+        const details = await digitalGoodsService.getDetails(Object.keys(PLAY_PRODUCTS));
+        details.forEach(item => {
+          const btn = document.getElementById('btnBuy_' + item.itemId);
+          if(btn && item.price){
+            btn.textContent = item.price.currency + ' ' + item.price.value;
+          }
+        });
+        if(statusEl) statusEl.textContent = '🛡️ Google Play Store Connected';
+        await restorePlayPurchases(true);
+        return;
+      }
+    }
+    if(window.AndroidBilling){
+      if(statusEl) statusEl.textContent = '🛡️ Android Play Billing Bridge Ready';
+      return;
+    }
+    if(statusEl) statusEl.textContent = '⚙️ Web Sandbox Mode (Play Store Ready)';
+  }catch(e){
+    console.warn('Play Billing init info:', e);
+    if(statusEl) statusEl.textContent = '⚙️ Web Sandbox Mode (Play Store Ready)';
+  }
+}
+
+async function grantVerifiedPurchase(sku, purchaseToken, source){
+  const product = PLAY_PRODUCTS[sku];
+  if(!product) return false;
+
+  let processedTokens = [];
+  try{ processedTokens = JSON.parse(localStorage.getItem('bb_play_tokens') || '[]'); }catch(e){}
+  if(purchaseToken && processedTokens.includes(purchaseToken)){
+    return false;
+  }
+
+  diamonds += product.diamonds;
+  if(purchaseToken){
+    processedTokens.push(purchaseToken);
+    if(processedTokens.length > 200) processedTokens = processedTokens.slice(-200);
+    localStorage.setItem('bb_play_tokens', JSON.stringify(processedTokens));
+  }
+
+  if(myUser){
+    const txId = (purchaseToken || ('tx_' + Date.now())).replace(/[^a-zA-Z0-9_-]/g, '_');
+    try{
+      await set(ref(db, 'purchases/' + userKey() + '/' + txId), {
+        userId: myUser.id,
+        sku: sku,
+        diamonds: product.diamonds,
+        source: source,
+        purchaseToken: purchaseToken || 'sandbox',
+        timestamp: Date.now()
+      });
+    }catch(e){ console.warn('Log purchase error:', e); }
+  }
+
+  soundCoin();
+  persistSave();
+  await syncAll();
+  updateTopUI();
+  showToast('💎 +'+product.diamonds+' Diamonds diterima!');
+  return true;
+}
+
+window.onPlayPurchaseSuccess = async function(sku, purchaseToken){
+  await grantVerifiedPurchase(sku, purchaseToken, 'android_bridge');
+};
+window.onPlayPurchaseError = function(errMsg){
+  alert('Pembayaran Play Store dibatalkan atau gagal: ' + (errMsg || 'Cancelled'));
+};
+
+window.purchasePlayProduct = async function(sku){
+  if(!myUser) return alert('Sila login atau daftar ID terlebih dahulu sebelum membeli Diamond!');
+  const product = PLAY_PRODUCTS[sku];
+  if(!product) return;
+
+  if(digitalGoodsService && window.PaymentRequest){
+    try{
+      const paymentMethods = [{
+        supportedMethods: 'https://play.google.com/billing',
+        data: { sku: product.sku }
+      }];
+      const paymentDetails = {
+        total: {
+          label: product.diamonds + ' Diamonds - BLOCK BLAST 2026',
+          amount: { currency: 'MYR', value: sku === 'diamond_5' ? '3.00' : (sku === 'diamond_10' ? '6.00' : '15.00') }
+        }
+      };
+      const request = new PaymentRequest(paymentMethods, paymentDetails);
+      const paymentResponse = await request.show();
+      const { purchaseToken } = paymentResponse.details;
+
+      await digitalGoodsService.consume(purchaseToken);
+      await paymentResponse.complete('success');
+      await grantVerifiedPurchase(product.sku, purchaseToken, 'google_play_twa');
+      return;
+    }catch(err){
+      if(err.name !== 'AbortError'){
+        alert('Ralat transaksi Google Play: ' + err.message);
+      }
+      return;
+    }
+  }
+
+  if(window.AndroidBilling && typeof window.AndroidBilling.launchBillingFlow === 'function'){
+    window.AndroidBilling.launchBillingFlow(product.sku, myUser.id);
+    return;
+  }
+
+  const ok = confirm(
+    '[MOD UJIAN GOOGLE PLAY BILLING]\n\n' +
+    'Produk: 💎 ' + product.diamonds + ' Diamonds\n' +
+    'SKU Play Console: ' + product.sku + '\n' +
+    'Harga: ' + product.defaultPrice + '\n\n' +
+    'Teruskan simulasi pembayaran?'
+  );
+  if(ok){
+    await grantVerifiedPurchase(product.sku, 'sandbox_' + Date.now(), 'web_sandbox');
+  }
+};
+
+window.restorePlayPurchases = async function(silent = false){
+  if(digitalGoodsService){
+    try{
+      const purchases = await digitalGoodsService.listPurchases();
+      let restored = 0;
+      for(const p of purchases){
+        if(PLAY_PRODUCTS[p.itemId]){
+          await digitalGoodsService.consume(p.purchaseToken);
+          const added = await grantVerifiedPurchase(p.itemId, p.purchaseToken, 'google_play_restore');
+          if(added) restored++;
+        }
+      }
+      if(!silent){
+        showToast(restored > 0 ? '✅ '+restored+' pembelian berjaya dipulihkan!' : 'Tiada pembelian tertunggak.');
+      }
+      return;
+    }catch(e){
+      if(!silent) alert('Gagal menyemak Play Store: ' + e.message);
+      return;
+    }
+  }
+  if(window.AndroidBilling && typeof window.AndroidBilling.queryPurchases === 'function'){
+    window.AndroidBilling.queryPurchases();
+    return;
+  }
+  if(!silent) showToast('Semua rekod pembelian anda telah disegerakkan.');
+};
+
+window.openShop=function(){
+  if(battleMode||battleCountdownActive){showToast('Shop tidak tersedia semasa Battle.');return;}
+  if(hasBlockingOverlayExcept('pauseModal') && !document.getElementById('shopModal').classList.contains('hidden')) return;
+  updateTopUI();
+  document.getElementById('shopModal').classList.remove('hidden');
+  stopFall();
+  syncOverlayPause();
+};
+
+window.closeShop=function(){
+  document.getElementById('shopModal').classList.add('hidden');
+  if(openedFromPause&&isPaused){
+    openedFromPause=false;
+    document.getElementById('pauseModal').classList.remove('hidden');
+  }
+  syncOverlayPause();
+};
+
+window.openShopFromPause=function(){
+  openedFromPause=true;
+  document.getElementById('pauseModal').classList.add('hidden');
+  openShop();
+};
+
+window.redeemItem=async function(type, cost){
+  if(!myUser) return alert('Sila login atau daftar ID terlebih dahulu!');
+  if(diamonds < cost){
+    alert('Baki Diamond tidak mencukupi! Perlukan 💎 '+cost+' Diamond.\n\nSila beli Diamond dahulu (RM 3.00 = 5 Diamonds).');
+    return;
+  }
+
+  diamonds -= cost;
+
+  if(type === 'bomb'){
+    bombs += 1;
+    soundCoin();
+    showToast('💣 Berjaya tebus +1 BOMB! (-1 💎)');
+  } else if(type === 'flash'){
+    flash += 1;
+    soundCoin();
+    showToast('⚡ Berjaya tebus +1 FLASH! (-2 💎)');
+  } else if(type === 'level'){
+    const prevLevel = level;
+    level += 1;
+    totalScore += 400;
+    if(level % 30 === 0){
+      freeSpins++;
+      showToast('🎁 Bonus Free Spin Level '+level+'!');
+    }
+    soundLevelUp();
+    checkThemeUp(prevLevel);
+    applyTheme();
+    showToast('⬆️ Tahniah! Naik ke Level '+level+'! (-3 💎)');
+  }
+
+  persistSave();
+  await syncAll();
+  updateTopUI();
+  renderBoard();
+};
+/* ========================================================================= */
+
 let openedFromPause=false,spinPaused=false,wasPausedBeforeSpin=false,isExploding=false;
 let battleMode=false,battleStartTime=0,battleElapsed=0,battleTimer=null,battleSpeedLabel='SLOW',battleAliveCount=0,battleSpeed=1200;
 let battleUnsubscribe=null,battleListeningRoom='',countdownInterval=null,countdownToken='',battleCountdownActive=false;
 let activeBattleKey='',finishedBattleKey='',battleEliminated=false,battleFinishRequestKey='',battleRoomForSession='',lastBattleScoreWrite=0;
 let firebaseServerOffset=0,overlaySyncTimer=null;
-const BLOCKING_OVERLAYS=['loginModal','roomModal','inviteModal','surpriseModal','howModal','rankModal','stageModal','spinModal','pauseModal','battleModal','battleOverModal','menuModal','msg'];
+
+const BLOCKING_OVERLAYS=['loginModal','roomModal','inviteModal','surpriseModal','howModal','rankModal','stageModal','spinModal','pauseModal','battleModal','battleOverModal','menuModal','shopModal','msg'];
 function hasBlockingOverlayExcept(exceptId){ return BLOCKING_OVERLAYS.some(id=>id!==exceptId&&document.getElementById(id)&&!document.getElementById(id).classList.contains('hidden')); }
 function hasBlockingOverlay(){return hasBlockingOverlayExcept('');}
 function gameInputBlocked(){return isPaused||spinPaused||isExploding||hasBlockingOverlay();}
@@ -315,6 +683,7 @@ const overlayObserver=new MutationObserver(syncOverlayPause);
 overlayObserver.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
 function battleNow(){return Date.now()+firebaseServerOffset;}
 function makeBattleKey(roomCode,startAt){return roomCode+':'+String(Number(startAt)||0);}
+
 window.openMenu=function(){ if(battleMode||battleCountdownActive){showToast('Menu is unavailable during Battle.');return;} if(hasBlockingOverlayExcept('pauseModal'))return; document.getElementById('menuModal').classList.remove('hidden'); updateTopUI(); stopFall(); syncOverlayPause(); };
 window.closeMenu=function(){ document.getElementById('menuModal').classList.add('hidden'); if(openedFromPause&&isPaused){ openedFromPause=false; document.getElementById('pauseModal').classList.remove('hidden'); } syncOverlayPause(); };
 window.openMenuModal=function(action){ const cameFromPause=openedFromPause&&isPaused; document.getElementById('menuModal').classList.add('hidden'); openedFromPause=cameFromPause; if(typeof action==='function')action(); if(cameFromPause&&isPaused&&!hasBlockingOverlay())restorePauseAfterOverlay(); syncOverlayPause(); };
@@ -323,27 +692,134 @@ window.openMenuFromPause=function(){ if(battleMode||battleCountdownActive)return
 window.openRankFromPause=function(){ openedFromPause=true; document.getElementById('pauseModal').classList.add('hidden'); openRank(); };
 window.openStageFromPause=function(){ openedFromPause=true; document.getElementById('pauseModal').classList.add('hidden'); openStage(); };
 window.openHowFromPause=function(){ openedFromPause=true; document.getElementById('pauseModal').classList.add('hidden'); openHow(); };
-function checkLogin(){ let saved=null; try{saved=JSON.parse(localStorage.getItem('bb_user')||'null');}catch(e){} if(saved){ document.getElementById('autoLoginBox').style.display='block'; document.getElementById('autoLoginId').textContent=saved.id+' | Total: '+getSave().totalScore+' | Level: '+getSave().level; }else document.getElementById('autoLoginBox').style.display='none'; document.getElementById('loginModal').classList.remove('hidden'); syncOverlayPause(); }
-window.autoLogin=function(){ myUser=JSON.parse(localStorage.getItem('bb_user')); let s=getSave(); totalScore=s.totalScore; bombs=s.bombs; flash=s.flash; freeSpins=s.freeSpins; level=s.level; levelScore=0; document.getElementById('loginModal').classList.add('hidden'); updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle(); syncAll(); };
-window.loginWithId=async function(){ let id=document.getElementById('loginId').value.trim().toLowerCase(); if(!id) return alert('Enter your ID first!'); if(!id.startsWith('blast-')) id='blast-'+id; try{ let key=id.replace(/[^a-z0-9-]/g,'_'); let snap=await get(ref(db,'users/'+key)); if(!snap.exists()) return alert('ID not found! Please register or check spelling.'); let u=snap.val(); myUser={name:u.name, id:u.id, globalNum:u.globalNum}; localStorage.setItem('bb_user', JSON.stringify(myUser)); let totalSnap=await get(ref(db,'totals/'+key)); if(totalSnap.exists()){ let t=totalSnap.val(); totalScore=t.totalScore||0; bombs=t.bombs||0; flash=t.flash||0; freeSpins=t.freeSpins||0; level=t.level||1; saveData={totalScore,bombs,flash,freeSpins,level}; localStorage.setItem('bb_save', JSON.stringify(saveData)); } else { totalScore=0; } levelScore=0; document.getElementById('loginModal').classList.add('hidden'); updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle(); syncAll(); }catch(e){ alert(e.message); } };
-window.doRegister=async function(){ let btn=document.querySelector('#loginModal button[onclick="doRegister()"]'); if(btn) btn.disabled=true; const name=document.getElementById('regName').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'')||'baem'; document.getElementById('regResult').textContent='Registering...'; try{ const result=await runTransaction(ref(db,'counters/global_id'),current=>current===null?1:current+1); const next=result.snapshot.val(), num=String(next).padStart(3,'0'), id='blast-'+name+'-'+num; myUser={name,id,created:Date.now(),globalNum:next}; localStorage.setItem('bb_user',JSON.stringify(myUser)); await set(ref(db,'users/'+id.replace(/[^a-z0-9-]/g,'_')),myUser); totalScore=0; levelScore=0; bombs=0; flash=0; freeSpins=0; level=1; persistSave(); document.getElementById('regResult').textContent='Your ID: '+id; document.getElementById('regResult').style.color='#2ed573'; await syncAll(); setTimeout(()=>{ document.getElementById('loginModal').classList.add('hidden'); updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle(); },800); }catch(e){ document.getElementById('regResult').textContent='Failed: '+e.message; document.getElementById('regResult').style.color='#ff4757'; if(btn) btn.disabled=false; } };
+
+function checkLogin(){
+  let saved=null;
+  try{saved=JSON.parse(localStorage.getItem('bb_user')||'null');}catch(e){}
+  if(saved){
+    const s = getSave();
+    document.getElementById('autoLoginBox').style.display='block';
+    document.getElementById('autoLoginId').textContent=saved.id+' | Total: '+s.totalScore+' | Lv: '+s.level+' | 💎 '+s.diamonds;
+  }else document.getElementById('autoLoginBox').style.display='none';
+  document.getElementById('loginModal').classList.remove('hidden');
+  syncOverlayPause();
+}
+
+window.autoLogin=function(){
+  myUser=JSON.parse(localStorage.getItem('bb_user'));
+  let s=getSave();
+  totalScore=s.totalScore; bombs=s.bombs; flash=s.flash; freeSpins=s.freeSpins; level=s.level; diamonds=s.diamonds;
+  levelScore=0;
+  document.getElementById('loginModal').classList.add('hidden');
+  updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle(); syncAll();
+};
+
+window.loginWithId=async function(){
+  let id=document.getElementById('loginId').value.trim().toLowerCase();
+  if(!id) return alert('Enter your ID first!');
+  if(!id.startsWith('blast-')) id='blast-'+id;
+  try{
+    let key=id.replace(/[^a-z0-9-]/g,'_');
+    let snap=await get(ref(db,'users/'+key));
+    if(!snap.exists()) return alert('ID not found! Please register or check spelling.');
+    let u=snap.val();
+    myUser={name:u.name, id:u.id, globalNum:u.globalNum};
+    localStorage.setItem('bb_user', JSON.stringify(myUser));
+    let totalSnap=await get(ref(db,'totals/'+key));
+    if(totalSnap.exists()){
+      let t=totalSnap.val();
+      totalScore=t.totalScore||0;
+      bombs=t.bombs||0;
+      flash=t.flash||0;
+      freeSpins=t.freeSpins||0;
+      level=t.level||1;
+      diamonds=t.diamonds||0;
+      saveData={totalScore,bombs,flash,freeSpins,level,diamonds};
+      localStorage.setItem('bb_save', JSON.stringify(saveData));
+    } else {
+      totalScore=0; diamonds=0;
+    }
+    levelScore=0;
+    document.getElementById('loginModal').classList.add('hidden');
+    updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle(); syncAll();
+  }catch(e){ alert(e.message); }
+};
+
+window.doRegister=async function(){
+  let btn=document.querySelector('#loginModal button[onclick="doRegister()"]');
+  if(btn) btn.disabled=true;
+  const name=document.getElementById('regName').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'')||'baem';
+  document.getElementById('regResult').textContent='Registering...';
+  try{
+    const result=await runTransaction(ref(db,'counters/global_id'),current=>current===null?1:current+1);
+    const next=result.snapshot.val(), num=String(next).padStart(3,'0'), id='blast-'+name+'-'+num;
+    myUser={name,id,created:Date.now(),globalNum:next};
+    localStorage.setItem('bb_user',JSON.stringify(myUser));
+    await set(ref(db,'users/'+id.replace(/[^a-z0-9-]/g,'_')),myUser);
+    totalScore=0; levelScore=0; bombs=0; flash=0; freeSpins=0; level=1; diamonds=0;
+    persistSave();
+    document.getElementById('regResult').textContent='Your ID: '+id;
+    document.getElementById('regResult').style.color='#2ed573';
+    await syncAll();
+    setTimeout(()=>{
+      document.getElementById('loginModal').classList.add('hidden');
+      updateTopUI(); goOnline(); loadLeaderboard(true); newGame(); listenBattle();
+    },800);
+  }catch(e){
+    document.getElementById('regResult').textContent='Failed: '+e.message;
+    document.getElementById('regResult').style.color='#ff4757';
+    if(btn) btn.disabled=false;
+  }
+};
+
 async function goOnline(){ if(!myUser) return; try{ let key=myUser.id.replace(/[^a-z0-9-]/g,'_'); let onlineRef=ref(db,'online/'+key); await set(onlineRef,{id:myUser.id, name:myUser.name, time:Date.now(), room:myRoom||''}); onDisconnect(onlineRef).remove(); setInterval(()=>set(onlineRef,{id:myUser.id, name:myUser.name, time:Date.now(), room:myRoom||''}),30000); }catch(e){} }
 onValue(ref(db,'.info/serverTimeOffset'),s=>{firebaseServerOffset=Number(s.val())||0;});
 onValue(ref(db,'online'), s=>{ let v=s.val()||{}; document.getElementById('onlineCount').textContent=Object.keys(v).length; });
-async function copyShareText(text){ if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(text); return new Promise((resolve,reject)=>{ const input=document.createElement('textarea');input.value=text;input.style.position='fixed';input.style.opacity='0'; document.body.appendChild(input);input.select(); try{if(document.execCommand('copy'))resolve();else reject(new Error('Copy failed'));}catch(e){reject(e);} input.remove(); }); }
-let deferredInstallPrompt=null;
-function updateInstallButton(){ const btn=document.getElementById('installAppBtn'); if(btn)btn.textContent=deferredInstallPrompt?'INSTALL':'HOW TO INSTALL'; }
-window.addEventListener('beforeinstallprompt',event=>{ event.preventDefault();deferredInstallPrompt=event;updateInstallButton(); });
-window.addEventListener('appinstalled',()=>{ deferredInstallPrompt=null;updateInstallButton();showToast('BLOCK BLAST installed!'); });
-window.installApp=async function(){ if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone){ alert('BLOCK BLAST is already installed.');return; } if(deferredInstallPrompt){ deferredInstallPrompt.prompt(); try{await deferredInstallPrompt.userChoice;}catch(e){} deferredInstallPrompt=null;updateInstallButton();return; } if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){ alert('Install requires the game to be hosted on a public HTTPS website. Deploy index.html, manifest.webmanifest, the icon files, and service-worker.js together.'); return; } alert('If your browser offers installation, use its Install App or Add to Home Screen menu. On iPhone/iPad, open Share and choose Add to Home Screen.'); };
+
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){ navigator.serviceWorker.register(new URL('./service-worker.js',location.href)).catch(error=>console.warn('Service worker registration failed',error)); }
+
 window.inviteBattle=function(){ const url=location.href.split('#')[0].split('?')[0]; document.getElementById('inviteLinkInput').value=url; document.getElementById('inviteIdTxt').textContent=myUser?'Your ID: '+myUser.id+(myRoom?' | Room: '+myRoom:''):'Login dulu untuk dapat ID'; document.getElementById('inviteModal').classList.remove('hidden'); stopFall(); syncOverlayPause(); };
 window.closeInvite=function(){ document.getElementById('inviteModal').classList.add('hidden'); syncOverlayPause(); };
 window.copyInviteLink=async function(){ const text=document.getElementById('inviteLinkInput').value+(myUser?' | My ID: '+myUser.id:'')+(myRoom?' | Room: '+myRoom:''); try{ if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); } else throw new Error('no clipboard'); showToast('✅ Link Copied!'); }catch(e){ const inp=document.getElementById('inviteLinkInput'); inp.select(); inp.setSelectionRange(0,99999); try{ document.execCommand('copy'); showToast('✅ Link Copied!'); } catch(e2){ prompt('Copy link ni manually:', text); } } };
 window.shareInviteWhatsApp=function(){ const text=encodeURIComponent('Play BLOCK BLAST 2026! My ID: '+(myUser?myUser.id:'')+' Room: '+(myRoom||'-')+' Link: '+document.getElementById('inviteLinkInput').value); window.open('https://wa.me/?text='+text,'_blank'); };
+
 let isPaused=false;
-window.togglePause=function(){ if(battleMode||battleCountdownActive){showToast('Battle cannot be paused.');return;} if(hasBlockingOverlayExcept('pauseModal')||isExploding)return; isPaused=!isPaused; if(isPaused){ stopFall(); document.getElementById('pauseModal').classList.remove('hidden'); document.getElementById('pauseInfo').textContent='Level '+level+' | This Level Score: '+levelScore+' (not added yet) | Total: '+totalScore+' | BOMB: '+bombs+' | FLASH: '+flash+' | SPIN: '+freeSpins; }else{ openedFromPause=false; document.getElementById('pauseModal').classList.add('hidden'); if(curBlock) startFall(); } syncOverlayPause(); };
-window.doLogout=async function(){ if(battleMode) await battleEliminate('logout'); stopSuspenseMusic(); const savedLevel=level; let savedTotal=totalScore; levelScore=0; localStorage.setItem('bb_best',String(totalScore)); persistSave(); await syncAll(); if(myRoom) await leaveRoom(); isPaused=false; openedFromPause=false; battleMode=false; document.getElementById('wrap').classList.remove('battleMode'); document.getElementById('pauseModal').classList.add('hidden'); document.getElementById('battleOverModal').classList.add('hidden'); stopFall(); document.getElementById('loginModal').classList.remove('hidden'); checkLogin(); loadLeaderboard(true); alert('Saved! Total: '+savedTotal+' (Level '+savedLevel+').'); };
+window.togglePause=function(){
+  if(battleMode||battleCountdownActive){showToast('Battle cannot be paused.');return;}
+  if(hasBlockingOverlayExcept('pauseModal')||isExploding)return;
+  isPaused=!isPaused;
+  if(isPaused){
+    stopFall();
+    document.getElementById('pauseModal').classList.remove('hidden');
+    document.getElementById('pauseInfo').textContent='Level '+level+' | Skor: '+levelScore+' | Total: '+totalScore+' | 💎 '+diamonds+' | BOMB: '+bombs+' | FLASH: '+flash;
+  }else{
+    openedFromPause=false;
+    document.getElementById('pauseModal').classList.add('hidden');
+    if(curBlock) startFall();
+  }
+  syncOverlayPause();
+};
+
+window.doLogout=async function(){
+  if(battleMode) await battleEliminate('logout');
+  stopSuspenseMusic();
+  const savedLevel=level;
+  let savedTotal=totalScore;
+  levelScore=0;
+  localStorage.setItem('bb_best',String(totalScore));
+  persistSave();
+  await syncAll();
+  if(myRoom) await leaveRoom();
+  isPaused=false; openedFromPause=false; battleMode=false;
+  document.getElementById('wrap').classList.remove('battleMode');
+  document.getElementById('pauseModal').classList.add('hidden');
+  document.getElementById('battleOverModal').classList.add('hidden');
+  stopFall();
+  document.getElementById('loginModal').classList.remove('hidden');
+  checkLogin(); loadLeaderboard(true);
+  alert('Saved! Total: '+savedTotal+' (Level '+savedLevel+') | 💎 '+diamonds);
+};
+
 window.openRoom=function(){ if(battleMode||battleCountdownActive){showToast('Room controls are unavailable during Battle.');return;} document.getElementById('roomModal').classList.remove('hidden'); updateRoomInfo();listenBattle(); stopFall(); syncOverlayPause(); };
 window.closeRoom=function(){document.getElementById('roomModal').classList.add('hidden');restorePauseAfterOverlay();syncOverlayPause();};
 function genCode(){ return Math.random().toString(36).substring(2,6).toUpperCase(); }
@@ -365,15 +841,8 @@ window.createRoom=async function(){
   if(!code)return alert('Could not create a room. Please try again.');
   const key=userKey();
   await set(ref(db,'rooms/'+code),{
-    code,
-    max:size,
-    created:Date.now(),
-    host:myUser.id,
-    hostName:myUser.name,
-    status:'waiting',
-    players:{
-      [key]:{name:myUser.name, id:myUser.id, score:totalScore, alive:true, lastSeen:Date.now()}
-    },
+    code, max:size, created:Date.now(), host:myUser.id, hostName:myUser.name, status:'waiting',
+    players:{ [key]:{name:myUser.name, id:myUser.id, score:totalScore, alive:true, lastSeen:Date.now()} },
     requests:{}
   });
   myRoom=code; myRoomHost=myUser.id;
@@ -420,11 +889,7 @@ window.hostApprovePlayer=async function(playerKey){
   if(currentPlayers>=Number(room.max||2))return alert('Room sudah penuh mengikut kapasiti!');
 
   await set(ref(db,'rooms/'+myRoom+'/players/'+playerKey),{
-    name:req.name,
-    id:req.id,
-    score:req.score,
-    alive:true,
-    lastSeen:Date.now()
+    name:req.name, id:req.id, score:req.score, alive:true, lastSeen:Date.now()
   });
   await remove(ref(db,'rooms/'+myRoom+'/requests/'+playerKey));
 };
@@ -525,7 +990,7 @@ async function updateRoomInfo(roomCode,myRoomData){
   if(isHost && requests.length > 0){
     html += '<br><b style="color:#ffcc00">Permohonan Masuk (Requests):</b>';
     requests.forEach(([k,p])=>{
-      html += '<div class="battlePlayer" style="background:rgba(255,165,0,0.2)"><span>'+getDisplayName(p.id)+'</span><div><button onclick="hostApprovePlayer(\''+k+'\')" style="background:#2ed573;padding:4px 8px;margin-right:4px">Accept</button><button onclick="hostRejectPlayer(\''+k+'\')" style="background:#ff4757;padding:4px 8px">Reject</button></div></div>';
+      html += '<div class="battlePlayer" style="background:rgba(255,165,0,0.2)"><span>'+getDisplayName(p.id)+'</span><div><button onclick="hostApprovePlayer(\''+k+'\')" style="background:#2ed573;color:#000;padding:4px 8px;margin-right:4px">Accept</button><button onclick="hostRejectPlayer(\''+k+'\')" style="background:#ff4757;padding:4px 8px">Reject</button></div></div>';
     });
   }
 
@@ -773,7 +1238,7 @@ function checkLevel(){
   let leveled=false; const prevLevel=level;
   while(levelScore>=getLevelNeed(level)){
     const need=getLevelNeed(level); levelScore-=need; totalScore+=need; level++; leveled=true;
-    if(level%40===0){ freeSpins++; showToast('🎁 Free Spin Diberikan! Level '+level+'!'); }
+    if(level%30===0){ freeSpins++; showToast('🎁 Free Spin Diberikan! Level '+level+'!'); }
   }
   if(leveled){
     soundLevelUp(); checkThemeUp(prevLevel);
@@ -784,11 +1249,11 @@ function checkLevel(){
 }
 
 function renderHow(){
-  const need=getLevelNeed(level),left=Math.max(0,need-levelScore);
+  const need=getLevelNeed(level);
   document.getElementById('howContent').innerHTML=
     '<div class="howStep"><b>📍 LEVEL & SKOR</b><br>Level: <b>'+level+'</b> / 350 | Skor: <b>'+levelScore+'/'+need+'</b> (Setiap 400 skor naik 1 level).</div>'+
-    '<div class="howStep warn"><b>🎁 FREE SPIN & STAGE</b><br>- Free Spin diberikan setiap kenaikan <b>40 level</b>.<br>- Kenaikan Stage setiap <b>50 level</b> (Jumlah 350 level ke Mahaguru).<br>- Skor terkumpul dimasukkan ke Total Score (Top 3 Listed).</div>'+
-    '<div class="howStep"><b>🗺️ ROOM BATTLE</b><br>Host buat room, player request join, Host Accept. Bila penuh, Host tekan START BATTLE! Selepas game tamat, pop-up kedudukan pemenang No.1 dan seterusnya akan dipaparkan.</div>';
+    '<div class="howStep warn"><b>💎 DIAMOND SHOP</b><br>- <b>RM 3.00 = 5 Diamonds</b><br>- 💣 1 Bomb = 1 Diamond<br>- ⚡ 1 Flash = 2 Diamonds<br>- ⬆️ 1 Level Up = 3 Diamonds</div>'+
+    '<div class="howStep"><b>🎰 FREE SPIN & MISTERY JACKPORT</b><br>- Free Spin percuma setiap kenaikan <b>30 level</b>.<br>- <b>Mistery Jackport</b> berpeluang muncul <b>10%</b> dengan hadiah rawak: 💎 2 Diamond, 💎 1 Diamond, 💣 1x/2x Bomb, ⚡ 1x/2x Flash & 🎁 2x Spin!</div>';
 }
 window.openHow=function(){ renderHow(); document.getElementById('howModal').classList.remove('hidden'); stopFall(); syncOverlayPause(); };
 window.closeHow=function(){ document.getElementById('howModal').classList.add('hidden'); if(openedFromPause && isPaused){ openedFromPause=false; document.getElementById('pauseModal').classList.remove('hidden'); } syncOverlayPause(); };
@@ -862,7 +1327,7 @@ const PRIZES=[ {label:"💣 BOMB x1", type:"bomb", val:1}, {label:"🎁 FREE SPI
 let spinning=false;
 window.openSpin=function(){
   if(battleMode||battleCountdownActive){showToast('Spin is unavailable during Battle.');return;}
-  if(freeSpins<=0){alert('Tiada baki Free Spin! Anda akan dapat percuma setiap kenaikan 40 level.');return;}
+  if(freeSpins<=0){alert('Tiada baki Free Spin! Anda akan dapat percuma setiap kenaikan 30 level.');return;}
   wasPausedBeforeSpin=isPaused; spinPaused=true; stopFall();
   document.getElementById('spinModal').classList.remove('hidden');
   document.getElementById('spinModalCount').textContent=freeSpins;
@@ -902,36 +1367,42 @@ window.doSpinWheel=function(){
   },3200);
 };
 
+/* ==================== MISTERY JACKPORT (PELUANG 10% UNTUK SEMUA HADIAH) ==================== */
 let surpriseSpinning=false;
+const MISTERY_JACKPORT_PRIZES = [
+  { emoji: '💎', msg: 'JACKPOT! +2 Diamonds dimasukkan!', apply: () => { diamonds += 2; soundCoin(); } },
+  { emoji: '💎', msg: 'Tahniah! +1 Diamond dimasukkan!', apply: () => { diamonds += 1; soundCoin(); } },
+  { emoji: '💣', msg: 'Bonus! +1x BOMB dimasukkan!', apply: () => { bombs += 1; soundLevelUp(); } },
+  { emoji: '💣', msg: 'Bonus! +2x BOMB dimasukkan!', apply: () => { bombs += 2; soundLevelUp(); } },
+  { emoji: '⚡', msg: 'Bonus! +1x FLASH dimasukkan!', apply: () => { flash += 1; soundLevelUp(); } },
+  { emoji: '⚡', msg: 'Bonus! +2x FLASH dimasukkan!', apply: () => { flash += 2; soundLevelUp(); } },
+  { emoji: '🎁', msg: 'Bonus! +2x SPIN dimasukkan!', apply: () => { freeSpins += 2; soundLevelUp(); } }
+];
+
 function scheduleSurpriseSpin(){
-  let delay=60000+Math.random()*60000;
   setTimeout(()=>{
-    if(gameActive&&!isPaused&&!battleMode&&!surpriseSpinning&&!spinPaused&&!isExploding&&level>=10){
+    if(gameActive&&!isPaused&&!battleMode&&!surpriseSpinning&&!spinPaused&&!isExploding&&level>=10 && Math.random()<0.10){
       soundSurprise();
+      document.getElementById('surpriseWheel').textContent='🎰';
       document.getElementById('surpriseModal').classList.remove('hidden');
-      document.getElementById('surpriseResult').textContent='Bonus Misteri Muncul!';
-      document.getElementById('surpriseBtn').textContent='🎰 TEKAN UNTUK AMBIL!';
+      document.getElementById('surpriseResult').textContent='Mistery Jackport Muncul!';
+      document.getElementById('surpriseBtn').textContent='🎰 TEKAN UNTUK MISTERY JACKPORT!';
       document.getElementById('surpriseBtn').disabled=false;
     }
     scheduleSurpriseSpin();
-  },delay);
+  },60000);
 }
+
 window.spinSurprise=function(){
   if(surpriseSpinning) return;
   surpriseSpinning=true;
   const btn=document.getElementById('surpriseBtn');
-  btn.disabled=true; btn.textContent='Mendapatkan Hadiah...';
+  btn.disabled=true; btn.textContent='Membuka Mistery Jackport...';
   setTimeout(()=>{
-    const roll=Math.random(); let msg='', emoji='';
-    if(roll<0.4){
-      emoji='⬆️'; level++; msg='Tahniah! Naik 1 Level terus ke Lv '+level; soundLevelUp(); checkThemeUp(level-1);
-    } else if(roll<0.7){
-      emoji='🎁'; bombs+=2; msg='Bonus! +2 BOMB dimasukkan!'; soundLevelUp();
-    } else {
-      emoji='⚡'; flash+=2; msg='Bonus! +2 FLASH dimasukkan!'; soundLevelUp();
-    }
-    document.getElementById('surpriseWheel').textContent=emoji;
-    document.getElementById('surpriseResult').textContent=msg;
+    const prize = MISTERY_JACKPORT_PRIZES[Math.floor(Math.random() * MISTERY_JACKPORT_PRIZES.length)];
+    prize.apply();
+    document.getElementById('surpriseWheel').textContent=prize.emoji;
+    document.getElementById('surpriseResult').textContent=prize.msg;
     btn.textContent='✅ TERUSKAN PERMAINAN'; btn.disabled=false;
     btn.onclick=()=>{
       document.getElementById('surpriseModal').classList.add('hidden');
@@ -942,13 +1413,15 @@ window.spinSurprise=function(){
     persistSave(); syncAll(); updateTopUI();
   },1000);
 };
+/* ============================================================================================== */
 
 const COLS=8, ROWS=14, TOTAL=COLS*ROWS;
 const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[0,1]],[[0,0],[1,0],[2,0]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[1,1],[2,1]],[[0,0],[0,1],[1,1],[1,2]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]]];
 let grid=Array(TOTAL).fill(null);
-let totalScore=getSave().totalScore, levelScore=0, combo=1, freeSpins=getSave().freeSpins, bombs=getSave().bombs, flash=getSave().flash, level=getSave().level, gameActive=true;
+let totalScore=getSave().totalScore, levelScore=0, combo=1, freeSpins=getSave().freeSpins, bombs=getSave().bombs, flash=getSave().flash, level=getSave().level, diamonds=getSave().diamonds, gameActive=true;
 let curBlock=null, cursorX=3, cursorY=0, fallTimer=null, fallSpeed=900, bombMode=false, flashMode=false;
 const boardEl=document.getElementById('board');
+
 function randomBlock(){
   if(battleMode){
     let neon=[{c1:'#FF00CC',c2:'#7A00FF'},{c1:'#00E5FF',c2:'#0099FF'},{c1:'#FFCC00',c2:'#FF00CC'},{c1:'#FF4757',c2:'#FF00CC'},{c1:'#00FFCC',c2:'#00AAFF'}];
@@ -1087,7 +1560,10 @@ window.cancelBombFlash=function(){ clearBombFlashUI(); if(curBlock && !isPaused 
 window.useBomb=function(){
   if(battleMode||battleCountdownActive||gameInputBlocked())return;
   if(isExploding)return;
-  if(bombs<=0){alert('Tiada BOMB! Guna Spin untuk dapatkan.');return;}
+  if(bombs<=0){
+    if(confirm('Tiada BOMB! Mahu beli di Diamond Shop? (1 Bomb = 1 💎)')) openShop();
+    return;
+  }
   if(bombMode){cancelBombFlash();return;}
   flashMode=false; bombMode=true; stopFall();
   document.getElementById('flashBanner').style.display='none'; document.getElementById('bombBanner').style.display='block';
@@ -1097,7 +1573,10 @@ window.useBomb=function(){
 window.useFlash=function(){
   if(battleMode||battleCountdownActive||gameInputBlocked())return;
   if(isExploding)return;
-  if(flash<=0){alert('Tiada FLASH! Guna Spin untuk dapatkan.');return;}
+  if(flash<=0){
+    if(confirm('Tiada FLASH! Mahu beli di Diamond Shop? (1 Flash = 2 💎)')) openShop();
+    return;
+  }
   if(flashMode){cancelBombFlash();return;}
   bombMode=false; flashMode=true; stopFall();
   document.getElementById('bombBanner').style.display='none'; document.getElementById('flashBanner').style.display='block';
@@ -1167,12 +1646,7 @@ document.addEventListener('visibilitychange', ()=>{
   }
 });
 setInterval(()=>{ if(myUser && !battleMode) syncAll(); },10000);
-checkLogin(); updateTopUI(); newGame(); loadLeaderboard(true); startLiveLeaderboard(); scheduleSurpriseSpin();
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js');
-}
+initPlayBilling(); checkLogin(); updateTopUI(); newGame(); loadLeaderboard(true); startLiveLeaderboard(); scheduleSurpriseSpin();
 </script>
 </body>
 </html>
